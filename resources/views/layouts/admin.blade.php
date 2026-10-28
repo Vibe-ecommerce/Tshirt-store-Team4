@@ -91,25 +91,25 @@
         }
 
         .sidebar-brand {
-            padding: 13px 18px;
+            padding: 18px 20px 16px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            border-bottom: 1px solid var(--border-subtle);
+            gap: 12px;
+            border-bottom: 1px solid #f1f5f9;
             background: #ffffff;
             flex-shrink: 0;
         }
 
         .brand-badge {
-            width: 34px;
-            height: 34px;
-            border-radius: 10px;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
             background: var(--accent-gradient);
             display: flex;
             align-items: center;
             justify-content: center;
             color: #ffffff;
-            box-shadow: 0 3px 10px rgba(79, 70, 229, 0.3);
+            box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
             flex-shrink: 0;
             transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s;
         }
@@ -120,39 +120,69 @@
         }
 
         .brand-badge svg {
-            width: 18px;
-            height: 18px;
+            width: 22px;
+            height: 22px;
             stroke-width: 2.2;
         }
 
         .brand-info {
             display: flex;
             flex-direction: column;
-            line-height: 1.15;
+            line-height: 1.2;
+        }
+
+        .brand-title-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .brand-name {
-            font-size: 1.05rem;
+            font-size: 1.15rem;
+            font-weight: 850;
+            letter-spacing: -0.4px;
+            color: #0f172a;
+        }
+
+        .brand-pro-badge {
+            font-size: 0.62rem;
             font-weight: 800;
-            letter-spacing: -0.3px;
-            color: var(--text-main);
+            background: #eef2ff;
+            color: #4f46e5;
+            border: 1px solid #c7d2fe;
+            padding: 1.5px 5.5px;
+            border-radius: 5px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
         .brand-subtitle {
-            font-size: 0.62rem;
-            font-weight: 800;
-            letter-spacing: 1px;
-            color: var(--accent-primary);
+            font-size: 0.68rem;
+            font-weight: 750;
+            letter-spacing: 0.8px;
+            color: #64748b;
             text-transform: uppercase;
-            margin-top: 1px;
+            margin-top: 2px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-pulse-dot {
+            width: 6.5px;
+            height: 6.5px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 6px rgba(16, 185, 129, 0.8);
+            display: inline-block;
         }
 
         .sidebar-nav {
-            padding: 6px 10px;
+            padding: 10px 12px;
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 1.5px;
+            gap: 2px;
             flex: 1;
             overflow-y: auto;
             overflow-x: hidden;
@@ -167,46 +197,59 @@
         }
 
         .nav-label {
-            font-size: 0.62rem;
+            font-size: 0.68rem;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
-            color: #94a3b8;
-            padding: 7px 10px 2px;
+            letter-spacing: 0.9px;
+            color: #64748b;
+            padding: 11px 10px 3px;
             font-weight: 800;
             user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         .sidebar-link {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 5.5px 10px;
-            border-radius: var(--radius-sm);
-            font-size: 0.82rem;
+            padding: 7.5px 11px;
+            border-radius: 10px;
+            font-size: 0.86rem;
             font-weight: 600;
-            color: #475569;
+            color: #334155;
             transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
         }
 
         .sidebar-link:hover {
-            background: #f1f5f9;
-            color: var(--text-main);
+            background: #f8fafc;
+            color: #0f172a;
             transform: translateX(2px);
         }
 
         .sidebar-link.active {
-            background: #eef2ff;
-            color: var(--accent-primary);
-            border-left: 3px solid var(--accent-primary);
+            background: linear-gradient(90deg, #eff6ff 0%, #eef2ff 100%);
+            color: #4338ca;
             font-weight: 750;
-            box-shadow: none;
+            box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.14);
+        }
+
+        .sidebar-link.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 7px;
+            bottom: 7px;
+            width: 3.5px;
+            border-radius: 0 4px 4px 0;
+            background: linear-gradient(180deg, #4f46e5, #7c3aed);
         }
 
         .link-left {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 11px;
         }
 
         /* Modern Crisp Vector Nav Icons */
@@ -226,112 +269,146 @@
             height: 19px;
             stroke: currentColor;
             fill: none;
-            stroke-width: 1.9;
+            stroke-width: 1.95;
             stroke-linecap: round;
             stroke-linejoin: round;
             transition: all 0.18s ease;
         }
 
         .sidebar-link:hover .nav-icon {
-            color: var(--text-main);
+            color: #0f172a;
             transform: scale(1.08);
         }
 
         .sidebar-link.active .nav-icon {
-            color: var(--accent-primary);
-            filter: none;
+            color: #4f46e5;
+            filter: drop-shadow(0 2px 4px rgba(79, 70, 229, 0.3));
             transform: scale(1.08);
+        }
+
+        /* Nav Pills / Counters */
+        .nav-pill {
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 2px 7px;
+            border-radius: 9999px;
+            letter-spacing: 0.3px;
+            line-height: 1.2;
+        }
+
+        .nav-pill-indigo {
+            background: #e0e7ff;
+            color: #4338ca;
+            border: 1px solid #c7d2fe;
+        }
+
+        .nav-pill-blue {
+            background: #e0f2fe;
+            color: #0369a1;
+            border: 1px solid #bae6fd;
+        }
+
+        .nav-pill-amber {
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #fde68a;
         }
 
         /* Sidebar Footer Executive Profile Card */
         .sidebar-footer {
-            padding: 8px 10px;
-            border-top: 1px solid var(--border-subtle);
-            background: #ffffff;
+            padding: 10px 12px 12px;
+            border-top: 1px solid #f1f5f9;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
             margin-top: auto;
             flex-shrink: 0;
         }
 
         .sidebar-profile-card {
-            background: #f8fafc;
+            background: #ffffff;
             border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            padding: 7px 9px;
+            border-radius: 12px;
+            padding: 8px 10px;
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+            gap: 7px;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(15, 23, 42, 0.02);
             transition: all 0.2s ease;
         }
 
         .sidebar-profile-card:hover {
             border-color: #cbd5e1;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
         }
 
         .profile-card-header {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 9px;
             text-decoration: none;
             color: inherit;
         }
 
         .profile-avatar-wrap {
             position: relative;
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             flex-shrink: 0;
         }
 
         .profile-avatar-img {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             object-fit: cover;
-            border: 1.5px solid #ffffff;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+            border: 2px solid #ffffff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
             display: block;
         }
 
         .profile-avatar-fallback {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             background: var(--accent-gradient);
             color: #ffffff;
             font-weight: 800;
-            font-size: 0.82rem;
+            font-size: 0.88rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 1px 4px rgba(79, 70, 229, 0.3);
-            border: 1.5px solid #ffffff;
+            box-shadow: 0 2px 6px rgba(79, 70, 229, 0.35);
+            border: 2px solid #ffffff;
         }
 
         .profile-online-dot {
-            width: 8px;
-            height: 8px;
+            width: 9px;
+            height: 9px;
             border-radius: 50%;
             background: #10b981;
-            border: 1.5px solid #ffffff;
+            border: 1.8px solid #ffffff;
             position: absolute;
             bottom: -1px;
             right: -1px;
-            box-shadow: 0 0 4px rgba(16, 185, 129, 0.6);
+            box-shadow: 0 0 6px rgba(16, 185, 129, 0.7);
             animation: pulse-dot 2.2s infinite ease-in-out;
         }
 
         .profile-meta {
             display: flex;
             flex-direction: column;
-            line-height: 1.15;
+            line-height: 1.2;
             overflow: hidden;
             flex: 1;
         }
 
+        .profile-meta-top {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
         .profile-name {
-            font-size: 0.80rem;
+            font-size: 0.85rem;
             font-weight: 850;
             color: #0f172a;
             white-space: nowrap;
@@ -339,14 +416,25 @@
             text-overflow: ellipsis;
         }
 
+        .profile-role-badge {
+            font-size: 0.58rem;
+            font-weight: 800;
+            background: #ecfdf5;
+            color: #059669;
+            border: 1px solid #a7f3d0;
+            padding: 1px 4.5px;
+            border-radius: 4px;
+            letter-spacing: 0.4px;
+        }
+
         .profile-email {
-            font-size: 0.67rem;
+            font-size: 0.70rem;
             color: #64748b;
-            font-weight: 600;
+            font-weight: 550;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            margin-top: 1px;
+            margin-top: 2px;
         }
 
         .profile-card-actions {
@@ -354,7 +442,7 @@
             align-items: center;
             gap: 6px;
             padding-top: 6px;
-            border-top: 1px solid #e2e8f0;
+            border-top: 1px solid #f1f5f9;
         }
 
         .profile-action-btn {
@@ -362,23 +450,24 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 4px;
-            padding: 4.5px 8px;
-            border-radius: 6px;
-            background: #ffffff;
-            border: 1px solid #cbd5e1;
+            gap: 5px;
+            padding: 5.5px 8px;
+            border-radius: 7px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
             color: #334155;
-            font-size: 0.72rem;
+            font-size: 0.76rem;
             font-weight: 750;
             text-decoration: none;
-            transition: all 0.2s ease;
+            transition: all 0.18s ease;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
         }
 
         .profile-action-btn:hover {
-            background: #f1f5f9;
-            color: #0f172a;
-            border-color: #94a3b8;
+            background: #eff6ff;
+            color: #4338ca;
+            border-color: #c7d2fe;
+            transform: translateY(-1px);
         }
 
         .profile-logout-btn {
@@ -386,21 +475,21 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 4px;
-            padding: 4.5px 8px;
-            border-radius: 6px;
+            gap: 5px;
+            padding: 5.5px 8px;
+            border-radius: 7px;
             background: #fff1f2;
             border: 1px solid #fecdd3;
             color: #e11d48;
-            font-size: 0.72rem;
+            font-size: 0.76rem;
             font-weight: 750;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.18s ease;
             box-shadow: 0 1px 2px rgba(225, 29, 72, 0.05);
         }
 
         .profile-logout-btn:hover {
-            background: #ffe4e6;
+            background: #fee2e2;
             color: #be123c;
             border-color: #fda4af;
             transform: translateY(-1px);
@@ -931,8 +1020,11 @@
                     </svg>
                 </div>
                 <div class="brand-info">
-                    <span class="brand-name">THREADCRAFT</span>
-                    <span class="brand-subtitle">STORE STUDIO</span>
+                    <div class="brand-title-row">
+                        <span class="brand-name">THREADCRAFT</span>
+                        <span class="brand-pro-badge">PRO</span>
+                    </div>
+                    <span class="brand-subtitle"><span class="status-pulse-dot"></span> STUDIO ADMIN</span>
                 </div>
             </div>
 
@@ -1011,6 +1103,7 @@
                             </span>
                             <span>Order Management</span>
                         </span>
+                        <span class="nav-pill nav-pill-blue">Live</span>
                     </a>
                 </li>
 
@@ -1075,6 +1168,7 @@
                             </span>
                             <span>Review Management</span>
                         </span>
+                        <span class="nav-pill nav-pill-indigo">⭐ 5.0</span>
                     </a>
                 </li>
 
@@ -1154,7 +1248,10 @@
                             <span class="profile-online-dot" title="Active Administrator Session"></span>
                         </div>
                         <div class="profile-meta">
-                            <span class="profile-name">{{ Auth::user()->name ?? 'Admin Manager' }}</span>
+                            <div class="profile-meta-top">
+                                <span class="profile-name">{{ Auth::user()->name ?? 'Admin Manager' }}</span>
+                                <span class="profile-role-badge">ADMIN</span>
+                            </div>
                             <span class="profile-email">{{ Auth::user()->email ?? 'admin@tshirtstore.com' }}</span>
                         </div>
                     </a>
