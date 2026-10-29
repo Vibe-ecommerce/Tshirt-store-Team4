@@ -20,6 +20,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (config('app.env') === 'production' || request()->server->has('HTTP_X_FORWARDED_PROTO')) {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
+
         Paginator::defaultView('vendor.pagination.custom');
         Paginator::defaultSimpleView('vendor.pagination.custom');
 
