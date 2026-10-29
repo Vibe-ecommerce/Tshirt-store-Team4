@@ -579,24 +579,148 @@
         }
 
         .store-pill {
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: #ffffff;
-            border: 1px solid var(--border-subtle);
-            padding: 7px 14px;
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            padding: 7px 16px;
             border-radius: var(--radius-full);
             font-size: 0.82rem;
-            font-weight: 600;
-            color: var(--text-sub);
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
-            transition: all 0.2s;
+            font-weight: 750;
+            color: #334155;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
         }
 
         .store-pill:hover {
-            background: #f8fafc;
-            color: var(--accent-primary);
+            background: #0f172a;
+            color: #ffffff;
+            border-color: #0f172a;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .store-pill:hover svg {
+            color: #ffffff;
+        }
+
+        /* Top Header Luxury Executive User Card */
+        .header-user-card {
+            display: inline-flex;
+            align-items: center;
+            gap: 11px;
+            text-decoration: none;
+            color: inherit;
+            padding: 6px 14px 6px 7px;
+            border-radius: var(--radius-full);
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        .header-user-card:hover {
             border-color: #cbd5e1;
+            background: #f8fafc;
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+            transform: translateY(-1px);
+        }
+
+        .header-avatar-wrap {
+            position: relative;
+            width: 36px;
+            height: 36px;
+            flex-shrink: 0;
+        }
+
+        .header-avatar-img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ffffff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            display: block;
+        }
+
+        .header-avatar-fallback {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: #ffffff;
+            font-weight: 850;
+            font-size: 0.90rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #ffffff;
+            box-shadow: 0 2px 6px rgba(79, 70, 229, 0.35);
+        }
+
+        .header-online-dot {
+            width: 9.5px;
+            height: 9.5px;
+            border-radius: 50%;
+            background: #10b981;
+            border: 2px solid #ffffff;
+            position: absolute;
+            bottom: -1px;
+            right: -1px;
+            box-shadow: 0 0 6px rgba(16, 185, 129, 0.9);
+            animation: pulse-dot 2.2s infinite ease-in-out;
+        }
+
+        .header-user-meta {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.25;
+            text-align: left;
+        }
+
+        .header-user-name-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .header-user-name {
+            font-weight: 850;
+            font-size: 0.88rem;
+            color: #0f172a;
+            letter-spacing: -0.2px;
+        }
+
+        .header-user-badge {
+            font-size: 0.58rem;
+            font-weight: 850;
+            background: #ecfdf5;
+            color: #059669;
+            border: 1px solid #a7f3d0;
+            padding: 1px 5.5px;
+            border-radius: 9999px;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+        }
+
+        .header-user-email {
+            font-size: 0.72rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .header-user-chevron {
+            color: #94a3b8;
+            transition: transform 0.2s, color 0.2s;
+            margin-left: 2px;
+        }
+
+        .header-user-card:hover .header-user-chevron {
+            color: #0f172a;
+            transform: translateY(1px);
         }
 
         .user-dropdown-btn {
@@ -1338,18 +1462,25 @@
                         </svg>
                     </a>
 
-                    <a href="{{ route('admin.account.profile') }}" style="display:flex; align-items:center; gap:10px; text-decoration:none; color:inherit; padding:5px 12px; border-radius:var(--radius-md); background:#ffffff; border:1px solid var(--border-subtle); box-shadow:0 1px 2px rgba(0,0,0,0.03); transition:all 0.2s;" title="Manage Admin Profile & Account">
-                        <div class="avatar-sm" style="overflow:hidden; padding:1.5px; background:var(--accent-gradient);">
+                    <a href="{{ route('admin.account.profile') }}" class="header-user-card" title="Manage Admin Profile & Account">
+                        <div class="header-avatar-wrap">
                             @if (Auth::user() && Auth::user()->avatar)
-                                <img src="{{ asset(Auth::user()->avatar) }}" alt="{{ Auth::user()->name }}" style="width:100%; height:100%; border-radius:50%; object-fit:cover; display:block;">
+                                <img src="{{ asset(Auth::user()->avatar) }}" alt="{{ Auth::user()->name }}" class="header-avatar-img">
                             @else
-                                <span style="color:#ffffff;">{{ strtoupper(substr(Auth::user()->name ?? 'A', 0, 1)) }}</span>
+                                <div class="header-avatar-fallback">{{ strtoupper(substr(Auth::user()->name ?? 'A', 0, 1)) }}</div>
                             @endif
+                            <span class="header-online-dot"></span>
                         </div>
-                        <div style="display:flex; flex-direction:column; line-height:1.2;">
-                            <span style="font-weight:750; font-size:0.88rem; color:var(--text-main);">{{ Auth::user()->name ?? 'Admin' }}</span>
-                            <span style="font-size:0.75rem; color:var(--accent-primary); font-family:'JetBrains Mono', monospace;">{{ Auth::user()->email ?? '' }}</span>
+                        <div class="header-user-meta">
+                            <div class="header-user-name-row">
+                                <span class="header-user-name">{{ Auth::user()->name ?? 'Admin Manager' }}</span>
+                                <span class="header-user-badge">ADMIN</span>
+                            </div>
+                            <span class="header-user-email">{{ Auth::user()->email ?? 'admin@tshirtstore.com' }}</span>
                         </div>
+                        <svg class="header-user-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
                     </a>
                 </div>
             </header>

@@ -780,8 +780,9 @@
             </div>
 
             <!-- Price -->
-            <div class="price-box">
+            <div class="price-box" style="align-items:baseline; gap:12px; flex-wrap:wrap;">
                 <span class="main-price">${{ number_format($product->price, 2) }}</span>
+                <span style="font-size:1.05rem; font-weight:850; color:#059669; background:#ecfdf5; border:1.5px solid #a7f3d0; padding:3px 10px; border-radius:8px;">≈ @khr($product->price)</span>
                 @if ($product->original_price)
                     <span class="original-price">${{ number_format($product->original_price, 2) }}</span>
                     @php

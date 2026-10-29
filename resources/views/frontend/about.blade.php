@@ -962,7 +962,7 @@
             </h1>
 
             <p class="hero-lead-text">
-                We founded THREADCRAFT with a singular obsession: dismantle disposable fast-fashion. By engineering 240 GSM organic combed jersey, architectural street drape, and eco-certified artisanal screenprinting, we build garments that look sharper, feel heavier, and outlast trends.
+                We founded T-Shirt Online with a singular obsession: dismantle disposable fast-fashion. By engineering 240 GSM organic combed jersey, architectural street drape, and eco-certified artisanal screenprinting, we build garments that look sharper, feel heavier, and outlast trends.
             </p>
 
             <div class="hero-action-buttons">
@@ -1015,7 +1015,7 @@
         <!-- 2. ORIGIN & EDITORIAL SPLIT -->
         <section id="story" class="story-split-section">
             <div class="editorial-media-wrapper">
-                <img src="/images/about/studio.jpg" alt="THREADCRAFT Design Atelier & Garment Workshop" loading="lazy">
+                <img src="/images/about/studio.jpg" alt="T-Shirt Online Design Atelier & Garment Workshop" loading="lazy">
                 <div class="media-badge-floating">
                     <div class="media-badge-icon">✂️</div>
                     <div class="media-badge-text">
@@ -1027,14 +1027,14 @@
 
             <div class="story-content-side">
                 <div class="section-eyebrow">
-                    <span>— The THREADCRAFT Origin</span>
+                    <span>— The T-Shirt Online Origin</span>
                 </div>
                 <h2 class="section-headline">
                     A Rebellion Against Paper-Thin, Disposable T-Shirts.
                 </h2>
 
                 <p class="story-paragraph">
-                    Founded in 2024, THREADCRAFT was born out of frustration with modern fast-fashion. We were tired of paper-thin 130 GSM shirts that warped, shrank, and turned see-through after two laundry cycles. Synthetic polyester blends felt suffocating, and mass-market rubbery prints peeled into microplastics.
+                    Founded in 2024, T-Shirt Online was born out of frustration with modern fast-fashion. We were tired of paper-thin 130 GSM shirts that warped, shrank, and turned see-through after two laundry cycles. Synthetic polyester blends felt suffocating, and mass-market rubbery prints peeled into microplastics.
                 </p>
 
                 <p class="story-paragraph">
@@ -1184,7 +1184,7 @@
                     <span>— From Fiber to Garment</span>
                 </div>
                 <h2 class="section-headline">
-                    How We Build Every THREADCRAFT Shirt
+                    How We Build Every T-Shirt Online Shirt
                 </h2>
                 <p style="color:var(--text-muted); font-size:1.05rem;">
                     A meticulous, slow-fashion journey engineered to deliver generational quality.
@@ -1221,7 +1221,7 @@
         <!-- 6. STUDIO INSET BANNER (PRINTMAKING ATELIER) -->
         <section class="studio-inset-banner">
             <div class="studio-inset-img">
-                <img src="/images/about/printing.jpg" alt="Artisanal Screen Printing Workshop at THREADCRAFT" loading="lazy">
+                <img src="/images/about/printing.jpg" alt="Artisanal Screen Printing Workshop at T-Shirt Online" loading="lazy">
             </div>
             <div class="studio-inset-content">
                 <div class="section-eyebrow">
@@ -1231,7 +1231,7 @@
                     Slow Craft in a World of Fast Trends.
                 </h3>
                 <p style="color:var(--text-sub); font-size:1rem; line-height:1.7; margin-bottom:24px;">
-                    We deliberately produce in controlled, numbered small runs. Doing so allows us to maintain direct hands-on control over ink viscosity, mesh tension, and seam finishes. When you wear THREADCRAFT, you wear a tangible piece of contemporary art.
+                    We deliberately produce in controlled, numbered small runs. Doing so allows us to maintain direct hands-on control over ink viscosity, mesh tension, and seam finishes. When you wear T-Shirt Online, you wear a tangible piece of contemporary art.
                 </p>
                 <div>
                     <a href="{{ route('shop.index') }}" class="btn-gradient-glow" style="padding:12px 28px; font-size:0.95rem;">

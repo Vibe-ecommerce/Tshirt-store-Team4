@@ -50,7 +50,7 @@ class OrderController extends Controller
         $taxRate = ($savedTax !== null && $savedTax !== '' && floatval($savedTax) > 0) ? floatval($savedTax) : 10.00;
 
         $storeInfo = [
-            'name' => \App\Models\SiteSetting::get('store_name', 'THREADCRAFT Store'),
+            'name' => \App\Models\SiteSetting::get('store_name', 'T-Shirt Online'),
             'tagline' => \App\Models\SiteSetting::get('store_tagline', 'Premium Streetwear & Graphic T-Shirts'),
             'email' => \App\Models\SiteSetting::get('support_email', 'admin@tshirtstore.com'),
             'phone' => \App\Models\SiteSetting::get('phone', '+1 (800) 555-TEES'),

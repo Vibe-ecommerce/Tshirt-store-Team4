@@ -852,10 +852,10 @@
         <div class="sheet-brand-left">
             <div class="sheet-logo-badge">🧵</div>
             <div class="sheet-brand-title">
-                <h1>THREADCRAFT STORE STUDIO</h1>
-                <p>Architectural Apparel Atelier • Performance & Revenue Audit</p>
+                <h1>T-SHIRT ONLINE STUDIO</h1>
+                <p>Modern Apparel Atelier • Performance & Revenue Audit</p>
                 <div style="font-size:0.72rem; color:#64748b; margin-top:3px;">
-                    Studio 4A, Phnom Penh, Cambodia • internal-audit@threadcraft.store
+                    Studio 4A, Phnom Penh, Cambodia • contact@tshirtonline.store
                 </div>
             </div>
         </div>
@@ -1030,7 +1030,7 @@
 
         <div class="stamp-box">
             <div style="font-size:1.1rem; margin-bottom:2px;">🛡️</div>
-            <div>THREADCRAFT APPAREL</div>
+            <div>T-SHIRT ONLINE APPAREL</div>
             <div style="font-size:0.6rem; color:#94a3b8;">VERIFIED AUDIT RECORD</div>
         </div>
     </div>
@@ -1038,7 +1038,7 @@
     <!-- Document Footer -->
     <div class="sheet-footer-legal">
         CONFIDENTIAL & PROPRIETARY — FOR INTERNAL AUDIT AND MANAGEMENT DIRECTIVES ONLY.<br>
-        THREADCRAFT STUDIO • PHNOM PENH, CAMBODIA • REPORT GENERATED VIA CERTIFIED ADMIN CONSOLE • PAGE 1 OF 1
+        T-SHIRT ONLINE STUDIO • PHNOM PENH, CAMBODIA • REPORT GENERATED VIA CERTIFIED ADMIN CONSOLE • PAGE 1 OF 1
     </div>
 </div>
 
@@ -1107,7 +1107,7 @@
     // 3. EXPORT CLEAN CSV DATA (CLIENT-SIDE ONE-CLICK DOWNLOAD)
     function exportReportToCSV() {
         const rows = [
-            ["THREADCRAFT APPAREL STUDIO — OFFICIAL PERFORMANCE & REVENUE AUDIT"],
+            ["T-SHIRT ONLINE APPAREL STUDIO — OFFICIAL PERFORMANCE & REVENUE AUDIT"],
             ["Audit Reference", "TC-REP-{{ date('Ymd') }}-{{ strtoupper(substr(md5($totalRevenue . $totalOrders), 0, 6)) }}"],
             ["Generated At", "{{ now()->format('Y-m-d H:i:s') }}"],
             ["Auditor", "{{ Auth::user()->name ?? 'Administrator' }}"],
@@ -1144,7 +1144,7 @@
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement("a");
         link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "threadcraft_store_audit_{{ date('Y-m-d') }}.csv");
+        link.setAttribute("download", "tshirt_online_audit_{{ date('Y-m-d') }}.csv");
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

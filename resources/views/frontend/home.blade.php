@@ -458,14 +458,16 @@
     }
 
     .marquee-item {
-        font-size: 0.84rem;
-        font-weight: 750;
-        letter-spacing: 1.4px;
-        text-transform: uppercase;
-        color: #334155;
+        font-family: 'Kantumruy Pro', 'Plus Jakarta Sans', sans-serif;
+        font-size: 0.88rem;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+        color: #1e293b;
         display: inline-flex;
         align-items: center;
         gap: 12px;
+        white-space: nowrap;
+        line-height: 1.4;
     }
 
     .marquee-item span.star {
@@ -1189,24 +1191,22 @@
         </div>
     </section>
 
-    <!-- 2. INFINITE LUXURY MARQUEE TICKER -->
+    <!-- 2. INFINITE LUXURY MARQUEE TICKER (Khmer & English Quality Highlights) -->
     <div class="marquee-strip">
         <div class="marquee-track">
-            <div class="marquee-item"><span class="star">✦</span> 240 GSM COMBED ORGANIC COTTON</div>
-            <div class="marquee-item"><span class="star">✦</span> GOTS SUSTAINABLY CERTIFIED</div>
-            <div class="marquee-item"><span class="star">✦</span> WATER-BASED ZERO-CRACK SCREEN PRINT</div>
-            <div class="marquee-item"><span class="star">✦</span> RELAXED TAILORED STREETWEAR DRAPE</div>
-            <div class="marquee-item"><span class="star">✦</span> PRE-SHRUNK ENZYME SILK WASH</div>
-            <div class="marquee-item"><span class="star">✦</span> TWIN-NEEDLE REINFORCED HEM</div>
-            <div class="marquee-item"><span class="star">✦</span> WORLDWIDE EXPRESS DISPATCH IN 24H</div>
+            <div class="marquee-item"><span class="star">✦</span> ដឹកជញ្ជូនរហ័សទូទាំង ២៥ ខេត្ត-ក្រុង (EXPRESS DELIVERY IN 24H)</div>
+            <div class="marquee-item"><span class="star">✦</span> សាច់ក្រណាត់ ORGANIC COTTON 240 GSM កម្រាស់ធ្ងន់ប្រណិត</div>
+            <div class="marquee-item"><span class="star">✦</span> ធានាគុណភាពបោកទឹកមិនយារ មិនបែកព្រីន (ZERO-CRACK SCREEN PRINT)</div>
+            <div class="marquee-item"><span class="star">✦</span> ម៉ូដ STREETWEAR ទាន់សម័យ RELAXED TAILORED DRAPE</div>
+            <div class="marquee-item"><span class="star">✦</span> សេវាប្តូរទំហំអាវងាយស្រួល (EASY SIZE EXCHANGE) រយៈពេល ៧ ថ្ងៃ</div>
+            <div class="marquee-item"><span class="star">✦</span> ស្កេនទូទាត់រហ័សតាម KHQR គ្រប់ធនាគារ (ABA, BAKONG, ACLEDA)</div>
             <!-- Duplicate for seamless infinite loop -->
-            <div class="marquee-item"><span class="star">✦</span> 240 GSM COMBED ORGANIC COTTON</div>
-            <div class="marquee-item"><span class="star">✦</span> GOTS SUSTAINABLY CERTIFIED</div>
-            <div class="marquee-item"><span class="star">✦</span> WATER-BASED ZERO-CRACK SCREEN PRINT</div>
-            <div class="marquee-item"><span class="star">✦</span> RELAXED TAILORED STREETWEAR DRAPE</div>
-            <div class="marquee-item"><span class="star">✦</span> PRE-SHRUNK ENZYME SILK WASH</div>
-            <div class="marquee-item"><span class="star">✦</span> TWIN-NEEDLE REINFORCED HEM</div>
-            <div class="marquee-item"><span class="star">✦</span> WORLDWIDE EXPRESS DISPATCH IN 24H</div>
+            <div class="marquee-item"><span class="star">✦</span> ដឹកជញ្ជូនរហ័សទូទាំង ២៥ ខេត្ត-ក្រុង (EXPRESS DELIVERY IN 24H)</div>
+            <div class="marquee-item"><span class="star">✦</span> សាច់ក្រណាត់ ORGANIC COTTON 240 GSM កម្រាស់ធ្ងន់ប្រណិត</div>
+            <div class="marquee-item"><span class="star">✦</span> ធានាគុណភាពបោកទឹកមិនយារ មិនបែកព្រីន (ZERO-CRACK SCREEN PRINT)</div>
+            <div class="marquee-item"><span class="star">✦</span> ម៉ូដ STREETWEAR ទាន់សម័យ RELAXED TAILORED DRAPE</div>
+            <div class="marquee-item"><span class="star">✦</span> សេវាប្តូរទំហំអាវងាយស្រួល (EASY SIZE EXCHANGE) រយៈពេល ៧ ថ្ងៃ</div>
+            <div class="marquee-item"><span class="star">✦</span> ស្កេនទូទាត់រហ័សតាម KHQR គ្រប់ធនាគារ (ABA, BAKONG, ACLEDA)</div>
         </div>
     </div>
 
@@ -1361,10 +1361,13 @@
 
                         <div class="product-footer-modern">
                             <div>
-                                <span class="product-price-current">${{ number_format($product->price, 2) }}</span>
-                                @if ($product->original_price)
-                                    <span class="product-price-prev">${{ number_format($product->original_price, 2) }}</span>
-                                @endif
+                                <div style="display:flex; align-items:baseline; gap:6px;">
+                                    <span class="product-price-current">${{ number_format($product->price, 2) }}</span>
+                                    @if ($product->original_price)
+                                        <span class="product-price-prev">${{ number_format($product->original_price, 2) }}</span>
+                                    @endif
+                                </div>
+                                <div style="font-size:0.75rem; color:#64748b; font-weight:700; margin-top:2px;">≈ @khr($product->price)</div>
                             </div>
 
                             @if ($product->isOutOfStock())
@@ -1514,10 +1517,13 @@
 
                         <div class="product-footer-modern">
                             <div>
-                                <span class="product-price-current">${{ number_format($product->price, 2) }}</span>
-                                @if ($product->original_price)
-                                    <span class="product-price-prev">${{ number_format($product->original_price, 2) }}</span>
-                                @endif
+                                <div style="display:flex; align-items:baseline; gap:6px;">
+                                    <span class="product-price-current">${{ number_format($product->price, 2) }}</span>
+                                    @if ($product->original_price)
+                                        <span class="product-price-prev">${{ number_format($product->original_price, 2) }}</span>
+                                    @endif
+                                </div>
+                                <div style="font-size:0.75rem; color:#64748b; font-weight:700; margin-top:2px;">≈ @khr($product->price)</div>
                             </div>
 
                             @if ($product->isOutOfStock())

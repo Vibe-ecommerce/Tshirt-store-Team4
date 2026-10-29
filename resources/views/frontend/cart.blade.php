@@ -1650,7 +1650,10 @@
 
                     <!-- Total Row -->
                     <div class="summary-total-row">
-                        <div class="summary-total-label">Total Due</div>
+                        <div>
+                            <div class="summary-total-label">Total Due</div>
+                            <div style="font-size:0.80rem; color:#64748b; font-weight:700;">≈ @khr($total)</div>
+                        </div>
                         <div class="summary-total-price">${{ number_format($total, 2) }}</div>
                     </div>
 

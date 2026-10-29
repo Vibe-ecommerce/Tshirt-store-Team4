@@ -6,10 +6,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'T-Shirt Online — Premium T-Shirt Store')</title>
 
-    <!-- Google Fonts -->
+    <!-- Google Fonts (Plus Jakarta Sans + Kantumruy Pro for Beautiful Khmer Typography) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,300..700;1,300..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -37,7 +37,7 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Plus Jakarta Sans', 'Kantumruy Pro', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         body {
@@ -768,24 +768,25 @@
         }
 
         .user-menu-trigger {
-            background: #f1f5f9;
-            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
             color: #0f172a;
             padding: 4px 12px 4px 5px;
             border-radius: var(--radius-full);
             display: inline-flex;
             align-items: center;
-            gap: 9px;
+            gap: 8px;
             cursor: pointer;
-            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
             outline: none;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
         }
 
         .user-menu-trigger:hover, .user-menu-wrap.open .user-menu-trigger {
-            background: #e2e8f0;
+            background: #f8fafc;
             border-color: #cbd5e1;
             transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
         }
 
         .user-avatar-wrap {
@@ -800,14 +801,15 @@
             width: 32px;
             height: 32px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%);
-            padding: 1.5px;
+            background: #f1f5f9;
+            padding: 1px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 12px rgba(99, 102, 241, 0.45);
+            border: 1.5px solid #e2e8f0;
             flex-shrink: 0;
             overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
         }
 
         .user-avatar img {
@@ -822,7 +824,7 @@
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            background: #0b1120;
+            background: #0f172a;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -836,19 +838,19 @@
             position: absolute;
             bottom: -1px;
             right: -1px;
-            width: 9px;
-            height: 9px;
+            width: 9.5px;
+            height: 9.5px;
             border-radius: 50%;
             background: #10b981;
-            border: 2px solid #0b1120;
-            box-shadow: 0 0 6px #10b981;
+            border: 2px solid #ffffff;
+            box-shadow: 0 0 6px rgba(16, 185, 129, 0.8);
         }
 
         .user-name-text {
             font-size: 0.86rem;
-            font-weight: 750;
+            font-weight: 800;
             color: #0f172a;
-            max-width: 110px;
+            max-width: 120px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -856,16 +858,20 @@
         }
 
         .user-admin-chip {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.3) 0%, rgba(236, 72, 153, 0.25) 100%);
-            border: 1px solid rgba(168, 85, 247, 0.5);
-            color: #f1f5f9;
+            background: #ecfdf5;
+            border: 1.5px solid #a7f3d0;
+            color: #047857;
             font-size: 0.62rem;
-            font-weight: 850;
-            padding: 2px 7px;
+            font-weight: 900;
+            padding: 1.5px 7px;
             border-radius: 9999px;
-            letter-spacing: 0.6px;
-            box-shadow: 0 0 8px rgba(168, 85, 247, 0.3);
-            text-shadow: 0 0 8px rgba(168, 85, 247, 0.6);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            box-shadow: none;
+            text-shadow: none;
+            display: inline-flex;
+            align-items: center;
+            line-height: 1.3;
         }
 
         .user-menu-caret {
@@ -874,7 +880,7 @@
         }
 
         .user-menu-wrap.open .user-menu-caret {
-            color: #c7d2fe;
+            color: #0f172a;
             transform: rotate(180deg);
         }
 
@@ -1202,33 +1208,39 @@
         }
 
         .alert-box {
-            padding: 12px 18px;
-            border-radius: var(--radius-md);
-            font-size: 0.9rem;
-            font-weight: 600;
+            padding: 13px 20px;
+            border-radius: 12px;
+            font-size: 0.90rem;
+            font-weight: 700;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            margin-bottom: 16px;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+            animation: fadeInDown 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .alert-success {
-            background: rgba(34, 197, 94, 0.15);
-            border: 1px solid rgba(34, 197, 94, 0.4);
-            color: #4ade80;
+            background: #ecfdf5;
+            border: 1.5px solid #a7f3d0;
+            color: #065f46;
         }
 
         .alert-error {
-            background: rgba(239, 68, 68, 0.15);
-            border: 1px solid rgba(239, 68, 68, 0.4);
-            color: #f87171;
+            background: #fef2f2;
+            border: 1.5px solid #fecaca;
+            color: #991b1b;
         }
 
         .alert-info {
-            background: rgba(59, 130, 246, 0.15);
-            border: 1px solid rgba(59, 130, 246, 0.4);
-            color: #60a5fa;
+            background: #eff6ff;
+            border: 1.5px solid #bfdbfe;
+            color: #1e40af;
         }
 
         /* Main Content */
@@ -1675,6 +1687,152 @@
             display: inline-block !important;
             vertical-align: middle !important;
         }
+        /* -------------------------------------------------------------
+           FLOATING TELEGRAM SUPPORT WIDGET (24/7 Concierge)
+        ------------------------------------------------------------- */
+        .floating-telegram-widget {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            z-index: 9990;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            padding: 6px 16px 6px 6px;
+            border-radius: 9999px;
+            box-shadow: 0 12px 30px -6px rgba(15, 23, 42, 0.16), 0 4px 14px rgba(34, 158, 217, 0.28);
+            text-decoration: none;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+        }
+
+        .floating-telegram-widget:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 18px 36px -6px rgba(34, 158, 217, 0.4), 0 6px 16px rgba(15, 23, 42, 0.12);
+            border-color: #38bdf8;
+            color: inherit;
+        }
+
+        .tg-icon-circle {
+            position: relative;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #229ED9 0%, #0088cc 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 4px 14px rgba(34, 158, 217, 0.45);
+        }
+
+        .tg-pulse-ring {
+            position: absolute;
+            left: 6px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(34, 158, 217, 0.35);
+            animation: tg-pulse 2.4s infinite cubic-bezier(0.25, 1, 0.5, 1);
+            pointer-events: none;
+        }
+
+        @keyframes tg-pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.35); opacity: 0; }
+            100% { transform: scale(0.95); opacity: 0; }
+        }
+
+        .tg-online-dot {
+            position: absolute;
+            bottom: 1px;
+            right: 1px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #10b981;
+            border: 2px solid #ffffff;
+            box-shadow: 0 0 6px #10b981;
+        }
+
+        .tg-floating-label {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.25;
+            text-align: left;
+        }
+
+        .tg-label-sub {
+            font-size: 0.68rem;
+            color: #0284c7;
+            font-weight: 850;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+        }
+
+        .tg-label-main {
+            font-size: 0.86rem;
+            font-weight: 850;
+            color: #0f172a;
+        }
+
+        @media (max-width: 640px) {
+            .floating-telegram-widget {
+                bottom: 20px;
+                right: 20px;
+                padding: 3px;
+                border: none;
+                background: transparent;
+                box-shadow: none;
+            }
+            .tg-floating-label, .tg-pulse-ring {
+                display: none;
+            }
+        }
+
+        /* -------------------------------------------------------------
+           FOOTER SOCIAL MEDIA BUTTONS
+        ------------------------------------------------------------- */
+        .footer-social-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 18px;
+            flex-wrap: wrap;
+        }
+
+        .social-btn-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            color: #475569;
+            text-decoration: none;
+            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+
+        .social-btn-pill svg {
+            width: 17px;
+            height: 17px;
+            transition: transform 0.2s;
+        }
+
+        .social-btn-pill:hover {
+            transform: translateY(-2px);
+            color: #ffffff;
+        }
+
+        .social-btn-pill.tg:hover { background: #229ED9; border-color: #229ED9; box-shadow: 0 6px 16px rgba(34, 158, 217, 0.45); }
+        .social-btn-pill.fb:hover { background: #1877F2; border-color: #1877F2; box-shadow: 0 6px 16px rgba(24, 119, 242, 0.45); }
+        .social-btn-pill.tt:hover { background: #000000; border-color: #000000; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35); }
+        .social-btn-pill.ig:hover { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); border-color: #dc2743; box-shadow: 0 6px 16px rgba(220, 39, 67, 0.45); }
     </style>
     @yield('styles')
 </head>
@@ -1916,6 +2074,22 @@
                 <p>
                     Premium organic & bespoke graphic t-shirts engineered for maximum everyday comfort, durability, and contemporary streetwear aesthetics.
                 </p>
+
+                <!-- Social Media Channels (បណ្តាញសង្គម) -->
+                <div class="footer-social-row">
+                    <a href="https://t.me/Tdelivery4_bot" target="_blank" rel="noopener" class="social-btn-pill tg" title="Telegram Channel / Bot">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 3.6a1.5 1.5 0 0 0-1.6-.25L2.8 10.7a1.5 1.5 0 0 0 .1 2.85l4.8 1.6 1.8 5.6a1.5 1.5 0 0 0 2.5.5l2.7-2.6 4.7 3.5a1.5 1.5 0 0 0 2.4-.8l3-16a1.5 1.5 0 0 0-1.2-1.65z"/></svg>
+                    </a>
+                    <a href="https://facebook.com/tshirtonline.cambodia" target="_blank" rel="noopener" class="social-btn-pill fb" title="Facebook Page">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    </a>
+                    <a href="https://tiktok.com/@tshirtonline.cambodia" target="_blank" rel="noopener" class="social-btn-pill tt" title="TikTok">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.24 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+                    </a>
+                    <a href="https://instagram.com/tshirtonline.cambodia" target="_blank" rel="noopener" class="social-btn-pill ig" title="Instagram">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </a>
+                </div>
             </div>
 
             <div>
@@ -1950,8 +2124,8 @@
                 <h5 class="footer-heading">Contact</h5>
                 <ul class="footer-links">
                     <li><a href="{{ route('contact') }}">Contact Us</a></li>
-                    <li><a href="tel:+18005558337">+1 (800) 555-TEES</a></li>
-                    <li><a href="mailto:support@threadcraft.store">support@threadcraft.store</a></li>
+                    <li><a href="tel:{{ \App\Models\SiteSetting::get('phone', '+85512345678') }}">{{ \App\Models\SiteSetting::get('phone', '+855 (0) 12 345 678') }}</a></li>
+                    <li><a href="mailto:{{ \App\Models\SiteSetting::get('support_email', 'contact@tshirtonline.store') }}">{{ \App\Models\SiteSetting::get('support_email', 'contact@tshirtonline.store') }}</a></li>
                     <li style="color: var(--text-muted); font-size: 0.88rem; margin-top: 4px;">Studio 4A, Street 123, Sangkat Boeung Keng Kang 1,<br>Khan Boeung Keng Kang, Phnom Penh, Cambodia</li>
                 </ul>
             </div>
@@ -2710,6 +2884,21 @@
 
     <!-- Floating Notification Container -->
     <div id="toastContainer" class="toast-stack-container" aria-live="polite"></div>
+
+    <!-- Floating Luxury Telegram Support Widget (ឆាតសួរព័ត៌មាន) -->
+    <a href="https://t.me/Tdelivery4_bot" target="_blank" rel="noopener noreferrer" class="floating-telegram-widget" title="ឆាតសួរព័ត៌មានតាម Telegram (Chat with us on Telegram)">
+        <div class="tg-pulse-ring"></div>
+        <div class="tg-icon-circle">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M21.6 3.6a1.5 1.5 0 0 0-1.6-.25L2.8 10.7a1.5 1.5 0 0 0 .1 2.85l4.8 1.6 1.8 5.6a1.5 1.5 0 0 0 2.5.5l2.7-2.6 4.7 3.5a1.5 1.5 0 0 0 2.4-.8l3-16a1.5 1.5 0 0 0-1.2-1.65z" fill="#ffffff"/>
+            </svg>
+            <span class="tg-online-dot"></span>
+        </div>
+        <span class="tg-floating-label">
+            <span class="tg-label-sub">ជំនួយការ ២៤/៧</span>
+            <span class="tg-label-main">Chat via Telegram</span>
+        </span>
+    </a>
 
     @yield('scripts')
 </body>

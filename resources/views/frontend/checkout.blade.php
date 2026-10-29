@@ -1110,7 +1110,7 @@
                                         </div>
                                         <div class="khqr-amount-box">
                                             <div class="khqr-amount-label">Amount to Transfer</div>
-                                            <div class="khqr-amount-val">${{ number_format($total, 2) }} USD</div>
+                                            <div class="khqr-amount-val">${{ number_format($total, 2) }} USD <span style="font-size:0.85rem; font-weight:700; color:#059669; display:block;">(~ @khr($total))</span></div>
                                         </div>
                                     </div>
 
@@ -1332,14 +1332,17 @@
                             </div>
 
                             <div style="display:flex; justify-content:space-between; align-items:baseline; margin-top:16px; padding-top:16px; border-top:1.5px solid #e2e8f0;">
-                                <span style="font-size:1.20rem; font-weight:900; color:#0f172a !important;">Total</span>
+                                <div>
+                                    <span style="font-size:1.20rem; font-weight:900; color:#0f172a !important;">Total</span>
+                                    <div style="font-size:0.78rem; color:#64748b; font-weight:700;">≈ @khr($total)</div>
+                                </div>
                                 <span style="font-size:1.60rem; font-weight:900; color:#0f172a !important; letter-spacing:-0.5px;">${{ number_format($total, 2) }}</span>
                             </div>
                         </div>
 
                         <!-- Place Order Button -->
                         <button type="submit" class="place-order-btn">
-                            <span>Place Order (${{ number_format($total, 2) }})</span>
+                            <span>Place Order (${{ number_format($total, 2) }} / ≈ @khr($total))</span>
                             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                         </button>
 

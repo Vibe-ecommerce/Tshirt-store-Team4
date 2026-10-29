@@ -819,9 +819,9 @@
                 <div class="modal-support-box">
                     <span class="support-title">Need direct customer support?</span>
                     <div class="support-links-row">
-                        <a href="mailto:support@threadcraft.store" class="support-item-link">
+                        <a href="mailto:support@tshirtonline.store" class="support-item-link">
                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                            <span>support@threadcraft.store</span>
+                            <span>support@tshirtonline.store</span>
                         </a>
                         <span>&bull;</span>
                         <a href="tel:+85512345678" class="support-item-link">

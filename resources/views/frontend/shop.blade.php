@@ -711,13 +711,16 @@
                                 <span class="rating-dot">•</span>
                                 <span class="rating-reviews-count">Top Rated</span>
                             </div>
-                            <div class="product-price-row">
-                                <span class="product-price">${{ number_format($product->price, 2) }}</span>
-                                @if ($product->original_price && $product->original_price > $product->price)
-                                    @php $pct = round((($product->original_price - $product->price) / $product->original_price) * 100); @endphp
-                                    <span class="product-original-price">${{ number_format($product->original_price, 2) }}</span>
-                                    <span class="product-discount-pill">-{{ $pct }}%</span>
-                                @endif
+                            <div class="product-price-row" style="flex-direction:column; align-items:flex-start; gap:2px;">
+                                <div style="display:flex; align-items:baseline; gap:8px; flex-wrap:wrap;">
+                                    <span class="product-price">${{ number_format($product->price, 2) }}</span>
+                                    @if ($product->original_price && $product->original_price > $product->price)
+                                        @php $pct = round((($product->original_price - $product->price) / $product->original_price) * 100); @endphp
+                                        <span class="product-original-price">${{ number_format($product->original_price, 2) }}</span>
+                                        <span class="product-discount-pill">-{{ $pct }}%</span>
+                                    @endif
+                                </div>
+                                <div style="font-size:0.75rem; color:#64748b; font-weight:700;">≈ @khr($product->price)</div>
                             </div>
                             <div class="product-action-wrap">
                                 @if ($product->isOutOfStock())

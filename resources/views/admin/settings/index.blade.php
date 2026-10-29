@@ -524,7 +524,7 @@
                                 <span class="field-left-icon">
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                                 </span>
-                                <input type="text" name="store_name" id="storeNameInput" class="settings-input-control" value="{{ old('store_name', $settings['store_name']) }}" required placeholder="e.g. THREADCRAFT Store" oninput="updateLivePreview()">
+                                <input type="text" name="store_name" id="storeNameInput" class="settings-input-control" value="{{ old('store_name', $settings['store_name']) }}" required placeholder="e.g. T-Shirt Online" oninput="updateLivePreview()">
                             </div>
                         </div>
 
@@ -616,7 +616,7 @@
                                 <div class="preview-logo-box" id="previewLogoBox">TC</div>
                                 <div>
                                     <div style="font-size:1.15rem; font-weight:850; color:#0f172a;" id="previewStoreName">
-                                        {{ $settings['store_name'] ?? 'THREADCRAFT Store' }}
+                                        {{ $settings['store_name'] ?? 'T-Shirt Online' }}
                                     </div>
                                     <div style="font-size:0.82rem; color:#4f46e5; font-weight:600;" id="previewStoreTagline">
                                         {{ $settings['store_tagline'] ?? 'Premium Streetwear & Graphic T-Shirts' }}
@@ -721,7 +721,7 @@
                             <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px;">
                                 <div>
                                     <label class="form-group-label" style="font-size:0.88rem; font-weight:800; color:#0f172a;">Account Holder Name *</label>
-                                    <input type="text" name="qr_account_name" class="settings-input-control" style="padding-left:14px; font-weight:700;" value="{{ old('qr_account_name', $settings['qr_account_name'] ?? 'THREADCRAFT CO., LTD') }}" placeholder="e.g. THREADCRAFT STORE" required>
+                                    <input type="text" name="qr_account_name" class="settings-input-control" style="padding-left:14px; font-weight:700;" value="{{ old('qr_account_name', $settings['qr_account_name'] ?? 'T-SHIRT ONLINE CO., LTD') }}" placeholder="e.g. T-SHIRT ONLINE" required>
                                 </div>
                                 <div>
                                     <label class="form-group-label" style="font-size:0.88rem; font-weight:800; color:#0f172a;">Account Number *</label>
@@ -1028,8 +1028,8 @@
         const emailInput = document.getElementById('supportEmailInput');
 
         if (nameInput) {
-            document.getElementById('previewStoreName').textContent = nameInput.value || 'THREADCRAFT Store';
-            const initials = nameInput.value.trim().split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase() || 'TC';
+            document.getElementById('previewStoreName').textContent = nameInput.value || 'T-Shirt Online';
+            const initials = nameInput.value.trim().split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase() || 'TO';
             document.getElementById('previewLogoBox').textContent = initials;
         }
 
