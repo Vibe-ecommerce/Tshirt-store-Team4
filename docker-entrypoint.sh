@@ -17,9 +17,12 @@ chmod -R 775 storage bootstrap/cache
 php artisan storage:link --force || true
 
 # Optimize cache for production
-php artisan config:cache || true
-php artisan route:cache || true
-php artisan view:cache || true
+if [ -n "$APP_KEY" ]; then
+    php artisan config:cache || true
+    php artisan route:cache || true
+    php artisan view:cache || true
+fi
 
 echo "Starting Apache web server..."
 exec apache2-foreground
+

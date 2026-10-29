@@ -1,22 +1,14 @@
 FROM php:8.2-apache
 
-# Install required system packages & PHP extensions for Laravel 11
+# Install system utilities and enable Apache rewrite
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    libonig-dev \
-    libxml2-dev \
-    libzip-dev \
-    zip \
-    unzip \
-    curl \
-    git \
-    ca-certificates \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip opcache \
+    zip unzip curl git ca-certificates \
     && apt-get clean && rm -rf /var/lib/apt/lists/* \
     && a2enmod rewrite headers
+
+# Install pre-configured PHP extensions using official extension installer
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
+RUN install-php-extensions pdo_mysql mbstring gd zip bcmath exif pcntl opcache
 
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
@@ -48,3 +40,4 @@ RUN tr -d '\r' < /usr/local/bin/docker-entrypoint.sh > /usr/local/bin/docker-ent
 EXPOSE 80
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+
