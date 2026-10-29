@@ -797,12 +797,19 @@
 
     .product-footer-modern {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
+        flex-direction: column;
         margin-top: auto;
         padding-top: 14px;
         border-top: 1px solid #f1f5f9;
-        gap: 10px;
+        gap: 12px;
+    }
+
+    .product-pricing-strip {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        width: 100%;
+        gap: 8px;
     }
 
     .product-price-current {
@@ -819,72 +826,101 @@
         margin-left: 6px;
     }
 
-    .btn-quick-cart {
+    .product-khr-pill {
+        font-family: 'Kantumruy Pro', sans-serif;
+        font-size: 0.74rem;
+        font-weight: 750;
+        color: #475569;
+        background: #f1f5f9;
+        border: 1px solid #e2e8f0;
+        padding: 2.5px 8px;
+        border-radius: 6px;
+        letter-spacing: 0.2px;
+        white-space: nowrap;
+    }
+
+    .card-action-dual {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .btn-quick-cart-modern {
+        width: 100%;
+        height: 40px;
         background: #0f172a;
         color: #ffffff;
         border: none;
-        padding: 9px 15px;
+        padding: 0 12px;
         border-radius: var(--radius-full);
-        font-size: 0.82rem;
+        font-size: 0.84rem;
         font-weight: 800;
         cursor: pointer;
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 6px;
         box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
         transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         white-space: nowrap;
+        box-sizing: border-box;
     }
 
-    .btn-quick-cart:hover {
+    .btn-quick-cart-modern:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 20px rgba(15, 23, 42, 0.22);
         background: #000000;
         color: #ffffff;
     }
 
-    .btn-quick-buynow {
+    .btn-quick-buynow-modern {
+        width: 100%;
+        height: 40px;
         background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
         color: #ffffff;
         border: none;
-        padding: 9px 15px;
+        padding: 0 14px;
         border-radius: var(--radius-full);
-        font-size: 0.82rem;
-        font-weight: 800;
+        font-size: 0.84rem;
+        font-weight: 850;
         cursor: pointer;
         display: inline-flex;
         align-items: center;
-        gap: 5px;
-        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.28);
+        justify-content: center;
+        gap: 6px;
+        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
         transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         white-space: nowrap;
+        box-sizing: border-box;
     }
 
-    .btn-quick-buynow:hover {
+    .btn-quick-buynow-modern:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.42);
+        box-shadow: 0 8px 22px rgba(37, 99, 235, 0.45);
         background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
         color: #ffffff;
     }
 
-    .btn-quick-buynow:active {
+    .btn-quick-buynow-modern:active {
         transform: translateY(0);
     }
 
-    .btn-stockout {
+    .btn-stockout-full {
+        width: 100%;
+        height: 40px;
         background: #f1f5f9;
-        color: #94a3b8;
         border: 1px solid #e2e8f0;
+        color: #94a3b8;
+        padding: 0 12px;
         border-radius: var(--radius-full);
         font-size: 0.82rem;
         font-weight: 750;
-        padding: 9px 18px;
         cursor: not-allowed;
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        user-select: none;
-        white-space: nowrap;
+        justify-content: center;
+        box-sizing: border-box;
     }
 
     .badge-bestseller {
@@ -1360,36 +1396,36 @@
                         </div>
 
                         <div class="product-footer-modern">
-                            <div>
+                            <div class="product-pricing-strip">
                                 <div style="display:flex; align-items:baseline; gap:6px;">
                                     <span class="product-price-current">${{ number_format($product->price, 2) }}</span>
                                     @if ($product->original_price)
                                         <span class="product-price-prev">${{ number_format($product->original_price, 2) }}</span>
                                     @endif
                                 </div>
-                                <div style="font-size:0.75rem; color:#64748b; font-weight:700; margin-top:2px;">≈ @khr($product->price)</div>
+                                <span class="product-khr-pill">≈ @khr($product->price)</span>
                             </div>
 
                             @if ($product->isOutOfStock())
-                                <button type="button" class="btn-stockout" disabled>
+                                <button type="button" class="btn-stockout-full" disabled>
                                     Sold Out
                                 </button>
                             @else
-                                <div style="display: flex; gap: 6px; align-items: center;">
-                                    <form action="{{ route('cart.add', $product->id) }}" method="POST" id="cartForm_{{ $product->id }}" style="margin: 0;">
+                                <div class="card-action-dual">
+                                    <form action="{{ route('cart.add', $product->id) }}" method="POST" id="cartForm_{{ $product->id }}" style="flex: 1; margin: 0;">
                                         @csrf
                                         <input type="hidden" name="size" id="sizeInput_{{ $product->id }}" value="M">
-                                        <button type="submit" class="btn-quick-cart" title="Add to Cart">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"></path></svg>
+                                        <button type="submit" class="btn-quick-cart-modern" title="Add to Cart">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><path d="M3 6h18"></path><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
                                             <span>Cart</span>
                                         </button>
                                     </form>
-                                    <form action="{{ route('cart.buyNow', $product->id) }}" method="POST" id="buyNowForm_{{ $product->id }}" style="margin: 0;">
+                                    <form action="{{ route('cart.buyNow', $product->id) }}" method="POST" id="buyNowForm_{{ $product->id }}" style="flex: 1.25; margin: 0;">
                                         @csrf
                                         <input type="hidden" name="size" id="buyNowSizeInput_{{ $product->id }}" value="M">
-                                        <button type="submit" class="btn-quick-buynow" title="Buy Now & Proceed to Checkout">
+                                        <button type="submit" class="btn-quick-buynow-modern" title="Buy Now & Proceed to Checkout">
                                             <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
-                                            <span>Buy</span>
+                                            <span>Buy Now</span>
                                         </button>
                                     </form>
                                 </div>
@@ -1516,36 +1552,36 @@
                         <p class="product-desc-modern">{{ $product->description }}</p>
 
                         <div class="product-footer-modern">
-                            <div>
+                            <div class="product-pricing-strip">
                                 <div style="display:flex; align-items:baseline; gap:6px;">
                                     <span class="product-price-current">${{ number_format($product->price, 2) }}</span>
                                     @if ($product->original_price)
                                         <span class="product-price-prev">${{ number_format($product->original_price, 2) }}</span>
                                     @endif
                                 </div>
-                                <div style="font-size:0.75rem; color:#64748b; font-weight:700; margin-top:2px;">≈ @khr($product->price)</div>
+                                <span class="product-khr-pill">≈ @khr($product->price)</span>
                             </div>
 
                             @if ($product->isOutOfStock())
-                                <button type="button" class="btn-stockout" disabled>
+                                <button type="button" class="btn-stockout-full" disabled>
                                     Sold Out
                                 </button>
                             @else
-                                <div style="display: flex; gap: 6px; align-items: center;">
-                                    <form action="{{ route('cart.add', $product->id) }}" method="POST" style="margin: 0;">
+                                <div class="card-action-dual">
+                                    <form action="{{ route('cart.add', $product->id) }}" method="POST" style="flex: 1; margin: 0;">
                                         @csrf
                                         <input type="hidden" name="size" value="L">
-                                        <button type="submit" class="btn-quick-cart" title="Add to Cart">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"></path></svg>
+                                        <button type="submit" class="btn-quick-cart-modern" title="Add to Cart">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><path d="M3 6h18"></path><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
                                             <span>Cart</span>
                                         </button>
                                     </form>
-                                    <form action="{{ route('cart.buyNow', $product->id) }}" method="POST" style="margin: 0;">
+                                    <form action="{{ route('cart.buyNow', $product->id) }}" method="POST" style="flex: 1.25; margin: 0;">
                                         @csrf
                                         <input type="hidden" name="size" value="L">
-                                        <button type="submit" class="btn-quick-buynow" title="Buy Now & Proceed to Checkout">
+                                        <button type="submit" class="btn-quick-buynow-modern" title="Buy Now & Proceed to Checkout">
                                             <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
-                                            <span>Buy</span>
+                                            <span>Buy Now</span>
                                         </button>
                                     </form>
                                 </div>

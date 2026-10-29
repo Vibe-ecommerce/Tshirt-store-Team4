@@ -631,6 +631,67 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Official Social Media Channels (បណ្តាញសង្គមផ្លូវការទាំង ៤ ក្នុង Footer) -->
+                <div style="margin-top:28px; background:#ffffff; border:1.5px solid #e2e8f0; border-radius:var(--radius-md); padding:24px; box-shadow:0 4px 18px rgba(15,23,42,0.03);">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px; padding-bottom:14px; border-bottom:1.5px solid #f1f5f9;">
+                        <div>
+                            <div style="font-size:1.05rem; font-weight:850; color:#0f172a; display:flex; align-items:center; gap:8px;">
+                                <span>📱</span>
+                                <span>Official Social Media Channels (បណ្តាញសង្គមផ្លូវការទាំង ៤ ក្នុង Footer)</span>
+                            </div>
+                            <div style="font-size:0.84rem; color:#64748b; font-weight:500;">
+                                Manage the 4 official social media buttons displayed in the storefront footer (Telegram, Facebook, TikTok, Instagram).
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:18px;">
+                        <!-- Telegram -->
+                        <div class="form-group-block">
+                            <label class="form-group-label" style="font-size:0.86rem; font-weight:800; color:#0f172a;">
+                                ✈️ Telegram Channel / Bot
+                            </label>
+                            <div class="field-input-box">
+                                <input type="text" name="social_telegram" class="settings-input-control" style="padding-left:14px;" value="{{ old('social_telegram', $settings['social_telegram'] ?? 'https://t.me/Tdelivery4_bot') }}" placeholder="https://t.me/your_handle">
+                            </div>
+                            <span style="font-size:0.75rem; color:#64748b; margin-top:4px; display:block;">Enter full Telegram URL or username.</span>
+                        </div>
+
+                        <!-- Facebook -->
+                        <div class="form-group-block">
+                            <label class="form-group-label" style="font-size:0.86rem; font-weight:800; color:#0f172a;">
+                                🌐 Facebook Page
+                            </label>
+                            <div class="field-input-box">
+                                <input type="text" name="social_facebook" class="settings-input-control" style="padding-left:14px;" value="{{ old('social_facebook', $settings['social_facebook'] ?? 'https://facebook.com/tshirtonline.cambodia') }}" placeholder="https://facebook.com/your_page">
+                            </div>
+                            <span style="font-size:0.75rem; color:#64748b; margin-top:4px; display:block;">Enter your official Facebook page URL.</span>
+                        </div>
+
+                        <!-- TikTok -->
+                        <div class="form-group-block">
+                            <label class="form-group-label" style="font-size:0.86rem; font-weight:800; color:#0f172a;">
+                                🎵 TikTok Account
+                            </label>
+                            <div class="field-input-box">
+                                <input type="text" name="social_tiktok" class="settings-input-control" style="padding-left:14px;" value="{{ old('social_tiktok', $settings['social_tiktok'] ?? 'https://tiktok.com/@tshirtonline.cambodia') }}" placeholder="https://tiktok.com/@your_handle">
+                            </div>
+                            <span style="font-size:0.75rem; color:#64748b; margin-top:4px; display:block;">Enter your official TikTok profile URL.</span>
+                        </div>
+
+                        <!-- Instagram -->
+                        <div class="form-group-block">
+                            <label class="form-group-label" style="font-size:0.86rem; font-weight:800; color:#0f172a;">
+                                📸 Instagram Profile
+                            </label>
+                            <div class="field-input-box">
+                                <input type="text" name="social_instagram" class="settings-input-control" style="padding-left:14px;" value="{{ old('social_instagram', $settings['social_instagram'] ?? 'https://instagram.com/tshirtonline.cambodia') }}" placeholder="https://instagram.com/your_handle">
+                            </div>
+                            <span style="font-size:0.75rem; color:#64748b; margin-top:4px; display:block;">Enter your official Instagram profile URL.</span>
+                        </div>
+                    </div>
+                </div>
             @endif
 
             {{-- ============================================================

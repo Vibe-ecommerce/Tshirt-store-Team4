@@ -23,6 +23,10 @@ class SettingController extends Controller
             'currency' => SiteSetting::get('currency', 'USD'),
             'address' => SiteSetting::get('address', 'Studio 4A, Street 123, Sangkat Boeung Keng Kang 1, Phnom Penh, Cambodia'),
             'tax_id' => SiteSetting::get('tax_id', 'VAT-K008-902188442'),
+            'social_telegram' => SiteSetting::get('social_telegram', 'https://t.me/Tdelivery4_bot'),
+            'social_facebook' => SiteSetting::get('social_facebook', 'https://facebook.com/tshirtonline.cambodia'),
+            'social_tiktok' => SiteSetting::get('social_tiktok', 'https://tiktok.com/@tshirtonline.cambodia'),
+            'social_instagram' => SiteSetting::get('social_instagram', 'https://instagram.com/tshirtonline.cambodia'),
 
             // Payment Settings
             'enable_stripe' => SiteSetting::get('enable_stripe', '1'),
