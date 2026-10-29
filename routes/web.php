@@ -16,6 +16,8 @@ use App\Http\Controllers\WishlistController;
 |--------------------------------------------------------------------------
 */
 
+// xQDqbm9PnYjlg47t 
+
 // 1. HOME
 Route::get('/', [PageController::class, 'home'])->name('home');
 
@@ -65,6 +67,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
 
     Route::get('/auth/google', [AuthController::class, 'googleSignIn'])->name('auth.google');
+    Route::get('/auth/google/callback', [AuthController::class, 'googleCallback'])->name('auth.google.callback');
 });
 
 Route::match(['get', 'post'], '/logout', [AuthController::class, 'logout'])->name('logout');

@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -69,30 +71,66 @@ class AuthController extends Controller
         return redirect()->intended('/');
     }
 
-    // Google Sign-In Action
+    // Google Sign-In Action (Supports Real Google OAuth 2.0 via Socialite + Demo Fallback)
     public function googleSignIn(Request $request)
     {
-        // Sign in or create customer with Google account
+        // If Google Client ID is configured, redirect to real Google OAuth
+        if (!empty(config('services.google.client_id')) && !empty(config('services.google.client_secret'))) {
+            return Socialite::driver('google')->redirect();
+        }
+
+        // Demo Fallback if keys are not set yet
         $user = User::firstOrCreate(
             ['email' => 'customer@gmail.com'],
             [
-                'name' => 'John Doe (Google)',
+                'name' => 'John Doe (Google Demo)',
                 'password' => Hash::make('password123'),
                 'role' => 'user',
-                'phone' => '+1 (555) 234-5678',
-                'address' => '120 Sunset Strip, Suite 300',
-                'city' => 'West Hollywood',
-                'postal_code' => '90069',
-                'country' => 'United States',
+                'phone' => '+855 12 345 678',
+                'address' => 'Street 2004, Phnom Penh',
+                'city' => 'Phnom Penh',
+                'postal_code' => '12000',
+                'country' => 'Cambodia',
             ]
         );
 
         Auth::login($user);
         $request->session()->regenerate();
-
-        session()->flash('success', 'Signed in with Google successfully!');
-
+        session()->flash('success', 'ចូលគណនីសាកល្បងដោយជោគជ័យ (Demo Google Mode)');
         return redirect()->intended('/');
+    }
+
+    // Google OAuth Callback (Handles Real Google Account Sign-In)
+    public function googleCallback(Request $request)
+    {
+        try {
+            $googleUser = Socialite::driver('google')->user();
+
+            $user = User::where('email', $googleUser->getEmail())->first();
+
+            if (!$user) {
+                $user = User::create([
+                    'name' => $googleUser->getName() ?: 'Google User',
+                    'email' => $googleUser->getEmail(),
+                    'password' => Hash::make(Str::random(24)),
+                    'role' => 'user',
+                    'avatar' => $googleUser->getAvatar(),
+                ]);
+            } else {
+                if ($googleUser->getAvatar() && empty($user->avatar)) {
+                    $user->update(['avatar' => $googleUser->getAvatar()]);
+                }
+            }
+
+            Auth::login($user, true);
+            $request->session()->regenerate();
+
+            session()->flash('success', 'ស្វាគមន៍! អ្នកបានចូលគណនីតាម Google ជោគជ័យ (' . $user->name . ')');
+            return redirect()->intended('/');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Google Sign-in failed: ' . $e->getMessage());
+            return redirect()->route('login');
+        }
     }
 
     // ដំណើរការពេល Logout
