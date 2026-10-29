@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: tshirt-online
+    runtime: docker
+    plan: free
+    region: singapore
+    branch: main
+    envVars:
+      - key: APP_NAME
+        value: "T-Shirt Online"
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_KEY
+        generateValue: true
+      - key: APP_URL
+        fromService:
+          type: web
+          name: tshirt-online
+          property: host
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        value: gateway01.ap-southeast-1.prod.aws.tidbcloud.com
+      - key: DB_PORT
+        value: "4000"
+      - key: DB_DATABASE
+        value: tshirt_store
+      - key: DB_USERNAME
+        value: 2byP8zCFEMh41m2.root
+      - key: DB_PASSWORD
+        value: xQDqbm9PnYjlg47t
+      - key: MYSQL_ATTR_SSL_CA
+        value: /etc/ssl/certs/ca-certificates.crt

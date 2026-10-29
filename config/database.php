@@ -60,8 +60,28 @@ return [
             'strict' => true,
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([
-                Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-            ]) : [],
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => env('MYSQL_ATTR_SSL_VERIFY_SERVER_CERT', false),
+            ], fn($v) => !is_null($v) && $v !== '') : [],
+        ],
+
+        'tidb' => [
+            'driver' => 'mysql',
+            'host' => env('TIDB_HOST', 'gateway01.ap-southeast-1.prod.aws.tidbcloud.com'),
+            'port' => env('TIDB_PORT', '4000'),
+            'database' => env('TIDB_DATABASE', 'tshirt_store'),
+            'username' => env('TIDB_USERNAME', '2byP8zCFEMh41m2.root'),
+            'password' => env('TIDB_PASSWORD', 'xQDqbm9PnYjlg47t'),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? [
+                PDO::MYSQL_ATTR_SSL_CA => ini_get('openssl.cafile') ?: (PHP_OS_FAMILY === 'Windows' ? 'C:\\xamppM\\apache\\bin\\curl-ca-bundle.crt' : '/etc/ssl/certs/ca-certificates.crt'),
+                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+            ] : [],
         ],
 
         'mariadb' => [
@@ -80,8 +100,9 @@ return [
             'strict' => true,
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([
-                Mysql::ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-            ]) : [],
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => env('MYSQL_ATTR_SSL_VERIFY_SERVER_CERT', false),
+            ], fn($v) => !is_null($v) && $v !== '') : [],
         ],
 
         'pgsql' => [
