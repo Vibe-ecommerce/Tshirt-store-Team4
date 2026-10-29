@@ -1,6 +1,6 @@
 @extends('layouts.store')
 
-@section('title', $product->name . ' — THREADCRAFT')
+@section('title', $product->name . ' — T-Shirt Online')
 
 @section('styles')
 <style>

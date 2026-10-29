@@ -10,6 +10,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Kantumruy+Pro:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
     
+    <!-- html2pdf.js for client-side pixel-perfect PDF export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
     <style>
         :root {
             --primary: #4f46e5;
@@ -136,15 +139,32 @@
         }
 
         .btn-pdf {
-            background: rgba(16, 185, 129, 0.15);
-            color: #34d399;
-            border: 1px solid rgba(52, 211, 153, 0.35);
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.4);
         }
 
         .btn-pdf:hover {
-            background: rgba(16, 185, 129, 0.25);
+            background: linear-gradient(135deg, #047857 0%, #059669 100%);
             transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.55);
             color: #ffffff;
+        }
+
+        .btn-pdf:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .spin-icon {
+            animation: spin 0.8s linear infinite;
         }
 
         .btn-back {
@@ -820,13 +840,13 @@
             </div>
         </div>
         <div class="toolbar-actions">
+            <button type="button" id="btnDownloadPdf" onclick="downloadInvoicePDF()" class="btn-action btn-pdf">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span>📥 Download PDF (ទាញយកវិក្កយបត្រ)</span>
+            </button>
             <button type="button" onclick="window.print()" class="btn-action btn-print">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-                <span>🖨️ Print Invoice (បោះពុម្ព)</span>
-            </button>
-            <button type="button" onclick="window.print()" class="btn-action btn-pdf">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                <span>Save as PDF</span>
+                <span>🖨️ Print (បោះពុម្ព)</span>
             </button>
             <a href="javascript:history.back()" class="btn-action btn-back">
                 <span>← Back</span>
@@ -857,7 +877,7 @@
 
     <!-- 2. Printable Paper Sheet -->
     <div class="invoice-sheet-container">
-        <div class="invoice-paper">
+        <div class="invoice-paper" id="printableInvoice">
             <div class="paper-top-accent"></div>
             
             <!-- 3. Header Section -->
@@ -1142,5 +1162,84 @@
         </div>
     </div>
 
+    <script>
+        function downloadInvoicePDF() {
+            const btn = document.getElementById('btnDownloadPdf');
+            const origHtml = btn ? btn.innerHTML : '';
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = `
+                    <svg class="spin-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <circle cx="12" cy="12" r="10" stroke-opacity="0.25"></circle>
+                        <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"></path>
+                    </svg>
+                    <span>Generating PDF... (កំពុងបង្កើត)</span>
+                `;
+            }
+
+            const element = document.getElementById('printableInvoice');
+            if (!element) {
+                window.print();
+                return;
+            }
+
+            const origBoxShadow = element.style.boxShadow;
+            element.style.boxShadow = 'none';
+
+            const opt = {
+                margin:       [6, 6, 6, 6],
+                filename:     'Tax-Invoice-{{ $order->order_number }}.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { 
+                    scale: 2, 
+                    useCORS: true, 
+                    letterRendering: true,
+                    logging: false,
+                    windowWidth: 1100
+                },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
+            };
+
+            if (typeof html2pdf !== 'undefined') {
+                html2pdf().set(opt).from(element).save().then(() => {
+                    element.style.boxShadow = origBoxShadow;
+                    if (btn) {
+                        btn.innerHTML = '<span>✓</span> <span>Downloaded! (ទាញយកជោគជ័យ)</span>';
+                        setTimeout(() => {
+                            btn.innerHTML = origHtml;
+                            btn.disabled = false;
+                        }, 2500);
+                    }
+                }).catch(err => {
+                    console.error('PDF Generation Error:', err);
+                    element.style.boxShadow = origBoxShadow;
+                    window.print();
+                    if (btn) {
+                        btn.innerHTML = origHtml;
+                        btn.disabled = false;
+                    }
+                });
+            } else {
+                element.style.boxShadow = origBoxShadow;
+                window.print();
+                if (btn) {
+                    btn.innerHTML = origHtml;
+                    btn.disabled = false;
+                }
+            }
+        }
+
+        // Auto-download PDF if URL contains ?download=1
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('download') === '1') {
+                // Short timeout to guarantee Google Fonts (Plus Jakarta Sans & Kantumruy Pro) finish rendering
+                setTimeout(function() {
+                    downloadInvoicePDF();
+                }, 750);
+            }
+        });
+    </script>
 </body>
 </html>

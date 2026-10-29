@@ -10,9 +10,13 @@
             <p style="color:var(--text-muted); font-size:0.9rem;">Placed on {{ $order->created_at->format('F d, Y \a\t h:i A') }}</p>
         </div>
         <div style="display:flex; align-items:center; gap:10px;">
-            <a href="{{ route('admin.orders.invoice', $order->id) }}" target="_blank" class="btn-primary" style="padding:10px 18px; font-size:0.88rem; display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg, #10b981, #059669); border:none;">
+            <a href="{{ route('admin.orders.invoice', $order->id) }}?download=1" target="_blank" class="btn-primary" style="padding:10px 18px; font-size:0.88rem; display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg, #059669, #047857); border:none; box-shadow:0 4px 12px rgba(5,150,105,0.35);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span>📥 Download PDF</span>
+            </a>
+            <a href="{{ route('admin.orders.invoice', $order->id) }}" target="_blank" class="btn-primary" style="padding:10px 18px; font-size:0.88rem; display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg, #4f46e5, #4338ca); border:none; box-shadow:0 4px 12px rgba(79,70,229,0.35);">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-                <span>🖨️ Print Customer Invoice / Receipt</span>
+                <span>🖨️ Print Invoice</span>
             </a>
             <a href="{{ route('admin.orders.index') }}" class="btn-outline">← Back to Orders</a>
         </div>

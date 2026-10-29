@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', 'Admin Portal') — THREADCRAFT Manager</title>
+    <title>@yield('title', 'Admin Portal') — T-Shirt Online Manager</title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -91,20 +91,26 @@
         }
 
         .sidebar-brand {
-            padding: 18px 20px 16px;
+            padding: 20px 20px 18px;
             display: flex;
             align-items: center;
             gap: 12px;
             border-bottom: 1px solid #f1f5f9;
             background: #ffffff;
             flex-shrink: 0;
+            text-decoration: none;
+            transition: background 0.15s ease;
+        }
+
+        .sidebar-brand:hover {
+            background: #fafbfc;
         }
 
         .brand-badge {
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             border-radius: 12px;
-            background: var(--accent-gradient);
+            background: linear-gradient(135deg, #2563eb 0%, #4f46e5 50%, #7c3aed 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -115,8 +121,8 @@
         }
 
         .sidebar-brand:hover .brand-badge {
-            transform: scale(1.05) rotate(-2deg);
-            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.5);
+            transform: scale(1.06) rotate(-2deg);
+            box-shadow: 0 8px 22px rgba(79, 70, 229, 0.45);
         }
 
         .brand-badge svg {
@@ -128,7 +134,7 @@
         .brand-info {
             display: flex;
             flex-direction: column;
-            line-height: 1.2;
+            line-height: 1.25;
         }
 
         .brand-title-row {
@@ -138,20 +144,20 @@
         }
 
         .brand-name {
-            font-size: 1.15rem;
-            font-weight: 850;
-            letter-spacing: -0.4px;
+            font-size: 1.18rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
             color: #0f172a;
         }
 
         .brand-pro-badge {
             font-size: 0.62rem;
-            font-weight: 800;
-            background: #eef2ff;
-            color: #4f46e5;
-            border: 1px solid #c7d2fe;
-            padding: 1.5px 5.5px;
-            border-radius: 5px;
+            font-weight: 850;
+            background: #eff6ff;
+            color: #2563eb;
+            border: 1px solid #bfdbfe;
+            padding: 1.5px 6px;
+            border-radius: 6px;
             letter-spacing: 0.5px;
             text-transform: uppercase;
         }
@@ -165,7 +171,7 @@
             margin-top: 2px;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
         }
 
         .status-pulse-dot {
@@ -173,8 +179,9 @@
             height: 6.5px;
             border-radius: 50%;
             background: #10b981;
-            box-shadow: 0 0 6px rgba(16, 185, 129, 0.8);
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.9);
             display: inline-block;
+            animation: pulse-dot 2s infinite ease-in-out;
         }
 
         .sidebar-nav {
@@ -199,10 +206,10 @@
         .nav-label {
             font-size: 0.68rem;
             text-transform: uppercase;
-            letter-spacing: 0.9px;
-            color: #64748b;
-            padding: 11px 10px 3px;
-            font-weight: 800;
+            letter-spacing: 0.95px;
+            color: #94a3b8;
+            padding: 14px 12px 5px;
+            font-weight: 850;
             user-select: none;
             display: flex;
             align-items: center;
@@ -213,26 +220,27 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 7.5px 11px;
-            border-radius: 10px;
-            font-size: 0.86rem;
+            padding: 8px 12px;
+            border-radius: 11px;
+            font-size: 0.88rem;
             font-weight: 600;
             color: #334155;
             transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
             position: relative;
+            margin-bottom: 2px;
         }
 
         .sidebar-link:hover {
             background: #f8fafc;
             color: #0f172a;
-            transform: translateX(2px);
+            transform: translateX(2.5px);
         }
 
         .sidebar-link.active {
-            background: linear-gradient(90deg, #eff6ff 0%, #eef2ff 100%);
-            color: #4338ca;
+            background: linear-gradient(135deg, #eff6ff 0%, #eef2ff 100%);
+            color: #1d4ed8;
             font-weight: 750;
-            box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.14);
+            box-shadow: inset 0 0 0 1px #dbeafe;
         }
 
         .sidebar-link.active::before {
@@ -243,7 +251,7 @@
             bottom: 7px;
             width: 3.5px;
             border-radius: 0 4px 4px 0;
-            background: linear-gradient(180deg, #4f46e5, #7c3aed);
+            background: linear-gradient(180deg, #2563eb, #4f46e5);
         }
 
         .link-left {
@@ -281,8 +289,8 @@
         }
 
         .sidebar-link.active .nav-icon {
-            color: #4f46e5;
-            filter: drop-shadow(0 2px 4px rgba(79, 70, 229, 0.3));
+            color: #2563eb;
+            filter: drop-shadow(0 2px 5px rgba(37, 99, 235, 0.3));
             transform: scale(1.08);
         }
 
@@ -290,113 +298,137 @@
         .nav-pill {
             font-size: 0.65rem;
             font-weight: 800;
-            padding: 2px 7px;
+            padding: 2.5px 8px;
             border-radius: 9999px;
             letter-spacing: 0.3px;
             line-height: 1.2;
         }
 
+        .nav-pill-live {
+            background: #ecfdf5;
+            color: #059669;
+            border: 1px solid #a7f3d0;
+            display: inline-flex;
+            align-items: center;
+            gap: 4.5px;
+        }
+
+        .pulse-live-dot {
+            width: 5.5px;
+            height: 5.5px;
+            border-radius: 50%;
+            background: #10b981;
+            display: inline-block;
+            box-shadow: 0 0 6px rgba(16, 185, 129, 0.9);
+            animation: pulse-dot 1.8s infinite ease-in-out;
+        }
+
         .nav-pill-indigo {
-            background: #e0e7ff;
-            color: #4338ca;
-            border: 1px solid #c7d2fe;
+            background: #fffbeb;
+            color: #b45309;
+            border: 1px solid #fde68a;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
         }
 
         .nav-pill-blue {
-            background: #e0f2fe;
-            color: #0369a1;
-            border: 1px solid #bae6fd;
+            background: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #bfdbfe;
         }
 
         .nav-pill-amber {
-            background: #fef3c7;
+            background: #fffbeb;
             color: #92400e;
             border: 1px solid #fde68a;
         }
 
         /* Sidebar Footer Executive Profile Card */
         .sidebar-footer {
-            padding: 10px 12px 12px;
+            padding: 12px 14px 14px;
             border-top: 1px solid #f1f5f9;
-            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+            background: #ffffff;
             margin-top: auto;
             flex-shrink: 0;
         }
 
         .sidebar-profile-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 8px 10px;
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 10px 12px;
             display: flex;
             flex-direction: column;
-            gap: 7px;
-            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(15, 23, 42, 0.02);
-            transition: all 0.2s ease;
+            gap: 9px;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .sidebar-profile-card:hover {
+            background: #ffffff;
             border-color: #cbd5e1;
-            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+            transform: translateY(-1px);
         }
 
         .profile-card-header {
             display: flex;
             align-items: center;
-            gap: 9px;
+            gap: 10px;
             text-decoration: none;
             color: inherit;
         }
 
         .profile-avatar-wrap {
             position: relative;
-            width: 36px;
-            height: 36px;
+            width: 38px;
+            height: 38px;
             flex-shrink: 0;
         }
 
         .profile-avatar-img {
-            width: 36px;
-            height: 36px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid #ffffff;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
             display: block;
         }
 
         .profile-avatar-fallback {
-            width: 36px;
-            height: 36px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
-            background: var(--accent-gradient);
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
             color: #ffffff;
-            font-weight: 800;
-            font-size: 0.88rem;
+            font-weight: 850;
+            font-size: 0.92rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 6px rgba(79, 70, 229, 0.35);
+            box-shadow: 0 2px 8px rgba(79, 70, 229, 0.35);
             border: 2px solid #ffffff;
         }
 
         .profile-online-dot {
-            width: 9px;
-            height: 9px;
+            width: 9.5px;
+            height: 9.5px;
             border-radius: 50%;
             background: #10b981;
-            border: 1.8px solid #ffffff;
+            border: 2px solid #ffffff;
             position: absolute;
-            bottom: -1px;
-            right: -1px;
-            box-shadow: 0 0 6px rgba(16, 185, 129, 0.7);
+            bottom: 0;
+            right: 0;
+            box-shadow: 0 0 8px rgba(16, 185, 129, 0.9);
             animation: pulse-dot 2.2s infinite ease-in-out;
         }
 
         .profile-meta {
             display: flex;
             flex-direction: column;
-            line-height: 1.2;
+            line-height: 1.25;
             overflow: hidden;
             flex: 1;
         }
@@ -404,11 +436,11 @@
         .profile-meta-top {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
         }
 
         .profile-name {
-            font-size: 0.85rem;
+            font-size: 0.88rem;
             font-weight: 850;
             color: #0f172a;
             white-space: nowrap;
@@ -417,31 +449,31 @@
         }
 
         .profile-role-badge {
-            font-size: 0.58rem;
+            font-size: 0.60rem;
             font-weight: 800;
             background: #ecfdf5;
             color: #059669;
             border: 1px solid #a7f3d0;
-            padding: 1px 4.5px;
-            border-radius: 4px;
+            padding: 1.5px 5.5px;
+            border-radius: 5px;
             letter-spacing: 0.4px;
         }
 
         .profile-email {
-            font-size: 0.70rem;
+            font-size: 0.72rem;
             color: #64748b;
             font-weight: 550;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            margin-top: 2px;
+            margin-top: 1px;
         }
 
         .profile-card-actions {
             display: flex;
             align-items: center;
-            gap: 6px;
-            padding-top: 6px;
+            gap: 8px;
+            padding-top: 8px;
             border-top: 1px solid #f1f5f9;
         }
 
@@ -450,24 +482,25 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 5px;
-            padding: 5.5px 8px;
-            border-radius: 7px;
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            color: #334155;
-            font-size: 0.76rem;
+            gap: 6px;
+            padding: 6.5px 10px;
+            border-radius: 8px;
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            color: #1e293b;
+            font-size: 0.78rem;
             font-weight: 750;
             text-decoration: none;
             transition: all 0.18s ease;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
         }
 
         .profile-action-btn:hover {
-            background: #eff6ff;
-            color: #4338ca;
-            border-color: #c7d2fe;
+            background: #0f172a;
+            color: #ffffff;
+            border-color: #0f172a;
             transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(15, 23, 42, 0.15);
         }
 
         .profile-logout-btn {
@@ -475,13 +508,13 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 5px;
-            padding: 5.5px 8px;
-            border-radius: 7px;
+            gap: 6px;
+            padding: 6.5px 10px;
+            border-radius: 8px;
             background: #fff1f2;
-            border: 1px solid #fecdd3;
+            border: 1.5px solid #fecdd3;
             color: #e11d48;
-            font-size: 0.76rem;
+            font-size: 0.78rem;
             font-weight: 750;
             cursor: pointer;
             transition: all 0.18s ease;
@@ -489,10 +522,11 @@
         }
 
         .profile-logout-btn:hover {
-            background: #fee2e2;
-            color: #be123c;
-            border-color: #fda4af;
+            background: #e11d48;
+            color: #ffffff;
+            border-color: #e11d48;
             transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(225, 29, 72, 0.25);
         }
 
         /* Main Workspace */
@@ -1012,21 +1046,20 @@
     <div class="admin-layout">
         <!-- Sidebar with all 11 Sitemap Modules -->
         <aside class="admin-sidebar">
-            <div class="sidebar-brand">
+            <a href="{{ route('admin.dashboard') }}" class="sidebar-brand" title="T-Shirt Online Admin Dashboard">
                 <div class="brand-badge">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 2L3 7v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V7l-9-5z"/>
-                        <path d="M9 12l2 2 4-4"/>
+                        <path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/>
                     </svg>
                 </div>
                 <div class="brand-info">
                     <div class="brand-title-row">
-                        <span class="brand-name">THREADCRAFT</span>
+                        <span class="brand-name">T-Shirt Online</span>
                         <span class="brand-pro-badge">PRO</span>
                     </div>
                     <span class="brand-subtitle"><span class="status-pulse-dot"></span> STUDIO ADMIN</span>
                 </div>
-            </div>
+            </a>
 
             <ul class="sidebar-nav">
                 <!-- 1. DASHBOARD -->
@@ -1103,7 +1136,7 @@
                             </span>
                             <span>Order Management</span>
                         </span>
-                        <span class="nav-pill nav-pill-blue">Live</span>
+                        <span class="nav-pill nav-pill-live"><span class="pulse-live-dot"></span> Live</span>
                     </a>
                 </li>
 

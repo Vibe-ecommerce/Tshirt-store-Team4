@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'THREADCRAFT — Premium T-Shirt Store')</title>
+    <title>@yield('title', 'T-Shirt Online — Premium T-Shirt Store')</title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1715,7 +1715,7 @@
                         <path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z" fill="rgba(255,255,255,0.2)"/>
                     </svg>
                 </span>
-                <span class="brand-text">THREADCRAFT<span class="brand-dot"></span></span>
+                <span class="brand-text">T-Shirt Online<span class="brand-dot"></span></span>
             </a>
 
             <ul class="nav-links">
@@ -1911,7 +1911,7 @@
                             <path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z" fill="rgba(255,255,255,0.2)"/>
                         </svg>
                     </span>
-                    <span class="brand-text" style="font-size:1.2rem;">THREADCRAFT<span class="brand-dot"></span></span>
+                    <span class="brand-text" style="font-size:1.2rem;">T-Shirt Online<span class="brand-dot"></span></span>
                 </a>
                 <p>
                     Premium organic & bespoke graphic t-shirts engineered for maximum everyday comfort, durability, and contemporary streetwear aesthetics.
@@ -1958,7 +1958,7 @@
         </div>
 
         <div class="footer-bottom">
-            <div>&copy; {{ date('Y') }} THREADCRAFT Apparel Co. All rights reserved.</div>
+            <div>&copy; {{ date('Y') }} T-Shirt Online Apparel Co. All rights reserved.</div>
             <div style="display:flex; gap: 20px;">
                 <a href="{{ route('about') }}" style="color:var(--text-muted);">Privacy Policy</a>
                 <a href="{{ route('about') }}" style="color:var(--text-muted);">Terms of Service</a>

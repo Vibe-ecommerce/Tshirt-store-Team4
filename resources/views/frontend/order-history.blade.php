@@ -1,6 +1,6 @@
 @extends('layouts.store')
 
-@section('title', 'Order History — THREADCRAFT')
+@section('title', 'Order History — T-Shirt Online')
 
 @section('styles')
 <style>
@@ -123,8 +123,12 @@
                     <div style="margin-top:18px; padding-top:14px; border-top:1px solid rgba(255,255,255,0.06); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
                         <span style="font-size:0.85rem; color:var(--text-muted);">Tracking: <code style="color:#a5b4fc;">{{ $order->tracking_code }}</code></span>
                         <div style="display:flex; align-items:center; gap:8px;">
+                            <a href="{{ route('order.invoice', $order->order_number) }}?download=1" target="_blank" class="btn-outline" style="padding:6px 14px; font-size:0.82rem; color:#34d399; border-color:rgba(52,211,153,0.4); display:inline-flex; align-items:center; gap:6px;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                                <span>Download PDF</span>
+                            </a>
                             <a href="{{ route('order.invoice', $order->order_number) }}" target="_blank" class="btn-outline" style="padding:6px 14px; font-size:0.82rem; color:#38bdf8; border-color:rgba(56,189,248,0.4); display:inline-flex; align-items:center; gap:6px;">
-                                <span>🖨️ Print Receipt</span>
+                                <span>🖨️ Print</span>
                             </a>
                             <a href="{{ route('order.track', ['code' => $order->tracking_code]) }}" class="btn-outline" style="padding:6px 14px; font-size:0.82rem;">Track Package</a>
                         </div>

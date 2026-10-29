@@ -145,4 +145,6 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     // 11. SETTINGS
     Route::get('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
+    Route::post('/settings/telegram/test', [\App\Http\Controllers\Admin\SettingController::class, 'testTelegram'])->name('settings.telegram.test');
+    Route::post('/settings/telegram/detect', [\App\Http\Controllers\Admin\SettingController::class, 'detectTelegramChat'])->name('settings.telegram.detect');
 });

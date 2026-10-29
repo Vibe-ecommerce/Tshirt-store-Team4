@@ -1,6 +1,6 @@
 @extends('layouts.store')
 
-@section('title', 'Order Confirmed #' . $order->order_number . ' — THREADCRAFT')
+@section('title', 'Order Confirmed #' . $order->order_number . ' — T-Shirt Online')
 
 @section('styles')
 <style>
@@ -164,12 +164,16 @@
         </div>
 
         <div class="actions-cta">
-            <a href="{{ route('order.invoice', $order->order_number) }}" target="_blank" class="btn-primary" style="padding: 12px 26px; background:linear-gradient(135deg, #10b981, #059669); border:none; display:inline-flex; align-items:center; gap:8px;">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
-                <span>🖨️ Print Sales Receipt</span>
+            <a href="{{ route('order.invoice', $order->order_number) }}?download=1" target="_blank" class="btn-primary" style="padding: 13px 26px; background:linear-gradient(135deg, #059669, #10b981); border:none; display:inline-flex; align-items:center; gap:9px; font-weight:800; box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span>Download Invoice (PDF) / ទាញយកវិក្កយបត្រ</span>
             </a>
-            <a href="{{ route('order.track', ['code' => $order->tracking_code]) }}" class="btn-primary" style="padding: 12px 28px;">
-                Track This Order Live →
+            <a href="{{ route('order.invoice', $order->order_number) }}" target="_blank" class="btn-outline" style="padding: 12px 22px; display:inline-flex; align-items:center; gap:8px; font-weight:700;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                <span>Print Invoice (បោះពុម្ព)</span>
+            </a>
+            <a href="{{ route('order.track', ['code' => $order->tracking_code]) }}" class="btn-primary" style="padding: 13px 26px;">
+                Track Live →
             </a>
             <a href="{{ route('shop.index') }}" class="btn-outline" style="padding: 12px 24px;">
                 Back to Shop

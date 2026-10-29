@@ -895,6 +895,63 @@
                         <option value="0" {{ $settings['notify_on_low_stock'] == '0' ? 'selected' : '' }}>Disabled</option>
                     </select>
                 </div>
+
+                <!-- Telegram Order Bot Automated Notifications -->
+                <div style="margin-top:28px; background:linear-gradient(135deg, #f0fdf4 0%, #eff6ff 100%); border:1.5px solid #bfdbfe; border-radius:var(--radius-md); padding:24px; box-shadow:0 4px 16px rgba(37,99,235,0.06);">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; flex-wrap:wrap; gap:12px;">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <div style="width:40px; height:40px; border-radius:10px; background:#0284c7; color:#ffffff; display:flex; align-items:center; justify-content:center; box-shadow:0 3px 10px rgba(2,132,199,0.3);">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.198 2.433a2.242 2.242 0 0 0-1.022.215l-16.5 6.75a2.25 2.25 0 0 0 .126 4.16l4.026 1.487 1.488 4.027a2.25 2.25 0 0 0 4.16.126l6.75-16.5a2.242 2.242 0 0 0-.215-1.022 2.25 2.25 0 0 0-1.813-1.243z"></path></svg>
+                            </div>
+                            <div>
+                                <div style="font-size:1.1rem; font-weight:850; color:#0f172a;">Instant Telegram Order Notifications</div>
+                                <div style="font-size:0.84rem; color:#475569; font-weight:500;">Receive automatic alerts + payment receipt slips directly in your Telegram group or private chat.</div>
+                            </div>
+                        </div>
+
+                        <select name="enable_telegram_notifications" class="status-select-pill" style="min-width:120px;">
+                            <option value="1" {{ ($settings['enable_telegram_notifications'] ?? '1') == '1' ? 'selected' : '' }}>Enabled</option>
+                            <option value="0" {{ ($settings['enable_telegram_notifications'] ?? '1') == '0' ? 'selected' : '' }}>Disabled</option>
+                        </select>
+                    </div>
+
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:14px;">
+                        <div>
+                            <label class="form-group-label" style="font-size:0.86rem; font-weight:800; color:#0f172a;">Telegram Bot Token</label>
+                            <div class="field-input-box">
+                                <span class="field-left-icon">🤖</span>
+                                <input type="text" name="telegram_bot_token" value="{{ old('telegram_bot_token', $settings['telegram_bot_token'] ?? '') }}" class="settings-input-control" placeholder="e.g. 123456789:ABCdefGhIJKlmNoPQRsTUVwxyZ">
+                            </div>
+                            <span style="font-size:0.75rem; color:#64748b; margin-top:4px; display:block;">Obtained from <a href="https://t.me/BotFather" target="_blank" style="color:#2563eb; font-weight:700;">@BotFather</a> on Telegram.</span>
+                        </div>
+
+                        <div>
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <label class="form-group-label" style="font-size:0.86rem; font-weight:800; color:#0f172a;">Telegram Chat / Group ID</label>
+                                <button type="submit" formaction="{{ route('admin.settings.telegram.detect') }}" formmethod="POST" style="background:#eff6ff; border:1px solid #bfdbfe; color:#1d4ed8; font-size:0.75rem; font-weight:750; padding:2px 8px; border-radius:6px; cursor:pointer;" title="Click to auto-fetch your ID from /start">
+                                    🔍 Auto-Detect ID
+                                </button>
+                            </div>
+                            <div class="field-input-box">
+                                <span class="field-left-icon">💬</span>
+                                <input type="text" name="telegram_chat_id" value="{{ old('telegram_chat_id', $settings['telegram_chat_id'] ?? '') }}" class="settings-input-control" placeholder="e.g. 1660281294 or -1001234567890">
+                            </div>
+                            <span style="font-size:0.75rem; color:#64748b; margin-top:4px; display:block;">Chat ID must be numeric (e.g. <code>1660281294</code>), <strong>not</strong> your bot's username.</span>
+                        </div>
+                    </div>
+
+                    <!-- Connection Action Controls -->
+                    <div style="display:flex; align-items:center; justify-content:space-between; margin-top:14px; padding-top:14px; border-top:1px dashed #bfdbfe; flex-wrap:wrap; gap:10px;">
+                        <div style="font-size:0.82rem; color:#0369a1; display:flex; align-items:center; gap:6px;">
+                            <span>💡</span>
+                            <span>Open your Telegram bot and tap <strong>/start</strong>, then click <strong>Auto-Detect ID</strong> or <strong>Send Test Notification</strong>.</span>
+                        </div>
+                        <button type="submit" formaction="{{ route('admin.settings.telegram.test') }}" formmethod="POST" style="background:linear-gradient(135deg, #0284c7, #0369a1); color:#ffffff; border:none; padding:8px 18px; border-radius:8px; font-size:0.82rem; font-weight:750; cursor:pointer; display:inline-flex; align-items:center; gap:6px; box-shadow:0 2px 8px rgba(2,132,199,0.35);">
+                            <span>⚡</span>
+                            <span>Send Test Notification (សាកល្បងផ្ញើសារ)</span>
+                        </button>
+                    </div>
+                </div>
             @endif
 
             {{-- ============================================================

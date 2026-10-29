@@ -1,6 +1,6 @@
 @extends('layouts.store')
 
-@section('title', 'Contact Us — THREADCRAFT')
+@section('title', 'Contact Us — T-Shirt Online')
 
 @section('styles')
 <style>

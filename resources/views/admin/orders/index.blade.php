@@ -138,7 +138,10 @@
                         <!-- Action Buttons -->
                         <td style="padding:16px 20px; text-align:right;">
                             <div style="display:flex; justify-content:flex-end; align-items:center; gap:8px;">
-                                <a href="{{ route('admin.orders.invoice', $order->id) }}" target="_blank" style="background:#f0f9ff; color:#0369a1; border:1.5px solid #bae6fd; padding:6px 12px; font-size:0.78rem; font-weight:750; border-radius:8px; text-decoration:none; display:inline-flex; align-items:center; gap:4px; transition:all 0.15s;" onmouseover="this.style.background='#0284c7'; this.style.color='#ffffff';" onmouseout="this.style.background='#f0f9ff'; this.style.color='#0369a1';" title="Print Sales Receipt">
+                                <a href="{{ route('admin.orders.invoice', $order->id) }}?download=1" target="_blank" style="background:#ecfdf5; color:#047857; border:1.5px solid #a7f3d0; padding:6px 10px; font-size:0.78rem; font-weight:750; border-radius:8px; text-decoration:none; display:inline-flex; align-items:center; gap:4px; transition:all 0.15s;" onmouseover="this.style.background='#059669'; this.style.color='#ffffff';" onmouseout="this.style.background='#ecfdf5'; this.style.color='#047857';" title="Download PDF Invoice">
+                                    📥 PDF
+                                </a>
+                                <a href="{{ route('admin.orders.invoice', $order->id) }}" target="_blank" style="background:#f0f9ff; color:#0369a1; border:1.5px solid #bae6fd; padding:6px 10px; font-size:0.78rem; font-weight:750; border-radius:8px; text-decoration:none; display:inline-flex; align-items:center; gap:4px; transition:all 0.15s;" onmouseover="this.style.background='#0284c7'; this.style.color='#ffffff';" onmouseout="this.style.background='#f0f9ff'; this.style.color='#0369a1';" title="Print Sales Receipt">
                                     🖨️ Receipt
                                 </a>
                                 <a href="{{ route('admin.orders.show', $order->id) }}" class="btn-primary" style="padding:6px 14px; font-size:0.78rem; font-weight:750;">

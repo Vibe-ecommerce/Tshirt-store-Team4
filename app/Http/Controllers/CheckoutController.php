@@ -10,6 +10,8 @@ use App\Models\SiteSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
@@ -55,7 +57,15 @@ class CheckoutController extends Controller
             'instructions' => SiteSetting::get('qr_instructions', 'Scan this QR code using any banking app (ABA Mobile, Bakong, ACLEDA, Wing) to complete payment. Upload your payment slip / receipt screenshot below for prompt verification.'),
         ];
 
-        return view('frontend.checkout', compact('cart', 'subtotal', 'discount', 'shipping', 'total', 'coupon', 'user', 'qrSettings'));
+        // Estimated delivery dates calculation
+        $estStandardStart = now()->addDays(2)->format('D, M d');
+        $estStandardEnd = now()->addDays(4)->format('D, M d');
+        $estExpress = now()->addDays(1)->format('D, M d');
+
+        return view('frontend.checkout', compact(
+            'cart', 'subtotal', 'discount', 'shipping', 'total', 'coupon', 'user', 'qrSettings',
+            'estStandardStart', 'estStandardEnd', 'estExpress'
+        ));
     }
 
     public function store(Request $request)
@@ -82,6 +92,8 @@ class CheckoutController extends Controller
             'payment_slip' => 'nullable|image|mimes:jpeg,png,jpg,webp,pdf|max:6144',
             'payment_reference' => 'nullable|string|max:100',
             'notes' => 'nullable|string|max:500',
+            'notify_telegram' => 'nullable',
+            'notify_whatsapp' => 'nullable',
         ]);
 
         // Process payment receipt slip upload if present
@@ -117,6 +129,13 @@ class CheckoutController extends Controller
 
         $orderNumber = 'TC-' . strtoupper(Str::random(8));
         $trackingCode = 'TRK-' . date('Ymd') . '-' . rand(1000, 9999);
+
+        // Channels note
+        $channels = [];
+        if ($request->filled('notify_telegram')) $channels[] = 'Telegram';
+        if ($request->filled('notify_whatsapp')) $channels[] = 'WhatsApp';
+        $channelNote = !empty($channels) ? ('[Updates via: ' . implode(', ', $channels) . ']') : '';
+        $finalNotes = trim(($validated['notes'] ?? '') . ' ' . $channelNote);
 
         DB::beginTransaction();
         try {
@@ -155,7 +174,7 @@ class CheckoutController extends Controller
                 'total' => $total,
                 'status' => 'Processing',
                 'tracking_code' => $trackingCode,
-                'notes' => $validated['notes'] ?? null,
+                'notes' => $finalNotes ?: null,
             ]);
 
             // 3. Create items and automatically decrement stock
@@ -177,7 +196,7 @@ class CheckoutController extends Controller
                     if ($product) {
                         $product->stock = max(0, $product->stock - $item['quantity']);
                         if ($product->stock <= 0) {
-                            $product->in_stock = false; // Automatic stockout when all units purchased!
+                            $product->in_stock = false;
                         }
                         $product->save();
                     }
@@ -212,15 +231,100 @@ class CheckoutController extends Controller
                 }
             }
 
+            // 5. Send Automated Telegram Notification
+            $this->sendTelegramNotification($order, $cart, $paymentSlipPath, $channels);
+
             // Clear session cart and coupon
             Session::forget('cart');
             Session::forget('coupon');
 
             return redirect()->route('order.confirmation', $order->order_number)
                 ->with('success', 'Thank you! Your order has been placed successfully.');
+
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->withInput()->with('error', 'Failed to place order: ' . $e->getMessage());
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Checkout error: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Send instant Telegram Bot order alert to Store Managers / Telegram Group
+     */
+    protected function sendTelegramNotification($order, array $cart, ?string $slipPath, array $channels = [])
+    {
+        try {
+            $enabled = SiteSetting::get('enable_telegram_notifications', '1') == '1';
+            if (!$enabled) {
+                return;
+            }
+
+            $botToken = SiteSetting::get('telegram_bot_token', env('TELEGRAM_BOT_TOKEN'));
+            $chatId = SiteSetting::get('telegram_chat_id', env('TELEGRAM_CHAT_ID'));
+
+            // Format items list
+            $itemsText = "";
+            foreach ($cart as $item) {
+                $size = $item['size'] ?? 'L';
+                $lineTotal = number_format($item['price'] * $item['quantity'], 2);
+                $itemsText .= "• {$item['quantity']}x <b>" . htmlspecialchars($item['name']) . "</b> ({$size}) — \${$lineTotal}\n";
+            }
+
+            $prefChannels = !empty($channels) ? implode(', ', $channels) : 'Standard SMS';
+            $refText = !empty($order->payment_reference) ? " (Ref: " . htmlspecialchars($order->payment_reference) . ")" : "";
+            $slipStatus = !empty($slipPath) ? " Attached & Ready to Verify" : "No receipt attached";
+
+            $message = "🛍️ <b>NEW ORDER RECEIVED! #{$order->order_number}</b>\n";
+            $message .= "━━━━━━━━━━━━━━━━━━━━\n";
+            $message .= "👤 <b>Customer:</b> " . htmlspecialchars($order->customer_name) . "\n";
+            $message .= "📞 <b>Phone:</b> " . htmlspecialchars($order->customer_phone) . " <i>({$prefChannels})</i>\n";
+            $message .= "✉️ <b>Email:</b> " . htmlspecialchars($order->customer_email) . "\n";
+            $message .= "📍 <b>Delivery:</b> " . htmlspecialchars($order->shipping_address) . ", " . htmlspecialchars($order->city) . "\n";
+            $message .= "🚚 <b>Method:</b> " . htmlspecialchars($order->delivery_method) . " Delivery\n";
+            $message .= "💳 <b>Payment:</b> " . htmlspecialchars($order->payment_method) . "{$refText}\n";
+            $message .= "🧾 <b>Slip Status:</b> {$slipStatus}\n";
+            $message .= "━━━━━━━━━━━━━━━━━━━━\n";
+            $message .= "📦 <b>ORDER ITEMS:</b>\n{$itemsText}";
+            $message .= "━━━━━━━━━━━━━━━━━━━━\n";
+            $message .= "💰 <b>Subtotal:</b> \$" . number_format($order->subtotal, 2) . "\n";
+            if ($order->discount > 0) {
+                $message .= "🎟️ <b>Discount:</b> -\$" . number_format($order->discount, 2) . "\n";
+            }
+            $message .= "🚚 <b>Shipping:</b> " . ($order->shipping_fee == 0 ? "FREE" : "\$" . number_format($order->shipping_fee, 2)) . "\n";
+            $message .= "💵 <b>TOTAL AMOUNT:</b> <b>\$" . number_format($order->total, 2) . " USD</b>\n";
+            if (!empty($order->notes)) {
+                $message .= "📝 <b>Notes:</b> " . htmlspecialchars($order->notes) . "\n";
+            }
+            $message .= "━━━━━━━━━━━━━━━━━━━━\n";
+            $message .= "🔗 <a href=\"" . url('/admin/orders') . "\">Open Admin Dashboard</a>";
+
+            // If token and chat ID are configured, call Telegram Bot API
+            if (!empty($botToken) && !empty($chatId)) {
+                $fullSlipPath = $slipPath ? public_path($slipPath) : null;
+
+                if ($fullSlipPath && file_exists($fullSlipPath)) {
+                    Http::timeout(10)
+                        ->attach('photo', file_get_contents($fullSlipPath), basename($fullSlipPath))
+                        ->post("https://api.telegram.org/bot{$botToken}/sendPhoto", [
+                            'chat_id' => $chatId,
+                            'caption' => $message,
+                            'parse_mode' => 'HTML',
+                        ]);
+                } else {
+                    Http::timeout(10)
+                        ->post("https://api.telegram.org/bot{$botToken}/sendMessage", [
+                            'chat_id' => $chatId,
+                            'text' => $message,
+                            'parse_mode' => 'HTML',
+                            'disable_web_page_preview' => true,
+                        ]);
+                }
+            }
+
+            Log::info("Telegram order notification processed for order #{$order->order_number}");
+        } catch (\Exception $e) {
+            Log::error("Telegram order notification failed: " . $e->getMessage());
         }
     }
 }

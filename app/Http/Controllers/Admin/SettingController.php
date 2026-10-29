@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\SiteSetting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class SettingController extends Controller
 {
@@ -44,6 +46,9 @@ class SettingController extends Controller
             'notify_on_order' => SiteSetting::get('notify_on_order', '1'),
             'notify_on_low_stock' => SiteSetting::get('notify_on_low_stock', '1'),
             'admin_notify_email' => SiteSetting::get('admin_notify_email', 'admin@tshirtstore.com'),
+            'telegram_bot_token' => SiteSetting::get('telegram_bot_token', env('TELEGRAM_BOT_TOKEN', '')),
+            'telegram_chat_id' => SiteSetting::get('telegram_chat_id', env('TELEGRAM_CHAT_ID', '')),
+            'enable_telegram_notifications' => SiteSetting::get('enable_telegram_notifications', '1'),
 
             // Security Settings
             'two_factor_auth' => SiteSetting::get('two_factor_auth', '0'),
@@ -82,6 +87,115 @@ class SettingController extends Controller
             SiteSetting::set($key, $value, $group);
         }
 
+        // Auto-fix if user mistakenly entered a bot username (ending in _bot) for chat_id
+        if ($group === 'notification') {
+            $botToken = SiteSetting::get('telegram_bot_token');
+            $chatId = SiteSetting::get('telegram_chat_id');
+            if (!empty($botToken) && !empty($chatId) && str_ends_with(strtolower(trim($chatId)), '_bot')) {
+                try {
+                    $res = Http::timeout(5)->get("https://api.telegram.org/bot{$botToken}/getUpdates")->json();
+                    if (!empty($res['result'])) {
+                        $lastMsg = end($res['result']);
+                        if (isset($lastMsg['message']['chat']['id'])) {
+                            $realChatId = (string) $lastMsg['message']['chat']['id'];
+                            SiteSetting::set('telegram_chat_id', $realChatId, 'notification');
+                        }
+                    }
+                } catch (\Exception $e) {}
+            }
+        }
+
         return redirect()->route('admin.settings.index', ['group' => $group])->with('success', ucfirst($group) . ' settings updated successfully.');
+    }
+
+    /**
+     * Send test notification to verify Telegram Bot & Chat ID connection
+     */
+    public function testTelegram(Request $request)
+    {
+        $botToken = SiteSetting::get('telegram_bot_token', $request->input('telegram_bot_token'));
+        $chatId = SiteSetting::get('telegram_chat_id', $request->input('telegram_chat_id'));
+
+        if (empty($botToken)) {
+            return redirect()->back()->with('error', 'Please configure your Telegram Bot Token first.');
+        }
+
+        // If chat ID is bot username, attempt auto-resolution
+        if (empty($chatId) || str_ends_with(strtolower(trim($chatId)), '_bot')) {
+            try {
+                $updates = Http::timeout(5)->get("https://api.telegram.org/bot{$botToken}/getUpdates")->json();
+                if (!empty($updates['result'])) {
+                    $last = end($updates['result']);
+                    if (isset($last['message']['chat']['id'])) {
+                        $chatId = (string) $last['message']['chat']['id'];
+                        SiteSetting::set('telegram_chat_id', $chatId, 'notification');
+                    }
+                }
+            } catch (\Exception $e) {}
+        }
+
+        if (empty($chatId)) {
+            return redirect()->back()->with('error', 'Chat ID is missing. Please type /start to your bot in Telegram first, then try again.');
+        }
+
+        try {
+            $storeName = SiteSetting::get('store_name', 'THREADCRAFT Store');
+            $message = "🎉 <b>TELEGRAM NOTIFICATION TEST SUCCESSFUL!</b>\n";
+            $message .= "━━━━━━━━━━━━━━━━━━━━\n";
+            $message .= "🏪 <b>Store:</b> {$storeName}\n";
+            $message .= "⏰ <b>Timestamp:</b> " . now()->format('Y-m-d H:i:s') . "\n";
+            $message .= "⚡ <b>Status:</b> Active & Listening for live customer orders.\n";
+            $message .= "━━━━━━━━━━━━━━━━━━━━\n";
+            $message .= "✅ Your Bot is successfully configured! Whenever a customer places an order, you will receive full receipt slips and order details here in real-time.";
+
+            $response = Http::timeout(10)->post("https://api.telegram.org/bot{$botToken}/sendMessage", [
+                'chat_id' => $chatId,
+                'text' => $message,
+                'parse_mode' => 'HTML',
+            ]);
+
+            if ($response->successful()) {
+                return redirect()->back()->with('success', '✓ Telegram test message sent successfully to Chat ID: ' . $chatId . '! Check your Telegram app.');
+            } else {
+                $desc = $response->json('description') ?? 'Unknown error';
+                return redirect()->back()->with('error', 'Telegram API Error: ' . $desc . ' (Hint: Make sure you opened the bot and clicked /start)');
+            }
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to reach Telegram API: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Auto-detect Telegram Chat ID from /start messages
+     */
+    public function detectTelegramChat(Request $request)
+    {
+        $botToken = SiteSetting::get('telegram_bot_token', $request->input('telegram_bot_token'));
+
+        if (empty($botToken)) {
+            return redirect()->back()->with('error', 'Please configure your Telegram Bot Token first.');
+        }
+
+        try {
+            $updates = Http::timeout(8)->get("https://api.telegram.org/bot{$botToken}/getUpdates")->json();
+
+            if (!empty($updates['result'])) {
+                $last = end($updates['result']);
+                if (isset($last['message']['chat']['id'])) {
+                    $chat = $last['message']['chat'];
+                    $chatId = (string) $chat['id'];
+                    $name = trim(($chat['first_name'] ?? '') . ' ' . ($chat['last_name'] ?? ''));
+                    $username = !empty($chat['username']) ? ('@' . $chat['username']) : '';
+
+                    SiteSetting::set('telegram_chat_id', $chatId, 'notification');
+
+                    return redirect()->back()->with('success', "✓ Successfully detected Telegram Chat ID: {$chatId} ({$name} {$username})! Settings updated.");
+                }
+            }
+
+            return redirect()->back()->with('error', 'No messages found yet. Please open your Telegram app, search for your bot, and send /start first, then click Auto-Detect again.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to detect Chat ID: ' . $e->getMessage());
+        }
     }
 }
