@@ -16,6 +16,30 @@
             </a>
 
             @if(auth()->id() !== $customer->id)
+                <form action="{{ route('admin.customers.status', $customer->id) }}" 
+                      method="POST" 
+                      style="display:inline-block; margin:0;"
+                      onsubmit="return confirm('{{ $customer->isBanned() ? "Are you sure you want to UNBLOCK account " . addslashes($customer->name) . "? (តើអ្នកចង់ដោះលែង / Unblock គណនីនេះទេ?)" : "Are you sure you want to BLOCK account " . addslashes($customer->name) . "? This user will immediately be logged out and cannot access the store. (តើអ្នកប្រាកដថាចង់ Block គណនីនេះទេ?)" }}');">
+                    @csrf
+                    @if($customer->isBanned())
+                        <button type="submit" class="btn-primary" style="padding:8px 14px; font-size:0.85rem; background:#059669; border:none; display:inline-flex; align-items:center; gap:6px; cursor:pointer;" title="Unblock user account">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                            </svg>
+                            <span>Unblock / Activate</span>
+                        </button>
+                    @else
+                        <button type="submit" class="btn-outline" style="padding:8px 14px; font-size:0.85rem; color:#ea580c; border-color:rgba(234,88,12,0.4); display:inline-flex; align-items:center; gap:6px; cursor:pointer;" title="Block user from shopping & login">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
+                            </svg>
+                            <span>Block Account</span>
+                        </button>
+                    @endif
+                </form>
+
                 <form action="{{ route('admin.customers.destroy', $customer->id) }}" 
                       method="POST" 
                       style="display:inline-block; margin:0;"
@@ -58,9 +82,23 @@
 
         <div style="background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-lg); padding:20px;">
             <div style="font-size:0.8rem; text-transform:uppercase; color:var(--text-muted);">Account Status</div>
-            <div style="font-size:1.2rem; font-weight:800; color:#a5b4fc; margin-top:8px;">
+            <div style="font-size:1.1rem; font-weight:800; margin-top:8px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
                 <span class="badge-status badge-blue">{{ ucfirst($customer->role) }}</span>
+                @if($customer->isBanned())
+                    <span style="background:#fef2f2; color:#dc2626; border:1px solid #fca5a5; font-size:0.75rem; padding:3px 9px; border-radius:9999px; font-weight:850;">
+                        🚫 BLOCKED / BANNED
+                    </span>
+                @else
+                    <span style="background:#ecfdf5; color:#059669; border:1px solid #a7f3d0; font-size:0.75rem; padding:3px 9px; border-radius:9999px; font-weight:850;">
+                        ● ACTIVE
+                    </span>
+                @endif
             </div>
+            @if($customer->isBanned() && $customer->banned_at)
+                <div style="font-size:0.75rem; color:#f87171; margin-top:6px;">
+                    Blocked on {{ $customer->banned_at->format('M d, Y h:i A') }}
+                </div>
+            @endif
         </div>
     </div>
 

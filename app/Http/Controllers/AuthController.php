@@ -26,6 +26,16 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
+            if (Auth::user()->isBanned()) {
+                Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
+
+                return back()->withErrors([
+                    'email' => 'គណនីរបស់អ្នកត្រូវបានផ្អាក ឬ Block ដោយ Admin (Your account has been suspended/blocked). សូមទាក់ទងមកកាន់ផ្នែក Support។',
+                ]);
+            }
+
             $request->session()->regenerate();
             
             // If redirected from checkout or protected customer page, prioritize intended URL
@@ -117,6 +127,11 @@ class AuthController extends Controller
                     'avatar' => $googleUser->getAvatar(),
                 ]);
             } else {
+                if ($user->isBanned()) {
+                    session()->flash('error', 'គណនីរបស់អ្នកត្រូវបានផ្អាក ឬ Block ដោយ Admin (Your account has been suspended/blocked).');
+                    return redirect()->route('login');
+                }
+
                 if ($googleUser->getAvatar() && empty($user->avatar)) {
                     $user->update(['avatar' => $googleUser->getAvatar()]);
                 }

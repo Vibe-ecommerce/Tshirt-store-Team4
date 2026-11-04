@@ -16,6 +16,9 @@ chmod -R 775 storage bootstrap/cache
 # Create public storage symlink if missing
 php artisan storage:link --force || true
 
+# Auto-run pending database migrations
+php artisan migrate --force || true
+
 # Optimize cache for production
 if [ -n "$APP_KEY" ]; then
     php artisan config:cache || true

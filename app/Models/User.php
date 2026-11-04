@@ -10,12 +10,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'avatar', 'password', 'role', 'phone', 'address', 'city', 'postal_code', 'country'])]
+#[Fillable(['name', 'email', 'avatar', 'password', 'role', 'status', 'banned_at', 'ban_reason', 'phone', 'address', 'city', 'postal_code', 'country'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
+
+    public function isBanned(): bool
+    {
+        return $this->status === 'banned';
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status === 'active' || empty($this->status);
+    }
 
     public function getAvatarUrlAttribute(): ?string
     {

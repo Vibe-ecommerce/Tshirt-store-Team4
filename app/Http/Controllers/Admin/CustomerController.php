@@ -16,7 +16,9 @@ class CustomerController extends Controller
         $query = User::withCount('orders')
             ->withSum('orders', 'total');
 
-        if ($role && $role !== 'all') {
+        if ($role === 'banned') {
+            $query->where('status', 'banned');
+        } elseif ($role && $role !== 'all') {
             $query->where('role', $role);
         }
 
@@ -37,6 +39,7 @@ class CustomerController extends Controller
             'all' => User::count(),
             'user' => User::where('role', 'user')->count(),
             'admin' => User::where('role', 'admin')->count(),
+            'banned' => User::where('status', 'banned')->count(),
         ];
 
         return view('admin.customers.index', compact('customers', 'role', 'roleCounts'));
@@ -51,13 +54,28 @@ class CustomerController extends Controller
 
     public function toggleStatus(Request $request, $id)
     {
-        $customer = User::findOrFail($id);
-        // Toggle or set account status if role/status column
-        $newRole = $request->input('status', 'user');
-        $customer->role = $newRole;
-        $customer->save();
+        if (auth()->id() == $id) {
+            return redirect()->back()->with('error', 'You cannot ban or block your own currently logged-in account (មិនអាច Block គណនី Admin ផ្ទាល់ខ្លួនបានទេ)!');
+        }
 
-        return redirect()->back()->with('success', "Customer status updated successfully.");
+        $customer = User::findOrFail($id);
+
+        if ($customer->status === 'banned') {
+            $customer->status = 'active';
+            $customer->banned_at = null;
+            $customer->ban_reason = null;
+            $customer->save();
+
+            return redirect()->back()->with('success', "គណនី '{$customer->name}' ({$customer->email}) ត្រូវបានដោះលែង / Unblock ជោគជ័យ (Account unblocked successfully).");
+        } else {
+            $reason = $request->input('reason', 'Blocked by store administrator');
+            $customer->status = 'banned';
+            $customer->banned_at = now();
+            $customer->ban_reason = $reason;
+            $customer->save();
+
+            return redirect()->back()->with('success', "គណនី '{$customer->name}' ({$customer->email}) ត្រូវបាន Block / Ban ជោគជ័យ (Account blocked successfully).");
+        }
     }
 
     public function statement($id)

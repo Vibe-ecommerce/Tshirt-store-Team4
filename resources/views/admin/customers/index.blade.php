@@ -243,6 +243,73 @@
         color: #ffffff;
         transform: translateY(-1px);
     }
+
+    .btn-block-customer {
+        background: #fff7ed;
+        border: 1.5px solid #fed7aa;
+        color: #c2410c;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 0.82rem;
+        font-weight: 750;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+    }
+
+    .btn-block-customer:hover {
+        background: #ea580c;
+        border-color: #ea580c;
+        color: #ffffff;
+        transform: translateY(-1px);
+    }
+
+    .btn-unblock-customer {
+        background: #ecfdf5;
+        border: 1.5px solid #a7f3d0;
+        color: #047857;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 0.82rem;
+        font-weight: 750;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        cursor: pointer;
+        transition: all 0.15s ease;
+    }
+
+    .btn-unblock-customer:hover {
+        background: #059669;
+        border-color: #059669;
+        color: #ffffff;
+        transform: translateY(-1px);
+    }
+
+    .badge-banned {
+        background: #fef2f2;
+        color: #dc2626;
+        border: 1.5px solid #fca5a5;
+        font-weight: 850;
+        padding: 2px 8px;
+        border-radius: 9999px;
+        font-size: 0.68rem;
+        letter-spacing: 0.3px;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .badge-active-dot {
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        background: #16a34a;
+        border-radius: 50%;
+        margin-right: 4px;
+    }
 </style>
 @endsection
 
@@ -387,6 +454,15 @@
                 {{ $roleCounts['user'] ?? 0 }}
             </span>
         </a>
+
+        <a href="{{ route('admin.customers.index', array_merge(request()->except(['page', 'role']), ['role' => 'banned'])) }}" 
+           class="btn-outline" 
+           style="{{ $currentRole === 'banned' ? 'background:#dc2626; border-color:#dc2626; color:#ffffff; font-weight:750; box-shadow:0 2px 6px rgba(220,38,38,0.25);' : 'background:#ffffff; border:1.5px solid #fca5a5; color:#991b1b; font-weight:650;' }}">
+            🚫 Blocked / Banned (គណនីផ្អាក)
+            <span style="background:{{ $currentRole === 'banned' ? 'rgba(255,255,255,0.25)' : '#fee2e2' }}; color:{{ $currentRole === 'banned' ? '#ffffff' : '#b91c1c' }}; padding:2px 8px; border-radius:10px; font-size:0.75rem; margin-left:6px; font-weight:800; border:{{ $currentRole === 'banned' ? 'none' : '1px solid #fecdd3' }};">
+                {{ $roleCounts['banned'] ?? 0 }}
+            </span>
+        </a>
     </div>
 
     <!-- CUSTOMERS & ADMINS TABLE -->
@@ -443,17 +519,29 @@
                             </span>
                         </td>
 
-                        <!-- Account Role -->
+                        <!-- Account Role & Status -->
                         <td>
-                            @if ($customer->role === 'admin')
-                                <span class="badge-status" style="background:#f3e8ff; color:#7e22ce; border:1.5px solid #d8b4fe; font-weight:850; padding:4px 10px; border-radius:9999px; font-size:0.75rem;">
-                                    🛡️ Admin
-                                </span>
-                            @else
-                                <span class="badge-status badge-blue">
-                                    👤 Customer
-                                </span>
-                            @endif
+                            <div style="display:flex; flex-direction:column; gap:4px; align-items:flex-start;">
+                                @if ($customer->role === 'admin')
+                                    <span class="badge-status" style="background:#f3e8ff; color:#7e22ce; border:1.5px solid #d8b4fe; font-weight:850; padding:3px 9px; border-radius:9999px; font-size:0.75rem;">
+                                        🛡️ Admin
+                                    </span>
+                                @else
+                                    <span class="badge-status badge-blue" style="padding:3px 9px; font-size:0.75rem;">
+                                        👤 Customer
+                                    </span>
+                                @endif
+
+                                @if ($customer->isBanned())
+                                    <span class="badge-banned" title="This account is currently blocked / banned">
+                                        🚫 Blocked
+                                    </span>
+                                @else
+                                    <span style="font-size:0.7rem; color:#16a34a; font-weight:750; display:inline-flex; align-items:center;">
+                                        <span class="badge-active-dot"></span> Active
+                                    </span>
+                                @endif
+                            </div>
                         </td>
 
                         <!-- Orders Placed -->
@@ -487,6 +575,32 @@
                                 </a>
 
                                 @if(auth()->id() !== $customer->id)
+                                    <!-- Block / Unblock Toggle Action -->
+                                    <form action="{{ route('admin.customers.status', $customer->id) }}" 
+                                          method="POST" 
+                                          style="display:inline-block; margin:0;"
+                                          onsubmit="return confirm('{{ $customer->isBanned() ? "Are you sure you want to UNBLOCK / ACTIVATE account " . addslashes($customer->name) . "? (តើអ្នកចង់ដោះលែង / Unblock គណនីនេះទេ?)" : "Are you sure you want to BLOCK / BAN account " . addslashes($customer->name) . "? This user will immediately be logged out and cannot log in. (តើអ្នកប្រាកដថាចង់ Block គណនីនេះទេ?)" }}');">
+                                        @csrf
+                                        @if($customer->isBanned())
+                                            <button type="submit" class="btn-unblock-customer" title="Unblock user account">
+                                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                                    <path d="M7 11V7a5 5 0 0 1 9.9-1"></path>
+                                                </svg>
+                                                <span>Unblock</span>
+                                            </button>
+                                        @else
+                                            <button type="submit" class="btn-block-customer" title="Block user from login and checkout">
+                                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                                    <circle cx="12" cy="12" r="10"></circle>
+                                                    <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
+                                                </svg>
+                                                <span>Block</span>
+                                            </button>
+                                        @endif
+                                    </form>
+
+                                    <!-- Delete Account Action -->
                                     <form action="{{ route('admin.customers.destroy', $customer->id) }}" 
                                           method="POST" 
                                           style="display:inline-block; margin:0;"
@@ -511,7 +625,7 @@
                                     </form>
                                 @else
                                     <span style="font-size:0.75rem; color:#15803d; font-weight:800; padding:6px 12px; background:#dcfce7; border-radius:8px; border:1.5px solid #86efac;">
-                                        Active
+                                        Active (You)
                                     </span>
                                 @endif
                             </div>
