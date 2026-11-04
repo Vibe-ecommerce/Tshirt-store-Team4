@@ -33,3 +33,4 @@ services:
         value: xQDqbm9PnYjlg47t
       - key: MYSQL_ATTR_SSL_CA
         value: /etc/ssl/certs/ca-certificates.crt
+

@@ -192,7 +192,97 @@
         height: 100%;
         background: linear-gradient(90deg, #10b981 0%, #10b981 60%, #3b82f6 85%, #e2e8f0 100%);
         border-radius: 999px;
-        width: 65%;
+        transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Admin Live Controller Card */
+    .admin-live-control-card {
+        background: #0f172a;
+        border: 1.5px solid #334155;
+        border-radius: 16px;
+        padding: 14px 20px;
+        margin-bottom: 24px;
+        box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.25);
+        color: #f8fafc;
+        text-align: left;
+    }
+    .admin-control-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 12px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #1e293b;
+    }
+    .admin-live-badge {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        color: #ffffff;
+        font-size: 0.72rem;
+        font-weight: 850;
+        padding: 3px 9px;
+        border-radius: 6px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+    .admin-open-panel-link {
+        color: #38bdf8;
+        font-size: 0.82rem;
+        font-weight: 700;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        transition: color 0.15s;
+    }
+    .admin-open-panel-link:hover {
+        color: #7dd3fc;
+        text-decoration: underline;
+    }
+    .admin-btn-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    .admin-status-pill {
+        background: #1e293b;
+        border: 1px solid #334155;
+        color: #94a3b8;
+        padding: 7px 14px;
+        border-radius: 9999px;
+        font-size: 0.8rem;
+        font-weight: 750;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .admin-status-pill:hover {
+        background: #334155;
+        color: #ffffff;
+        border-color: #64748b;
+        transform: translateY(-1px);
+    }
+    .admin-status-pill.is-current {
+        background: #3b82f6;
+        border-color: #60a5fa;
+        color: #ffffff;
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    }
+    .admin-status-pill.is-current-delivered {
+        background: #10b981;
+        border-color: #34d399;
+        color: #ffffff;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+    }
+    .admin-status-pill.is-current-cancelled {
+        background: #ef4444;
+        border-color: #f87171;
+        color: #ffffff;
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
     }
 
     /* ==========================================================================
@@ -787,11 +877,112 @@
             We've received your order and our atelier workshop is carefully preparing your apparel. An official receipt & dispatch confirmation has been sent to <strong>{{ $order->customer_email }}</strong>.
         </p>
 
+        @php
+            $currentStatus = strtolower($order->status ?? 'processing');
+            $isPaid = in_array($currentStatus, ['processing', 'shipped', 'delivered']) || $order->payment_method === 'Credit Card';
+
+            // Step 1: Placed
+            $step1Class = 'is-done';
+            
+            // Step 2: Payment
+            if (in_array($currentStatus, ['cancelled', 'cancel', 'canceled'])) {
+                $step2Class = 'is-cancelled';
+                $step2Label = 'Order Cancelled';
+                $step2Sub = 'Not processed';
+            } elseif ($isPaid) {
+                $step2Class = 'is-done';
+                $step2Label = 'Payment Verified';
+                $step2Sub = $order->payment_method === 'QR Code' ? 'KHQR Paid' : ($order->payment_method === 'Cash on Delivery' ? 'Cash on Delivery' : $order->payment_method);
+            } else {
+                $step2Class = 'is-active';
+                $step2Label = 'Payment Pending';
+                $step2Sub = $order->payment_method === 'Cash on Delivery' ? 'Pay upon Delivery' : 'Awaiting Review';
+            }
+
+            // Step 3: Production
+            if (in_array($currentStatus, ['shipped', 'delivered'])) {
+                $step3Class = 'is-done';
+                $step3Label = 'Production Completed';
+                $step3Sub = 'Atelier Workshop';
+            } elseif ($currentStatus === 'processing') {
+                $step3Class = 'is-active';
+                $step3Label = 'In Production';
+                $step3Sub = 'Garment Atelier';
+            } else {
+                $step3Class = '';
+                $step3Label = 'In Production';
+                $step3Sub = 'Queued';
+            }
+
+            // Step 4: Out for Delivery / Delivered
+            if ($currentStatus === 'delivered') {
+                $step4Class = 'is-done';
+                $step4Label = 'Delivered';
+                $step4Sub = 'Received by Client';
+            } elseif ($currentStatus === 'shipped') {
+                $step4Class = 'is-active';
+                $step4Label = 'Out for Delivery';
+                $step4Sub = $order->tracking_code ?: ($order->delivery_method . ' Courier');
+            } else {
+                $step4Class = '';
+                $step4Label = 'Out for Delivery';
+                $step4Sub = $order->delivery_method . ' Courier';
+            }
+
+            // Track bar width
+            if (in_array($currentStatus, ['cancelled', 'cancel', 'canceled'])) {
+                $trackWidth = '0%';
+            } elseif ($currentStatus === 'pending') {
+                $trackWidth = $isPaid ? '33%' : '15%';
+            } elseif ($currentStatus === 'processing') {
+                $trackWidth = '62%';
+            } elseif ($currentStatus === 'shipped') {
+                $trackWidth = '86%';
+            } elseif ($currentStatus === 'delivered') {
+                $trackWidth = '100%';
+            } else {
+                $trackWidth = '62%';
+            }
+        @endphp
+
+        @if(Auth::check() && Auth::user()->role === 'admin')
+            <!-- Admin Live Status Controller Toolbar -->
+            <div class="admin-live-control-card">
+                <div class="admin-control-header">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span class="admin-live-badge">👑 ADMIN REAL-TIME CONTROLS</span>
+                        <span style="font-size:0.86rem; color:#f1f5f9; font-weight:700;">សាកល្បងដំណើរការ Order #{{ $order->order_number }} ផ្ទាល់ (Live Fulfillment):</span>
+                    </div>
+                    <a href="{{ route('admin.orders.show', $order->id) }}" target="_blank" class="admin-open-panel-link">
+                        <span>បើកក្នុង Admin Panel</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                    </a>
+                </div>
+                <div class="admin-btn-actions">
+                    <button type="button" onclick="setLiveStatus('Pending')" class="admin-status-pill {{ $currentStatus === 'pending' ? 'is-current' : '' }}" id="btnStatusPending">
+                        ⏳ 1. Pending (រង់ចាំ)
+                    </button>
+                    <button type="button" onclick="setLiveStatus('Processing')" class="admin-status-pill {{ $currentStatus === 'processing' ? 'is-current' : '' }}" id="btnStatusProcessing">
+                        ⚙️ 2. Processing (កំពុងកាត់ដេរ In Production)
+                    </button>
+                    <button type="button" onclick="setLiveStatus('Shipped')" class="admin-status-pill {{ $currentStatus === 'shipped' ? 'is-current' : '' }}" id="btnStatusShipped">
+                        🚚 3. Shipped (កំពុងដឹកជញ្ជូន Out for Delivery)
+                    </button>
+                    <button type="button" onclick="setLiveStatus('Delivered')" class="admin-status-pill {{ $currentStatus === 'delivered' ? 'is-current-delivered' : '' }}" id="btnStatusDelivered">
+                        ✅ 4. Delivered (ដឹកដល់អតិថិជនជោគជ័យ)
+                    </button>
+                    <button type="button" onclick="setLiveStatus('Cancelled')" class="admin-status-pill {{ in_array($currentStatus, ['cancelled', 'cancel']) ? 'is-current-cancelled' : '' }}" id="btnStatusCancelled" style="color:#ef4444;">
+                        ✕ Cancel
+                    </button>
+                </div>
+            </div>
+        @endif
+
         <!-- 3. Lifecycle Progress Stepper (Visual Order Tracker) -->
         <div class="lifecycle-stepper-card">
             <div class="stepper-grid">
                 <div class="stepper-track-bar">
-                    <div class="stepper-track-fill"></div>
+                    <div class="stepper-track-fill" id="stepperTrackFill" style="width: {{ $trackWidth }};"></div>
                 </div>
 
                 <!-- Step 1: Placed -->
@@ -806,26 +997,54 @@
                 </div>
 
                 <!-- Step 2: Payment Verified -->
-                <div class="stepper-item">
-                    <div class="step-icon-circle is-done">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
+                <div class="stepper-item" id="stepperItem2">
+                    <div class="step-icon-circle {{ $step2Class }}" id="stepperCircle2">
+                        @if($step2Class === 'is-done')
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        @elseif($step2Class === 'is-active')
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        @elseif($step2Class === 'is-cancelled')
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        @else
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+                                <line x1="2" y1="10" x2="22" y2="10"></line>
+                            </svg>
+                        @endif
                     </div>
-                    <div class="step-label">Payment Verified</div>
-                    <div class="step-sub">{{ $order->payment_method === 'QR Code' ? 'KHQR Paid' : $order->payment_method }}</div>
+                    <div class="step-label" id="stepperLabel2">{{ $step2Label }}</div>
+                    <div class="step-sub" id="stepperSub2">{{ $step2Sub }}</div>
                 </div>
 
                 <!-- Step 3: Workshop Production -->
-                <div class="stepper-item">
-                    <div class="step-icon-circle is-active">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <polyline points="12 6 12 12 16 14"></polyline>
-                        </svg>
+                <div class="stepper-item" id="stepperItem3">
+                    <div class="step-icon-circle {{ $step3Class }}" id="stepperCircle3">
+                        @if($step3Class === 'is-done')
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        @elseif($step3Class === 'is-active')
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        @else
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        @endif
                     </div>
-                    <div class="step-label">In Production</div>
-                    <div class="step-sub">Garment Atelier</div>
+                    <div class="step-label" id="stepperLabel3">{{ $step3Label }}</div>
+                    <div class="step-sub" id="stepperSub3">{{ $step3Sub }}</div>
                 </div>
 
                 <!-- Step 4: Dispatched -->

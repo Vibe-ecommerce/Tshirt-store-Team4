@@ -53,6 +53,24 @@ class OrderController extends Controller
         }
         $order->save();
 
+        // If delivered, automatically mark pending payment as Successful (e.g. COD)
+        if ($order->status === 'Delivered') {
+            $payment = \App\Models\Payment::where('order_id', $order->id)->latest()->first();
+            if ($payment && $payment->status === 'Pending') {
+                $payment->status = 'Successful';
+                $payment->save();
+            }
+        }
+
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'status' => $order->status,
+                'tracking_code' => $order->tracking_code,
+                'message' => "Order #{$order->order_number} status updated to {$order->status}."
+            ]);
+        }
+
         return redirect()->back()->with('success', "Order #{$order->order_number} status updated to {$order->status}.");
     }
 
