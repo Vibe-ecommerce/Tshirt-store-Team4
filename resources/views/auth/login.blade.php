@@ -686,17 +686,71 @@
             text-decoration: underline;
             cursor: pointer;
         }
-        .demo-otp-banner {
-            background: #ecfdf5;
-            border: 1px dashed #10b981;
-            color: #065f46;
-            padding: 9px 12px;
-            border-radius: 10px;
-            font-size: 0.8rem;
-            margin-bottom: 14px;
-            cursor: pointer;
-            display: none;
+        .gmail-notice-card {
+            background: #f0f7ff;
+            border: 1.5px solid #bfdbfe;
+            border-radius: 16px;
+            padding: 14px 16px;
+            margin-bottom: 18px;
             text-align: left;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.08);
+            animation: modalFadeIn 0.25s ease;
+        }
+        .gmail-notice-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .gmail-icon-wrap {
+            width: 38px;
+            height: 38px;
+            border-radius: 11px;
+            background: #ffffff;
+            border: 1px solid #fee2e2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(234, 67, 53, 0.15);
+        }
+        .gmail-notice-texts {
+            flex: 1;
+        }
+        .gmail-notice-title {
+            font-size: 0.94rem;
+            font-weight: 850;
+            color: #0f172a;
+            margin: 0 0 3px;
+            letter-spacing: -0.2px;
+            line-height: 1.3;
+        }
+        .gmail-notice-desc {
+            font-size: 0.80rem;
+            color: #475569;
+            margin: 0;
+            line-height: 1.45;
+        }
+        .gmail-notice-footer {
+            margin-top: 10px;
+            padding-top: 9px;
+            border-top: 1px dashed #bfdbfe;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+        .open-gmail-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.79rem;
+            font-weight: 750;
+            color: #2563eb;
+            text-decoration: none;
+            transition: all 0.15s;
+        }
+        .open-gmail-link:hover {
+            color: #1d4ed8;
+            transform: translateX(2px);
         }
 
         /* -------------------------------------------------------------
@@ -939,9 +993,28 @@
                     <a href="javascript:void(0)" onclick="goToForgotStep(1)" class="change-email-btn">Wrong email? Change</a>
                 </p>
 
-                <!-- Demo local OTP notice -->
-                <div id="demoOtpBanner" class="demo-otp-banner" onclick="applyDemoOtp()" title="Click to fill automatically">
-                    💡 <strong>Test OTP Code:</strong> <span id="demoOtpValue" style="letter-spacing:2px; font-weight:800;"></span> (ចុចទីនេះដើម្បីបំពេញស្វ័យប្រវត្តិ)
+                <!-- Professional Gmail Notice Banner -->
+                <div id="gmailNoticeBanner" class="gmail-notice-card" style="display: none;">
+                    <div class="gmail-notice-header">
+                        <div class="gmail-icon-wrap">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                                <rect x="2" y="4" width="20" height="16" rx="3" fill="#ea4335" fill-opacity="0.12" stroke="#ea4335" stroke-width="1.8"/>
+                                <path d="M22 6L12 13 2 6" stroke="#ea4335" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <div class="gmail-notice-texts">
+                            <h4 class="gmail-notice-title">សូមពិនិត្យមើលទៅកាន់ Gmail របស់អ្នក</h4>
+                            <p class="gmail-notice-desc">
+                                លេខកូដសម្ងាត់ OTP ៦ខ្ទង់ ត្រូវបានផ្ញើទៅកាន់ <strong id="noticeEmailSpan" style="color: #0f172a;"></strong>។ សូមពិនិត្យមើលក្នុងប្រអប់ <strong>Inbox</strong> ឬ <strong>Spam</strong>។
+                            </p>
+                        </div>
+                    </div>
+                    <div class="gmail-notice-footer">
+                        <a href="https://mail.google.com" target="_blank" rel="noopener noreferrer" class="open-gmail-link">
+                            <span>បើកមើលក្នុង Gmail (Open Gmail Inbox)</span>
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+                        </a>
+                    </div>
                 </div>
 
                 <div id="forgotAlertStep2" class="modal-alert error">
@@ -1192,21 +1265,10 @@
                 currentTargetEmail = email;
                 document.getElementById('displayTargetEmail').textContent = email;
 
-                const demoBanner = document.getElementById('demoOtpBanner');
-                if (data.mail_sent) {
-                    demoBanner.innerHTML = '📬 <strong>អ៊ីមែលបានផ្ញើរួចរាល់៖</strong> សូមបើកមើលលេខកូដ OTP ៦ខ្ទង់ នៅក្នុង Inbox Gmail របស់អ្នក (' + email + ')';
-                    demoBanner.style.background = '#eff6ff';
-                    demoBanner.style.borderColor = '#93c5fd';
-                    demoBanner.style.color = '#1e40af';
-                    demoBanner.onclick = null;
-                    demoBanner.style.display = 'block';
-                } else if (data.debug_otp) {
-                    currentDebugOtp = data.debug_otp;
-                    document.getElementById('demoOtpValue').textContent = data.debug_otp;
-                    demoBanner.style.display = 'block';
-                } else {
-                    demoBanner.style.display = 'none';
-                }
+                const gmailBanner = document.getElementById('gmailNoticeBanner');
+                const noticeEmailSpan = document.getElementById('noticeEmailSpan');
+                if (noticeEmailSpan) noticeEmailSpan.textContent = email;
+                if (gmailBanner) gmailBanner.style.display = 'block';
 
                 startCountdownTimer(60);
                 goToForgotStep(2);
@@ -1245,15 +1307,10 @@
                     return;
                 }
 
-                const demoBanner = document.getElementById('demoOtpBanner');
-                if (data.mail_sent) {
-                    demoBanner.innerHTML = '📬 <strong>អ៊ីមែលថ្មីបានផ្ញើរួចរាល់៖</strong> សូមបើកមើលលេខកូដ OTP ថ្មី នៅក្នុង Gmail Inbox របស់អ្នក';
-                    demoBanner.style.display = 'block';
-                } else if (data.debug_otp) {
-                    currentDebugOtp = data.debug_otp;
-                    document.getElementById('demoOtpValue').textContent = data.debug_otp;
-                    demoBanner.style.display = 'block';
-                }
+                const gmailBanner = document.getElementById('gmailNoticeBanner');
+                const noticeEmailSpan = document.getElementById('noticeEmailSpan');
+                if (noticeEmailSpan) noticeEmailSpan.textContent = currentTargetEmail;
+                if (gmailBanner) gmailBanner.style.display = 'block';
 
                 startCountdownTimer(60);
             } catch (err) {
