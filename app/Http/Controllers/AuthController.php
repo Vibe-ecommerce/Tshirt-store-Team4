@@ -202,7 +202,7 @@ class AuthController extends Controller
         $mailError = null;
 
         try {
-            Mail::to($email)->send(new ResetPasswordOtpMail($otp, $user->name));
+            Mail::mailer('smtp')->to($email)->send(new ResetPasswordOtpMail($otp, $user->name));
             $mailSent = true;
         } catch (\Throwable $e) {
             Log::error('OTP Email Sending Error: ' . $e->getMessage());
