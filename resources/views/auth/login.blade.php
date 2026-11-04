@@ -12,6 +12,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,300..700;1,300..700&family=Plus+Jakarta+Sans:ital,wght@0,300..800;1,400..700&display=swap" rel="stylesheet">
 
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,300..700;1,300..700&display=swap');
+
         :root {
             --bg-page: #f8fafc;
             --bg-card: #ffffff;
@@ -619,10 +621,11 @@
             gap: 10px;
             padding: 10px 14px;
             border-radius: 12px;
-            font-size: 0.82rem;
-            line-height: 1.45;
+            font-size: 0.84rem;
+            line-height: 1.5;
             margin-bottom: 16px;
             text-align: left;
+            font-family: 'Kantumruy Pro', 'Plus Jakarta Sans', sans-serif;
         }
         .modal-alert.error {
             background: #fef2f2;
@@ -718,45 +721,18 @@
         }
         .gmail-notice-title {
             font-family: 'Kantumruy Pro', 'Plus Jakarta Sans', sans-serif;
-            font-size: 0.95rem;
+            font-size: 0.96rem;
             font-weight: 700;
             color: #0f172a;
             margin: 0 0 5px;
             line-height: 1.4;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
-        .gmail-brand-badge {
-            background: #ea4335;
-            color: #ffffff;
-            font-size: 0.70rem;
-            font-weight: 800;
-            padding: 1px 7px;
-            border-radius: 6px;
-            letter-spacing: 0.3px;
-            display: inline-block;
         }
         .gmail-notice-desc {
             font-family: 'Kantumruy Pro', 'Plus Jakarta Sans', sans-serif;
-            font-size: 0.82rem;
+            font-size: 0.83rem;
             color: #475569;
             margin: 0;
             line-height: 1.6;
-        }
-        .email-pill-highlight {
-            display: inline-block;
-            background: #e0f2fe;
-            color: #0369a1;
-            font-weight: 700;
-            font-family: 'SF Mono', Consolas, monospace;
-            font-size: 0.80rem;
-            padding: 1px 7px;
-            border-radius: 6px;
-            border: 1px solid #bae6fd;
-            margin: 2px 2px;
-            vertical-align: middle;
         }
         .gmail-notice-footer {
             margin-top: 12px;
@@ -1044,19 +1020,16 @@
                             </svg>
                         </div>
                         <div class="gmail-notice-texts">
-                            <h4 class="gmail-notice-title">
-                                <span>សូមពិនិត្យមើលប្រអប់សំបុត្រ</span>
-                                <span class="gmail-brand-badge">Gmail</span>
-                            </h4>
+                            <h4 class="gmail-notice-title">សូមពិនិត្យមើលទៅកាន់ Gmail របស់អ្នក</h4>
                             <p class="gmail-notice-desc">
-                                លេខកូដសម្ងាត់ OTP ៦ខ្ទង់ ត្រូវបានផ្ញើទៅកាន់ <span class="email-pill-highlight" id="noticeEmailSpan"></span> រួចរាល់ហើយ។ សូមពិនិត្យមើលក្នុងប្រអប់ <strong>Inbox</strong> ឬ <strong>Spam / Junk</strong>។
+                                លេខកូដសម្ងាត់ OTP ៦ខ្ទង់ ត្រូវបានផ្ញើទៅកាន់អ៊ីមែលរបស់អ្នករួចរាល់ហើយ។ សូមចូលទៅពិនិត្យមើលក្នុងប្រអប់ <strong>Inbox</strong> ឬ <strong>Spam</strong>។
                             </p>
                         </div>
                     </div>
                     <div class="gmail-notice-footer">
                         <span class="gmail-notice-hint">⏱️ លេខកូដមានសុពលភាព ១៥ នាទី</span>
                         <a href="https://mail.google.com" target="_blank" rel="noopener noreferrer" class="open-gmail-link">
-                            <span>បើកមើល Gmail</span>
+                            <span>បើកមើលក្នុង Gmail</span>
                             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
                         </a>
                     </div>
@@ -1311,8 +1284,6 @@
                 document.getElementById('displayTargetEmail').textContent = email;
 
                 const gmailBanner = document.getElementById('gmailNoticeBanner');
-                const noticeEmailSpan = document.getElementById('noticeEmailSpan');
-                if (noticeEmailSpan) noticeEmailSpan.textContent = email;
                 if (gmailBanner) gmailBanner.style.display = 'block';
 
                 startCountdownTimer(60);
@@ -1353,8 +1324,6 @@
                 }
 
                 const gmailBanner = document.getElementById('gmailNoticeBanner');
-                const noticeEmailSpan = document.getElementById('noticeEmailSpan');
-                if (noticeEmailSpan) noticeEmailSpan.textContent = currentTargetEmail;
                 if (gmailBanner) gmailBanner.style.display = 'block';
 
                 startCountdownTimer(60);
