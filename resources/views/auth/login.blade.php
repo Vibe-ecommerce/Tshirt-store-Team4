@@ -847,6 +847,75 @@
             color: #059669;
         }
 
+        /* Password Strength Meter */
+        .password-strength-container {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 9px 12px;
+            margin-top: 8px;
+            text-align: left;
+            font-family: 'Kantumruy Pro', 'Plus Jakarta Sans', sans-serif;
+            transition: all 0.2s ease;
+        }
+        .strength-meter-bar {
+            display: flex;
+            gap: 5px;
+            height: 4px;
+            margin-bottom: 7px;
+        }
+        .strength-meter-segment {
+            flex: 1;
+            height: 100%;
+            border-radius: 9999px;
+            background: #e2e8f0;
+            transition: background-color 0.25s ease;
+        }
+        .strength-meter-segment.active-weak {
+            background: #ef4444;
+        }
+        .strength-meter-segment.active-medium {
+            background: #f59e0b;
+        }
+        .strength-meter-segment.active-strong {
+            background: #10b981;
+        }
+        .strength-status-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+            font-size: 0.74rem;
+        }
+        .strength-label {
+            color: #64748b;
+            font-weight: 600;
+        }
+        .strength-text {
+            font-weight: 750;
+            transition: color 0.2s ease;
+        }
+        .strength-rules-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        .rule-item {
+            font-size: 0.72rem;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.2s ease;
+        }
+        .rule-item.valid {
+            color: #059669;
+            font-weight: 600;
+        }
+
         /* -------------------------------------------------------------
            PAGE FOOTER (Compact)
         ------------------------------------------------------------- */
@@ -1146,10 +1215,28 @@
                             <span class="input-icon">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                             </span>
-                            <input type="password" id="resetNewPassword" class="form-input" placeholder="At least 8 characters" minlength="8" required>
+                            <input type="password" id="resetNewPassword" class="form-input" placeholder="At least 8 chars with letters & numbers" minlength="8" required oninput="checkResetPasswordStrength(this.value)">
                             <button type="button" class="password-toggle" onclick="toggleModalPassword('resetNewPassword', 'eyeIconNew')" title="Toggle visibility">
                                 <svg id="eyeIconNew" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                             </button>
+                        </div>
+
+                        <!-- Password Strength Meter -->
+                        <div class="password-strength-container" id="resetPasswordStrengthWrap" style="display: none;">
+                            <div class="strength-meter-bar">
+                                <div class="strength-meter-segment" id="rseg1"></div>
+                                <div class="strength-meter-segment" id="rseg2"></div>
+                                <div class="strength-meter-segment" id="rseg3"></div>
+                                <div class="strength-meter-segment" id="rseg4"></div>
+                            </div>
+                            <div class="strength-status-row">
+                                <span class="strength-label">កម្រិតសុវត្ថិភាព (Strength):</span>
+                                <span class="strength-text" id="rstrengthText" style="color: #ef4444;">ខ្សោយ (Weak)</span>
+                            </div>
+                            <ul class="strength-rules-list">
+                                <li id="rruleLength" class="rule-item"><span>○</span> យ៉ាងតិច ៨ តួអក្សរ (At least 8 characters)</li>
+                                <li id="rruleLettersNumbers" class="rule-item"><span>○</span> មានទាំងអក្សរ និងលេខ (Letters & numbers)</li>
+                            </ul>
                         </div>
                     </div>
 
@@ -1467,6 +1554,78 @@
             }
         }
 
+        function checkResetPasswordStrength(val) {
+            const wrap = document.getElementById('resetPasswordStrengthWrap');
+            if (!val) {
+                wrap.style.display = 'none';
+                return;
+            }
+            wrap.style.display = 'block';
+
+            const hasLength = val.length >= 8;
+            const hasLetter = /[a-zA-Z]/.test(val);
+            const hasNumber = /\d/.test(val);
+            const hasSpecial = /[^a-zA-Z0-9]/.test(val);
+
+            // Update rule items
+            const ruleLength = document.getElementById('rruleLength');
+            const ruleLN = document.getElementById('rruleLettersNumbers');
+
+            if (hasLength) {
+                ruleLength.className = 'rule-item valid';
+                ruleLength.innerHTML = '<span>✓</span> យ៉ាងតិច ៨ តួអក្សរ (At least 8 characters)';
+            } else {
+                ruleLength.className = 'rule-item';
+                ruleLength.innerHTML = '<span>○</span> យ៉ាងតិច ៨ តួអក្សរ (At least 8 characters)';
+            }
+
+            if (hasLetter && hasNumber) {
+                ruleLN.className = 'rule-item valid';
+                ruleLN.innerHTML = '<span>✓</span> មានទាំងអក្សរ និងលេខ (Letters & numbers)';
+            } else {
+                ruleLN.className = 'rule-item';
+                ruleLN.innerHTML = '<span>○</span> មានទាំងអក្សរ និងលេខ (Letters & numbers)';
+            }
+
+            let score = 0;
+            if (hasLength) score++;
+            if (hasLetter) score++;
+            if (hasNumber) score++;
+            if (hasSpecial || val.length >= 12) score++;
+
+            const seg1 = document.getElementById('rseg1');
+            const seg2 = document.getElementById('rseg2');
+            const seg3 = document.getElementById('rseg3');
+            const seg4 = document.getElementById('rseg4');
+            const statusText = document.getElementById('rstrengthText');
+
+            [seg1, seg2, seg3, seg4].forEach(s => s.className = 'strength-meter-segment');
+
+            if (score <= 1) {
+                seg1.className = 'strength-meter-segment active-weak';
+                statusText.textContent = 'ខ្សោយ (Weak)';
+                statusText.style.color = '#ef4444';
+            } else if (score === 2) {
+                seg1.className = 'strength-meter-segment active-weak';
+                seg2.className = 'strength-meter-segment active-weak';
+                statusText.textContent = 'មធ្យម (Medium)';
+                statusText.style.color = '#f59e0b';
+            } else if (score === 3) {
+                seg1.className = 'strength-meter-segment active-medium';
+                seg2.className = 'strength-meter-segment active-medium';
+                seg3.className = 'strength-meter-segment active-medium';
+                statusText.textContent = (hasLength && hasLetter && hasNumber) ? 'រឹងមាំ (Good)' : 'មធ្យម (Medium)';
+                statusText.style.color = (hasLength && hasLetter && hasNumber) ? '#10b981' : '#f59e0b';
+            } else {
+                seg1.className = 'strength-meter-segment active-strong';
+                seg2.className = 'strength-meter-segment active-strong';
+                seg3.className = 'strength-meter-segment active-strong';
+                seg4.className = 'strength-meter-segment active-strong';
+                statusText.textContent = 'រឹងមាំខ្លាំង (Strong & Secure) 🛡️';
+                statusText.style.color = '#10b981';
+            }
+        }
+
         async function handleVerifyAndReset(e) {
             e.preventDefault();
             const otp = document.getElementById('resetOtpCode').value.replace(/\s+/g, '').trim();
@@ -1481,8 +1640,12 @@
                 return;
             }
 
-            if (password.length < 8) {
-                showStep2Error('លេខសម្ងាត់ថ្មីត្រូវមានយ៉ាងតិច ៨ តួអក្សរ (Minimum 8 characters)');
+            const hasLength = password.length >= 8;
+            const hasLetter = /[a-zA-Z]/.test(password);
+            const hasNumber = /\d/.test(password);
+
+            if (!hasLength || !hasLetter || !hasNumber) {
+                showStep2Error('លេខសម្ងាត់ថ្មីត្រូវតែរឹងមាំ (Strong Password) យ៉ាងតិច ៨ តួអក្សរ និងរួមបញ្ចូលទាំងអក្សរ និងលេខ (Letters & Numbers)។');
                 return;
             }
 

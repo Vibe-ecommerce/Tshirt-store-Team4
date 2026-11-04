@@ -72,7 +72,16 @@ class AuthController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:8', 'confirmed', 'regex:/^(?=.*[a-zA-Z])(?=.*\d).+$/'],
+        ], [
+            'name.required' => 'សូមបញ្ចូលឈ្មោះពេញរបស់អ្នក។',
+            'email.required' => 'សូមបញ្ចូលអាសយដ្ឋានអ៊ីមែល។',
+            'email.email' => 'ទម្រង់អ៊ីមែលមិនត្រឹមត្រូវឡើយ។',
+            'email.unique' => 'អ៊ីមែលនេះមានគណនីរួចហើយ សូមចូលប្រើប្រាស់ (Sign In)។',
+            'password.required' => 'សូមបញ្ចូលលេខសម្ងាត់។',
+            'password.min' => 'លេខសម្ងាត់ត្រូវមានយ៉ាងតិច ៨ តួអក្សរ (At least 8 characters)។',
+            'password.confirmed' => 'ការបញ្ជាក់លេខសម្ងាត់មិនត្រូវគ្នាឡើយ។',
+            'password.regex' => 'លេខសម្ងាត់ត្រូវតែរឹងមាំ (Strong Password) ដោយរួមបញ្ចូលទាំងអក្សរ និងលេខ (Letters & Numbers)។',
         ]);
 
         $user = User::create([
@@ -232,13 +241,14 @@ class AuthController extends Controller
         $request->validate([
             'email' => ['required', 'email'],
             'otp' => ['required', 'string', 'size:6'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:8', 'confirmed', 'regex:/^(?=.*[a-zA-Z])(?=.*\d).+$/'],
         ], [
             'otp.required' => 'សូមបញ្ចូលលេខកូដ OTP ៦ខ្ទង់។',
             'otp.size' => 'លេខកូដ OTP ត្រូវតែមាន ៦ ខ្ទង់។',
             'password.required' => 'សូមបញ្ចូលលេខសម្ងាត់ថ្មី។',
-            'password.min' => 'លេខសម្ងាត់ថ្មីត្រូវមានយ៉ាងតិច ៨ តួអក្សរ។',
+            'password.min' => 'លេខសម្ងាត់ថ្មីត្រូវមានយ៉ាងតិច ៨ តួអក្សរ (At least 8 characters)។',
             'password.confirmed' => 'ការបញ្ជាក់លេខសម្ងាត់ថ្មីមិនត្រូវគ្នាឡើយ។',
+            'password.regex' => 'លេខសម្ងាត់ថ្មីត្រូវតែរឹងមាំ (Strong Password) ដោយរួមបញ្ចូលទាំងអក្សរ និងលេខ (Letters & Numbers)។',
         ]);
 
         $email = strtolower(trim($request->email));
