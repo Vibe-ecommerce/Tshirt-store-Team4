@@ -1193,7 +1193,14 @@
                 document.getElementById('displayTargetEmail').textContent = email;
 
                 const demoBanner = document.getElementById('demoOtpBanner');
-                if (data.debug_otp) {
+                if (data.mail_sent) {
+                    demoBanner.innerHTML = '📬 <strong>អ៊ីមែលបានផ្ញើរួចរាល់៖</strong> សូមបើកមើលលេខកូដ OTP ៦ខ្ទង់ នៅក្នុង Inbox Gmail របស់អ្នក (' + email + ')';
+                    demoBanner.style.background = '#eff6ff';
+                    demoBanner.style.borderColor = '#93c5fd';
+                    demoBanner.style.color = '#1e40af';
+                    demoBanner.onclick = null;
+                    demoBanner.style.display = 'block';
+                } else if (data.debug_otp) {
                     currentDebugOtp = data.debug_otp;
                     document.getElementById('demoOtpValue').textContent = data.debug_otp;
                     demoBanner.style.display = 'block';
@@ -1238,10 +1245,14 @@
                     return;
                 }
 
-                if (data.debug_otp) {
+                const demoBanner = document.getElementById('demoOtpBanner');
+                if (data.mail_sent) {
+                    demoBanner.innerHTML = '📬 <strong>អ៊ីមែលថ្មីបានផ្ញើរួចរាល់៖</strong> សូមបើកមើលលេខកូដ OTP ថ្មី នៅក្នុង Gmail Inbox របស់អ្នក';
+                    demoBanner.style.display = 'block';
+                } else if (data.debug_otp) {
                     currentDebugOtp = data.debug_otp;
                     document.getElementById('demoOtpValue').textContent = data.debug_otp;
-                    document.getElementById('demoOtpBanner').style.display = 'block';
+                    demoBanner.style.display = 'block';
                 }
 
                 startCountdownTimer(60);
@@ -1254,7 +1265,7 @@
 
         async function handleVerifyAndReset(e) {
             e.preventDefault();
-            const otp = document.getElementById('resetOtpCode').value.trim();
+            const otp = document.getElementById('resetOtpCode').value.replace(/\s+/g, '').trim();
             const password = document.getElementById('resetNewPassword').value;
             const passwordConfirm = document.getElementById('resetConfirmPassword').value;
             const verifyBtn = document.getElementById('verifyResetBtn');

@@ -221,6 +221,12 @@ class AuthController extends Controller
     // ផ្ទៀងផ្ទាត់លេខកូដ OTP និងផ្លាស់ប្តូរលេខសម្ងាត់ថ្មី (Verify OTP & Reset Password)
     public function verifyAndResetPassword(Request $request)
     {
+        if ($request->has('otp')) {
+            $request->merge([
+                'otp' => preg_replace('/\s+/', '', (string) $request->otp),
+            ]);
+        }
+
         $request->validate([
             'email' => ['required', 'email'],
             'otp' => ['required', 'string', 'size:6'],
