@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Sign In — T-Shirt Online</title>
 
     <!-- Google Fonts -->
@@ -612,6 +613,92 @@
             text-decoration: underline;
         }
 
+        .modal-alert {
+            display: none;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 0.82rem;
+            line-height: 1.45;
+            margin-bottom: 16px;
+            text-align: left;
+        }
+        .modal-alert.error {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+        }
+        .modal-alert.info {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1d4ed8;
+        }
+        .modal-alert svg {
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .otp-input-field {
+            letter-spacing: 12px;
+            font-family: 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace;
+            font-size: 1.6rem;
+            font-weight: 850;
+            text-align: center;
+            color: #1e3a8a;
+            background: #f8fafc;
+            border: 2px solid #cbd5e1;
+            border-radius: 14px;
+            padding: 12px 14px;
+            width: 100%;
+            transition: all 0.2s ease;
+        }
+        .otp-input-field:focus {
+            outline: none;
+            border-color: #2563eb;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.14);
+        }
+        .resend-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #64748b;
+            margin: 10px 0 16px;
+        }
+        .resend-btn {
+            background: none;
+            border: none;
+            color: #2563eb;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 0;
+            font-size: 0.8rem;
+        }
+        .resend-btn:disabled {
+            color: #94a3b8;
+            cursor: not-allowed;
+            text-decoration: none;
+        }
+        .change-email-btn {
+            color: #2563eb;
+            font-weight: 700;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .demo-otp-banner {
+            background: #ecfdf5;
+            border: 1px dashed #10b981;
+            color: #065f46;
+            padding: 9px 12px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            margin-bottom: 14px;
+            cursor: pointer;
+            display: none;
+            text-align: left;
+        }
+
         /* -------------------------------------------------------------
            PAGE FOOTER (Compact)
         ------------------------------------------------------------- */
@@ -787,7 +874,8 @@
                 </svg>
             </button>
 
-            <div id="forgotModalFormState">
+            <!-- STEP 1: ENTER EMAIL -->
+            <div id="forgotStep1">
                 <div class="modal-icon-badge">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
@@ -797,9 +885,14 @@
                 </div>
 
                 <h2 class="modal-title">Reset Your Password</h2>
-                <p class="modal-desc">Enter your registered email address and we'll send you instructions to recover your account.</p>
+                <p class="modal-desc">Enter your registered email address and we'll send a 6-digit OTP code to verify your identity.</p>
 
-                <form id="forgotPasswordForm" onsubmit="handleForgotPasswordSubmit(event)">
+                <div id="forgotAlertStep1" class="modal-alert error">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                    <span id="forgotAlertStep1Text"></span>
+                </div>
+
+                <form id="forgotFormStep1" onsubmit="handleSendOtp(event)">
                     <div class="form-group" style="text-align: left; margin-bottom: 16px;">
                         <label for="resetEmail" class="form-label">Email Address</label>
                         <div class="input-wrapper">
@@ -810,8 +903,8 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="submit-btn" id="sendResetBtn" style="margin-top: 0;">
-                        <span>Send Reset Instructions</span>
+                    <button type="submit" class="submit-btn" id="sendOtpBtn" style="margin-top: 0;">
+                        <span>Send 6-Digit OTP Code</span>
                         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                     </button>
                 </form>
@@ -832,26 +925,98 @@
                 </div>
             </div>
 
-            <div id="forgotModalSuccessState" style="display: none;">
+            <!-- STEP 2: ENTER OTP & NEW PASSWORD -->
+            <div id="forgotStep2" style="display: none;">
+                <div class="modal-icon-badge">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                </div>
+
+                <h2 class="modal-title">Verification Code</h2>
+                <p class="modal-desc" style="margin-bottom: 12px;">
+                    We sent a 6-digit code to <strong id="displayTargetEmail" style="color:#0f172a;"></strong>.<br>
+                    <a href="javascript:void(0)" onclick="goToForgotStep(1)" class="change-email-btn">Wrong email? Change</a>
+                </p>
+
+                <!-- Demo local OTP notice -->
+                <div id="demoOtpBanner" class="demo-otp-banner" onclick="applyDemoOtp()" title="Click to fill automatically">
+                    💡 <strong>Test OTP Code:</strong> <span id="demoOtpValue" style="letter-spacing:2px; font-weight:800;"></span> (ចុចទីនេះដើម្បីបំពេញស្វ័យប្រវត្តិ)
+                </div>
+
+                <div id="forgotAlertStep2" class="modal-alert error">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                    <span id="forgotAlertStep2Text"></span>
+                </div>
+
+                <form id="forgotFormStep2" onsubmit="handleVerifyAndReset(event)">
+                    <div class="form-group" style="text-align: left; margin-bottom: 14px;">
+                        <label for="resetOtpCode" class="form-label">6-Digit Code (លេខកូដសម្ងាត់)</label>
+                        <input type="text" id="resetOtpCode" class="otp-input-field" maxlength="6" pattern="[0-9]{6}" inputmode="numeric" placeholder="------" required autocomplete="one-time-code">
+                    </div>
+
+                    <div class="form-group" style="text-align: left; margin-bottom: 12px;">
+                        <label for="resetNewPassword" class="form-label">New Password (លេខសម្ងាត់ថ្មី)</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                            </span>
+                            <input type="password" id="resetNewPassword" class="form-input" placeholder="At least 8 characters" minlength="8" required>
+                            <button type="button" class="password-toggle" onclick="toggleModalPassword('resetNewPassword', 'eyeIconNew')" title="Toggle visibility">
+                                <svg id="eyeIconNew" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="text-align: left; margin-bottom: 12px;">
+                        <label for="resetConfirmPassword" class="form-label">Confirm New Password (បញ្ជាក់លេខសម្ងាត់)</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                            </span>
+                            <input type="password" id="resetConfirmPassword" class="form-input" placeholder="Re-type new password" minlength="8" required>
+                            <button type="button" class="password-toggle" onclick="toggleModalPassword('resetConfirmPassword', 'eyeIconConfirm')" title="Toggle visibility">
+                                <svg id="eyeIconConfirm" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="resend-box">
+                        <span>Didn't receive email?</span>
+                        <button type="button" id="resendOtpBtn" class="resend-btn" onclick="resendOtp()" disabled>
+                            Resend in <span id="countdownSec">60</span>s
+                        </button>
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="verifyResetBtn" style="margin-top: 0;">
+                        <span>Reset Password & Sign In</span>
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </button>
+                </form>
+            </div>
+
+            <!-- STEP 3: SUCCESS STATE -->
+            <div id="forgotStep3" style="display: none;">
                 <div class="modal-icon-badge success">
-                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="20 6 9 17 4 12"></polyline>
                     </svg>
                 </div>
 
-                <h2 class="modal-title">Instructions Sent!</h2>
+                <h2 class="modal-title">Password Reset Successful!</h2>
                 <p class="modal-desc">
-                    If an account exists for <strong id="successTargetEmail" style="color:#0f172a;"></strong>, you will receive an email with instructions to reset your password shortly.
+                    Your password has been securely updated. Logging into your account now...
                 </p>
 
                 <div class="auth-alert info" style="text-align: left; margin: 16px 0; font-size: 0.82rem;">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-                    <span>Please be sure to check your <strong>Spam</strong> or <strong>Junk</strong> folder if you do not see it in your Inbox.</span>
+                    <span>You will be automatically redirected to your storefront account in a moment.</span>
                 </div>
 
-                <button type="button" class="submit-btn" onclick="closeForgotPasswordModal()">
-                    <span>Back to Sign In</span>
-                </button>
+                <a href="{{ url('/') }}" class="submit-btn" id="continueBtn" style="text-decoration:none; display:flex;">
+                    <span>Continue Now</span>
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </a>
             </div>
         </div>
     </div>
@@ -869,13 +1034,36 @@
             }
         }
 
+        function toggleModalPassword(inputId, iconId) {
+            const pwdInput = document.getElementById(inputId);
+            const eyeIcon = document.getElementById(iconId);
+            if (!pwdInput || !eyeIcon) return;
+            if (pwdInput.type === 'password') {
+                pwdInput.type = 'text';
+                eyeIcon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
+            } else {
+                pwdInput.type = 'password';
+                eyeIcon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
+            }
+        }
+
+        let currentTargetEmail = '';
+        let currentDebugOtp = '';
+        let countdownInterval = null;
+
+        function getCsrfToken() {
+            const meta = document.querySelector('meta[name="csrf-token"]');
+            if (meta) return meta.getAttribute('content');
+            const input = document.querySelector('input[name="_token"]');
+            return input ? input.value : '';
+        }
+
         function openForgotPasswordModal() {
             const modal = document.getElementById('forgotPasswordModal');
             const resetEmailInput = document.getElementById('resetEmail');
             const currentLoginEmail = document.getElementById('email').value.trim();
 
-            document.getElementById('forgotModalFormState').style.display = 'block';
-            document.getElementById('forgotModalSuccessState').style.display = 'none';
+            goToForgotStep(1);
 
             if (currentLoginEmail) {
                 resetEmailInput.value = currentLoginEmail;
@@ -892,6 +1080,8 @@
         function closeForgotPasswordModal() {
             const modal = document.getElementById('forgotPasswordModal');
             modal.style.display = 'none';
+            document.body.style.overflow = '';
+            if (countdownInterval) clearInterval(countdownInterval);
         }
 
         function handleBackdropClick(event) {
@@ -906,24 +1096,225 @@
             }
         });
 
-        function handleForgotPasswordSubmit(e) {
-            e.preventDefault();
-            const email = document.getElementById('resetEmail').value.trim();
-            const btn = document.getElementById('sendResetBtn');
+        function goToForgotStep(step) {
+            document.getElementById('forgotStep1').style.display = (step === 1) ? 'block' : 'none';
+            document.getElementById('forgotStep2').style.display = (step === 2) ? 'block' : 'none';
+            document.getElementById('forgotStep3').style.display = (step === 3) ? 'block' : 'none';
+
+            const alert1 = document.getElementById('forgotAlertStep1');
+            const alert2 = document.getElementById('forgotAlertStep2');
+            if (alert1) alert1.style.display = 'none';
+            if (alert2) alert2.style.display = 'none';
+
+            if (step === 2) {
+                setTimeout(() => {
+                    const otpInput = document.getElementById('resetOtpCode');
+                    if (otpInput) otpInput.focus();
+                }, 100);
+            }
+        }
+
+        function showStep1Error(msg) {
+            const alertBox = document.getElementById('forgotAlertStep1');
+            const alertText = document.getElementById('forgotAlertStep1Text');
+            alertText.textContent = msg;
+            alertBox.style.display = 'flex';
+        }
+
+        function showStep2Error(msg) {
+            const alertBox = document.getElementById('forgotAlertStep2');
+            const alertText = document.getElementById('forgotAlertStep2Text');
+            alertText.textContent = msg;
+            alertBox.style.display = 'flex';
+        }
+
+        function applyDemoOtp() {
+            if (currentDebugOtp) {
+                const otpInput = document.getElementById('resetOtpCode');
+                otpInput.value = currentDebugOtp;
+                otpInput.focus();
+            }
+        }
+
+        function startCountdownTimer(seconds = 60) {
+            if (countdownInterval) clearInterval(countdownInterval);
+            const resendBtn = document.getElementById('resendOtpBtn');
+            let remaining = seconds;
+
+            resendBtn.disabled = true;
+            resendBtn.innerHTML = `Resend in <span id="countdownSec">${remaining}</span>s`;
+
+            countdownInterval = setInterval(() => {
+                remaining--;
+                if (remaining <= 0) {
+                    clearInterval(countdownInterval);
+                    resendBtn.disabled = false;
+                    resendBtn.innerHTML = 'Resend Code Now';
+                } else {
+                    const secSpan = document.getElementById('countdownSec');
+                    if (secSpan) secSpan.textContent = remaining;
+                }
+            }, 1000);
+        }
+
+        async function handleSendOtp(e) {
+            if (e) e.preventDefault();
+            const emailInput = document.getElementById('resetEmail');
+            const email = emailInput.value.trim();
+            const sendBtn = document.getElementById('sendOtpBtn');
 
             if (!email) return;
 
-            btn.disabled = true;
-            btn.innerHTML = '<span>Sending instructions...</span>';
+            document.getElementById('forgotAlertStep1').style.display = 'none';
+            sendBtn.disabled = true;
+            sendBtn.innerHTML = '<span>Sending code...</span>';
 
-            setTimeout(() => {
-                btn.disabled = false;
-                btn.innerHTML = '<span>Send Reset Instructions</span><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
+            try {
+                const response = await fetch("{{ route('password.sendOtp') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': getCsrfToken()
+                    },
+                    body: JSON.stringify({ email: email })
+                });
 
-                document.getElementById('successTargetEmail').textContent = email;
-                document.getElementById('forgotModalFormState').style.display = 'none';
-                document.getElementById('forgotModalSuccessState').style.display = 'block';
-            }, 500);
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    showStep1Error(data.message || 'Error sending reset code. Please check your email.');
+                    sendBtn.disabled = false;
+                    sendBtn.innerHTML = '<span>Send 6-Digit OTP Code</span><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
+                    return;
+                }
+
+                currentTargetEmail = email;
+                document.getElementById('displayTargetEmail').textContent = email;
+
+                const demoBanner = document.getElementById('demoOtpBanner');
+                if (data.debug_otp) {
+                    currentDebugOtp = data.debug_otp;
+                    document.getElementById('demoOtpValue').textContent = data.debug_otp;
+                    demoBanner.style.display = 'block';
+                } else {
+                    demoBanner.style.display = 'none';
+                }
+
+                startCountdownTimer(60);
+                goToForgotStep(2);
+
+                sendBtn.disabled = false;
+                sendBtn.innerHTML = '<span>Send 6-Digit OTP Code</span><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
+            } catch (err) {
+                showStep1Error('Network error or server unavailable. Please try again.');
+                sendBtn.disabled = false;
+                sendBtn.innerHTML = '<span>Send 6-Digit OTP Code</span><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
+            }
+        }
+
+        async function resendOtp() {
+            const resendBtn = document.getElementById('resendOtpBtn');
+            resendBtn.disabled = true;
+            resendBtn.innerHTML = 'Sending...';
+
+            try {
+                const response = await fetch("{{ route('password.sendOtp') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': getCsrfToken()
+                    },
+                    body: JSON.stringify({ email: currentTargetEmail })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    showStep2Error(data.message || 'Could not resend code.');
+                    resendBtn.disabled = false;
+                    resendBtn.innerHTML = 'Resend Code Now';
+                    return;
+                }
+
+                if (data.debug_otp) {
+                    currentDebugOtp = data.debug_otp;
+                    document.getElementById('demoOtpValue').textContent = data.debug_otp;
+                    document.getElementById('demoOtpBanner').style.display = 'block';
+                }
+
+                startCountdownTimer(60);
+            } catch (err) {
+                showStep2Error('Failed to resend. Please check connection.');
+                resendBtn.disabled = false;
+                resendBtn.innerHTML = 'Resend Code Now';
+            }
+        }
+
+        async function handleVerifyAndReset(e) {
+            e.preventDefault();
+            const otp = document.getElementById('resetOtpCode').value.trim();
+            const password = document.getElementById('resetNewPassword').value;
+            const passwordConfirm = document.getElementById('resetConfirmPassword').value;
+            const verifyBtn = document.getElementById('verifyResetBtn');
+
+            document.getElementById('forgotAlertStep2').style.display = 'none';
+
+            if (!otp || otp.length !== 6) {
+                showStep2Error('សូមបញ្ចូលលេខកូដ OTP ៦ខ្ទង់ (Please enter 6-digit code)');
+                return;
+            }
+
+            if (password.length < 8) {
+                showStep2Error('លេខសម្ងាត់ថ្មីត្រូវមានយ៉ាងតិច ៨ តួអក្សរ (Minimum 8 characters)');
+                return;
+            }
+
+            if (password !== passwordConfirm) {
+                showStep2Error('ការបញ្ជាក់លេខសម្ងាត់ថ្មីមិនត្រូវគ្នាទេ (Passwords do not match)');
+                return;
+            }
+
+            verifyBtn.disabled = true;
+            verifyBtn.innerHTML = '<span>Verifying & Updating...</span>';
+
+            try {
+                const response = await fetch("{{ route('password.verifyOtp') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': getCsrfToken()
+                    },
+                    body: JSON.stringify({
+                        email: currentTargetEmail,
+                        otp: otp,
+                        password: password,
+                        password_confirmation: passwordConfirm
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    showStep2Error(data.message || 'OTP verification failed. Please try again.');
+                    verifyBtn.disabled = false;
+                    verifyBtn.innerHTML = '<span>Reset Password & Sign In</span><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                    return;
+                }
+
+                goToForgotStep(3);
+
+                setTimeout(() => {
+                    window.location.href = data.redirect || "{{ url('/') }}";
+                }, 1400);
+
+            } catch (err) {
+                showStep2Error('Server error while updating password. Please try again.');
+                verifyBtn.disabled = false;
+                verifyBtn.innerHTML = '<span>Reset Password & Sign In</span><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+            }
         }
     </script>
 </body>

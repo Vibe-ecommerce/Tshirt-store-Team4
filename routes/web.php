@@ -68,6 +68,10 @@ Route::middleware('guest')->group(function () {
 
     Route::get('/auth/google', [AuthController::class, 'googleSignIn'])->name('auth.google');
     Route::get('/auth/google/callback', [AuthController::class, 'googleCallback'])->name('auth.google.callback');
+
+    // Forgot Password Real OTP Flow
+    Route::post('/forgot-password/send-otp', [AuthController::class, 'sendResetOtp'])->name('password.sendOtp');
+    Route::post('/forgot-password/verify-otp', [AuthController::class, 'verifyAndResetPassword'])->name('password.verifyOtp');
 });
 
 Route::match(['get', 'post'], '/logout', [AuthController::class, 'logout'])->name('logout');
