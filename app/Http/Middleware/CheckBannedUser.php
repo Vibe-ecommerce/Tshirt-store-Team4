@@ -27,3 +27,4 @@ class CheckBannedUser
         return $next($request);
     }
 }
+
