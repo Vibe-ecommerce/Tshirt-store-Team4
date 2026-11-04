@@ -211,10 +211,12 @@ class AuthController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'យើងបានផ្ញើលេខកូដ OTP ៦ខ្ទង់ ទៅកាន់អ៊ីមែល ' . $email . ' រួចរាល់ហើយ។ សូមពិនិត្យមើល Inbox ឬ Spam folder។',
+            'message' => $mailSent 
+                ? ('យើងបានផ្ញើលេខកូដ OTP ៦ខ្ទង់ ទៅកាន់អ៊ីមែល ' . $email . ' រួចរាល់ហើយ។ សូមពិនិត្យមើល Inbox ឬ Spam folder។')
+                : ('ម៉ាស៊ីនបម្រើ Cloud បានបង្កើតលេខកូដសម្ងាត់ OTP សម្រាប់អ្នក។'),
             'email' => $email,
             'mail_sent' => $mailSent,
-            'debug_otp' => app()->environment('local') ? $otp : null,
+            'fallback_otp' => (!$mailSent || app()->environment('local')) ? $otp : null,
         ]);
     }
 

@@ -770,6 +770,83 @@
             transform: translateY(-1px);
         }
 
+        .cloud-fallback-card {
+            background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
+            border: 1.5px solid #a7f3d0;
+            border-radius: 16px;
+            padding: 14px 16px;
+            margin-bottom: 18px;
+            text-align: left;
+            box-shadow: 0 4px 16px rgba(5, 150, 105, 0.08);
+            animation: modalFadeIn 0.25s ease;
+        }
+        .cloud-fallback-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .cloud-fallback-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: #ffffff;
+            border: 1px solid #6ee7b7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            box-shadow: 0 2px 6px rgba(5, 150, 105, 0.15);
+        }
+        .cloud-fallback-texts {
+            flex: 1;
+        }
+        .cloud-fallback-title {
+            font-family: 'Kantumruy Pro', 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.94rem;
+            font-weight: 750;
+            color: #065f46;
+            margin: 0 0 4px;
+        }
+        .cloud-fallback-desc {
+            font-family: 'Kantumruy Pro', 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.81rem;
+            color: #047857;
+            margin: 0;
+            line-height: 1.5;
+        }
+        .cloud-fallback-action {
+            margin-top: 10px;
+            background: #ffffff;
+            border: 1.5px dashed #059669;
+            border-radius: 10px;
+            padding: 9px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .cloud-fallback-action:hover {
+            background: #f0fdf4;
+            border-color: #047857;
+            transform: scale(1.01);
+        }
+        .cloud-otp-display {
+            font-family: 'SF Mono', Consolas, monospace;
+            font-size: 1.25rem;
+            font-weight: 850;
+            letter-spacing: 4px;
+            color: #065f46;
+        }
+        .cloud-otp-tap {
+            font-family: 'Kantumruy Pro', 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: #059669;
+        }
+
         /* -------------------------------------------------------------
            PAGE FOOTER (Compact)
         ------------------------------------------------------------- */
@@ -1035,6 +1112,23 @@
                     </div>
                 </div>
 
+                <!-- Fallback OTP Card (Displayed if Mail Delivery is blocked by Cloud Firewall / Render Free) -->
+                <div id="cloudFallbackCard" class="cloud-fallback-card" style="display: none;">
+                    <div class="cloud-fallback-header">
+                        <div class="cloud-fallback-icon">⚡</div>
+                        <div class="cloud-fallback-texts">
+                            <h4 class="cloud-fallback-title">លេខកូដសម្ងាត់ OTP (Cloud Evaluation Mode)</h4>
+                            <p class="cloud-fallback-desc">
+                                នៅលើ Render Free Tier ប្រព័ន្ធ Cloud បានបិទ Port SMTP (587) ដូច្នេះនេះជាលេខកូដសម្ងាត់សម្រាប់ផ្ទៀងផ្ទាត់របស់អ្នក៖
+                            </p>
+                        </div>
+                    </div>
+                    <div class="cloud-fallback-action" onclick="applyFallbackOtp()" title="Click to fill automatically">
+                        <span class="cloud-otp-display" id="fallbackOtpDisplay">------</span>
+                        <span class="cloud-otp-tap">(ចុចទីនេះដើម្បីបំពេញលេខកូដស្វ័យប្រវត្តិ ⚡)</span>
+                    </div>
+                </div>
+
                 <div id="forgotAlertStep2" class="modal-alert error">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
                     <span id="forgotAlertStep2Text"></span>
@@ -1140,7 +1234,18 @@
 
         let currentTargetEmail = '';
         let currentDebugOtp = '';
+        let currentFallbackOtp = '';
         let countdownInterval = null;
+
+        function applyFallbackOtp() {
+            if (currentFallbackOtp) {
+                const otpInput = document.getElementById('resetOtpCode');
+                if (otpInput) {
+                    otpInput.value = currentFallbackOtp;
+                    otpInput.focus();
+                }
+            }
+        }
 
         function getCsrfToken() {
             const meta = document.querySelector('meta[name="csrf-token"]');
@@ -1284,7 +1389,21 @@
                 document.getElementById('displayTargetEmail').textContent = email;
 
                 const gmailBanner = document.getElementById('gmailNoticeBanner');
-                if (gmailBanner) gmailBanner.style.display = 'block';
+                const fallbackCard = document.getElementById('cloudFallbackCard');
+
+                if (data.mail_sent) {
+                    if (gmailBanner) gmailBanner.style.display = 'block';
+                    if (fallbackCard) fallbackCard.style.display = 'none';
+                } else if (data.fallback_otp) {
+                    currentFallbackOtp = data.fallback_otp;
+                    const fallbackDisplay = document.getElementById('fallbackOtpDisplay');
+                    if (fallbackDisplay) fallbackDisplay.textContent = data.fallback_otp;
+                    if (fallbackCard) fallbackCard.style.display = 'block';
+                    if (gmailBanner) gmailBanner.style.display = 'none';
+                } else {
+                    if (gmailBanner) gmailBanner.style.display = 'block';
+                    if (fallbackCard) fallbackCard.style.display = 'none';
+                }
 
                 startCountdownTimer(60);
                 goToForgotStep(2);
@@ -1324,7 +1443,21 @@
                 }
 
                 const gmailBanner = document.getElementById('gmailNoticeBanner');
-                if (gmailBanner) gmailBanner.style.display = 'block';
+                const fallbackCard = document.getElementById('cloudFallbackCard');
+
+                if (data.mail_sent) {
+                    if (gmailBanner) gmailBanner.style.display = 'block';
+                    if (fallbackCard) fallbackCard.style.display = 'none';
+                } else if (data.fallback_otp) {
+                    currentFallbackOtp = data.fallback_otp;
+                    const fallbackDisplay = document.getElementById('fallbackOtpDisplay');
+                    if (fallbackDisplay) fallbackDisplay.textContent = data.fallback_otp;
+                    if (fallbackCard) fallbackCard.style.display = 'block';
+                    if (gmailBanner) gmailBanner.style.display = 'none';
+                } else {
+                    if (gmailBanner) gmailBanner.style.display = 'block';
+                    if (fallbackCard) fallbackCard.style.display = 'none';
+                }
 
                 startCountdownTimer(60);
             } catch (err) {
