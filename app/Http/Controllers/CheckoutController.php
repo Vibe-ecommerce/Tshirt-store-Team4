@@ -57,6 +57,14 @@ class CheckoutController extends Controller
             'instructions' => SiteSetting::get('qr_instructions', 'Scan this QR code using any banking app (ABA Mobile, Bakong, ACLEDA, Wing) to complete payment. Upload your payment slip / receipt screenshot below for prompt verification.'),
         ];
 
+        // Active promotions check (matches cart auto-hide logic)
+        $activePromotions = \App\Models\Promotion::where('status', 'Active')
+            ->where(function ($query) {
+                $query->whereNull('expires_at')->orWhere('expires_at', '>=', now());
+            })
+            ->get();
+        $hasActivePromotions = $activePromotions->isNotEmpty();
+
         // Estimated delivery dates calculation
         $estStandardStart = now()->addDays(2)->format('D, M d');
         $estStandardEnd = now()->addDays(4)->format('D, M d');
@@ -64,7 +72,7 @@ class CheckoutController extends Controller
 
         return view('frontend.checkout', compact(
             'cart', 'subtotal', 'discount', 'shipping', 'total', 'coupon', 'user', 'qrSettings',
-            'estStandardStart', 'estStandardEnd', 'estExpress'
+            'estStandardStart', 'estStandardEnd', 'estExpress', 'hasActivePromotions'
         ));
     }
 

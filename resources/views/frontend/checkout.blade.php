@@ -1417,7 +1417,8 @@
                             </div>
                         @endforeach
 
-                        <!-- Promo Code Box on Checkout (NEW FEATURE 1) -->
+                        <!-- Promo Code Box on Checkout (Auto-hides when promotions are disabled by Admin) -->
+                        @if (!empty($hasActivePromotions) || !empty($coupon))
                         <div class="summary-coupon-box">
                             @if ($discount == 0)
                                 <div class="coupon-inline-row">
@@ -1441,6 +1442,7 @@
                                 </div>
                             @endif
                         </div>
+                        @endif
 
                         <div style="margin-top:14px; padding-top:14px; border-top:1.5px solid #e2e8f0;">
                             <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:0.92rem;">
