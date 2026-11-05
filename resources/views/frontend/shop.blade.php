@@ -572,6 +572,173 @@
         border-radius: var(--radius-lg);
         border: 1px solid #e2e8f0;
     }
+
+    /* -------------------------------------------------------------
+       RESPONSIVE MOBILE STYLES (Shop)
+    ------------------------------------------------------------- */
+    @media (max-width: 900px) {
+        .shop-header {
+            padding: 38px 20px 24px;
+        }
+        .shop-container {
+            margin: 24px auto 60px;
+            padding: 0 16px;
+        }
+        .controls-bar {
+            padding: 16px 18px;
+            gap: 16px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .controls-bar {
+            flex-direction: column;
+            align-items: stretch;
+            padding: 14px;
+            border-radius: 16px;
+            gap: 12px;
+        }
+        .category-pills {
+            overflow-x: auto;
+            flex-wrap: nowrap;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 6px;
+            scrollbar-width: none;
+            margin: 0 -4px;
+            padding-left: 4px;
+            padding-right: 4px;
+        }
+        .category-pills::-webkit-scrollbar {
+            display: none;
+        }
+        .cat-pill {
+            flex-shrink: 0;
+            white-space: nowrap;
+            font-size: 0.82rem;
+            padding: 7px 14px;
+        }
+        .search-sort-group {
+            width: 100%;
+            display: flex;
+            gap: 8px;
+        }
+        .search-box-wrap {
+            flex: 1;
+            min-width: 0;
+        }
+        .search-input {
+            width: 100% !important;
+            min-width: 0;
+            font-size: 0.84rem;
+            padding: 9px 34px 9px 34px;
+        }
+        .search-input:focus {
+            width: 100% !important;
+        }
+        .sort-select {
+            font-size: 0.82rem;
+            padding: 9px 12px;
+            flex-shrink: 0;
+        }
+        .active-search-bar {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 12px 16px;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .shop-header {
+            padding: 28px 16px 20px;
+        }
+        .shop-title {
+            font-size: 1.85rem;
+        }
+        .shop-desc {
+            font-size: 0.92rem;
+        }
+        .products-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .product-card {
+            border-radius: 14px;
+        }
+        .product-body {
+            padding: 12px 10px 14px;
+        }
+        .product-cat-label {
+            font-size: 0.65rem;
+            margin-bottom: 3px;
+        }
+        .product-title {
+            font-size: 0.86rem;
+            line-height: 1.3;
+            height: 2.6em;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        .product-rating-row {
+            margin: 4px 0 6px;
+            font-size: 0.74rem;
+        }
+        .rating-reviews-count {
+            display: none;
+        }
+        .product-price {
+            font-size: 0.98rem;
+        }
+        .product-original-price {
+            font-size: 0.75rem;
+        }
+        .product-discount-pill {
+            font-size: 0.65rem;
+            padding: 1px 5px;
+        }
+        .card-action-dual {
+            flex-direction: column;
+            gap: 6px;
+        }
+        .btn-shop-cart-dual, .btn-shop-buynow-dual {
+            height: 36px;
+            font-size: 0.78rem;
+            padding: 0 8px;
+            gap: 4px;
+        }
+        .btn-shop-cart-dual svg, .btn-shop-buynow-dual svg {
+            width: 13px;
+            height: 13px;
+        }
+        .btn-shop-cart-full, .btn-stockout-full {
+            height: 36px;
+            font-size: 0.78rem;
+        }
+        .badge-tag {
+            font-size: 0.62rem;
+            padding: 3px 7px;
+            top: 8px;
+            left: 8px;
+        }
+        .badge-stockout, .badge-lowstock {
+            font-size: 0.62rem;
+            padding: 3px 7px;
+            bottom: 8px;
+            left: 8px;
+        }
+        .wishlist-float-btn {
+            width: 32px;
+            height: 32px;
+            top: 8px;
+            right: 8px;
+        }
+        .wishlist-float-btn svg {
+            width: 15px;
+            height: 15px;
+        }
+    }
 </style>
 @endsection
 

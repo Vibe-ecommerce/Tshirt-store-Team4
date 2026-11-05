@@ -1096,6 +1096,143 @@
         padding: 4px 10px;
         border-radius: 9999px;
     }
+
+    /* -------------------------------------------------------------
+       RESPONSIVE MOBILE STYLES (Home)
+    ------------------------------------------------------------- */
+    @media (max-width: 992px) {
+        .reviews-grid-modern {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .hero-headline {
+            font-size: clamp(2rem, 6vw, 2.8rem);
+        }
+        .hero-description {
+            font-size: 0.95rem;
+        }
+        .hero-actions {
+            flex-direction: column;
+            width: 100%;
+        }
+        .btn-hero-primary, .btn-hero-secondary {
+            width: 100%;
+            justify-content: center;
+        }
+        .hero-trust-bar {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .trust-divider {
+            display: none;
+        }
+        .section-header-modern {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        .reviews-grid-modern {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .hero-split {
+            padding: 24px 16px 36px;
+            gap: 28px;
+        }
+        .hero-badge-live {
+            font-size: 0.68rem;
+            padding: 4px 10px;
+        }
+        .showcase-card {
+            border-radius: 18px;
+            padding: 16px;
+        }
+        .bento-categories {
+            grid-auto-rows: 180px;
+            gap: 12px;
+        }
+        .section-wrap-premium {
+            padding: 36px 16px;
+        }
+        .section-title-modern {
+            font-size: 1.6rem;
+        }
+        .section-subtitle-modern {
+            font-size: 0.88rem;
+        }
+
+        /* 2-Column Mobile Product Grid */
+        .products-grid-modern {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .product-card-modern {
+            border-radius: 14px;
+        }
+        .product-body-modern {
+            padding: 12px 10px 14px;
+        }
+        .product-title-modern {
+            font-size: 0.86rem;
+            line-height: 1.3;
+            height: 2.6em;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        .product-desc-modern {
+            display: none;
+        }
+        .size-selector-row {
+            margin: 6px 0;
+            gap: 4px;
+        }
+        .size-label-tag {
+            font-size: 0.64rem;
+        }
+        .size-pill-btn {
+            font-size: 0.68rem;
+            padding: 2px 6px;
+            min-width: 22px;
+        }
+        .product-price-current {
+            font-size: 0.98rem;
+        }
+        .product-price-prev {
+            font-size: 0.74rem;
+        }
+        .product-khr-pill {
+            font-size: 0.68rem;
+        }
+        .product-top-tag, .product-top-rating, .product-discount-badge {
+            font-size: 0.62rem;
+            padding: 2px 7px;
+        }
+        .card-action-dual {
+            flex-direction: column;
+            gap: 6px;
+        }
+        .btn-quick-cart-modern, .btn-quick-buynow-modern {
+            height: 36px;
+            font-size: 0.78rem;
+            padding: 0 8px;
+            gap: 4px;
+        }
+        .btn-quick-cart-modern svg, .btn-quick-buynow-modern svg {
+            width: 13px;
+            height: 13px;
+        }
+        .btn-stockout-full {
+            height: 36px;
+            font-size: 0.78rem;
+        }
+    }
 </style>
 @endsection
 

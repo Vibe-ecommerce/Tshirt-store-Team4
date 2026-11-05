@@ -1266,9 +1266,305 @@
             border-bottom: 1px solid #e2e8f0;
         }
 
+        /* -------------------------------------------------------------
+           MOBILE NAVIGATION DRAWER & TOGGLE
+        ------------------------------------------------------------- */
+        .mobile-menu-toggle-btn {
+            display: none;
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            border: 1.5px solid #e2e8f0;
+            background: #ffffff;
+            color: #0f172a;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            flex-shrink: 0;
+            padding: 0;
+        }
+        .mobile-menu-toggle-btn:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .mobile-nav-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(4px);
+            z-index: 9998;
+            opacity: 0;
+            transition: opacity 0.28s ease;
+        }
+        .mobile-nav-backdrop.show {
+            display: block;
+            opacity: 1;
+        }
+
+        .mobile-nav-drawer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: min(330px, 86vw);
+            background: #ffffff;
+            z-index: 9999;
+            box-shadow: 6px 0 30px rgba(0, 0, 0, 0.15);
+            transform: translateX(-100%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .mobile-nav-drawer.open {
+            transform: translateX(0);
+        }
+
+        .mobile-nav-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .mobile-nav-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        .mobile-nav-close-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: #f1f5f9;
+            color: #475569;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .mobile-nav-close-btn:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        .mobile-nav-search {
+            padding: 12px 18px;
+            border-bottom: 1px solid #f1f5f9;
+            background: #f8fafc;
+        }
+        .mobile-search-form {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 9999px;
+            padding: 4px 12px;
+        }
+        .mobile-search-form input {
+            border: none;
+            outline: none;
+            font-size: 0.86rem;
+            width: 100%;
+            background: transparent;
+            color: #0f172a;
+            padding: 6px 0;
+        }
+        .mobile-search-form button {
+            background: #0f172a;
+            color: #ffffff;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 9999px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .mobile-nav-body {
+            padding: 18px 20px;
+            flex: 1;
+        }
+        .mobile-nav-section-title {
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+        .mobile-links-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .mobile-links-list a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 12px;
+            color: #334155;
+            font-size: 0.92rem;
+            font-weight: 650;
+            text-decoration: none;
+            transition: all 0.15s ease;
+        }
+        .mobile-links-list a:hover {
+            background: #f8fafc;
+            color: #0f172a;
+        }
+        .mobile-links-list a.active {
+            background: #eff6ff;
+            color: #1d4ed8;
+            font-weight: 750;
+        }
+        .mobile-links-list .m-badge {
+            margin-left: auto;
+            background: #ecfdf5;
+            color: #059669;
+            font-size: 0.68rem;
+            font-weight: 800;
+            padding: 2px 7px;
+            border-radius: 9999px;
+            border: 1px solid #a7f3d0;
+        }
+
+        .mobile-user-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 12px;
+            margin-top: 6px;
+        }
+        .mobile-user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .mobile-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #2563eb;
+            color: #ffffff;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.90rem;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .mobile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .mobile-user-info .m-name {
+            font-weight: 750;
+            color: #0f172a;
+            font-size: 0.88rem;
+            line-height: 1.2;
+        }
+        .mobile-user-info .m-email {
+            font-size: 0.72rem;
+            color: #64748b;
+        }
+        .mobile-user-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .mobile-user-actions .m-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 650;
+            color: #334155;
+            text-decoration: none;
+            transition: all 0.15s;
+        }
+        .mobile-user-actions .m-btn:hover {
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+        .mobile-user-actions .m-btn.admin {
+            background: #fef3c7;
+            border-color: #fde68a;
+            color: #92400e;
+        }
+        .mobile-user-actions .m-btn.logout {
+            width: 100%;
+            cursor: pointer;
+            color: #dc2626;
+            border-color: #fecaca;
+        }
+        .mobile-auth-prompt p {
+            font-size: 0.80rem;
+            color: #64748b;
+            margin-bottom: 10px;
+            line-height: 1.45;
+        }
+        .mobile-auth-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        .m-auth-btn {
+            flex: 1;
+            padding: 8px;
+            text-align: center;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 750;
+            text-decoration: none;
+        }
+        .m-auth-btn.primary {
+            background: #0f172a;
+            color: #ffffff;
+        }
+        .m-auth-btn.secondary {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            color: #0f172a;
+        }
+
         @media (max-width: 900px) {
+            .mobile-menu-toggle-btn {
+                display: inline-flex;
+            }
+            .nav-container {
+                gap: 10px;
+                padding: 0 16px;
+            }
+            .brand-text {
+                font-size: 1.15rem;
+            }
             .footer-container {
                 grid-template-columns: 1fr 1fr;
+                gap: 30px;
             }
             .nav-links {
                 display: none;
@@ -1277,26 +1573,50 @@
                 width: 130px;
             }
             .nav-search-input:focus {
-                width: 170px;
+                width: 160px;
             }
         }
 
         @media (max-width: 680px) {
-            .nav-search-wrap {
+            .nav-search-container {
                 display: none;
             }
+            .hide-on-mobile-sm {
+                display: none !important;
+            }
             .top-banner {
-                font-size: 0.74rem;
-                padding: 6px 12px;
+                font-size: 0.72rem;
+                padding: 6px 10px;
             }
             .user-name-text {
                 display: none;
+            }
+            .cart-pill-btn span:first-of-type {
+                display: none;
+            }
+            .cart-pill-btn {
+                padding: 6px 10px;
             }
         }
 
         @media (max-width: 580px) {
             .footer-container {
                 grid-template-columns: 1fr;
+                gap: 28px;
+            }
+            .footer {
+                padding: 40px 16px 24px;
+                margin-top: 40px;
+            }
+            .brand-icon-wrap {
+                width: 32px;
+                height: 32px;
+            }
+            .brand-text {
+                font-size: 1.05rem;
+            }
+            .brand-dot {
+                display: none;
             }
         }
 
@@ -1915,9 +2235,18 @@
                         </div>
                     </div>
                 @else
-                    <a href="{{ route('login') }}" class="btn-outline" style="border:none; padding:8px 14px;">Log in</a>
-                    <a href="{{ route('register') }}" class="btn-primary" style="padding:8px 18px;">Register</a>
+                    <a href="{{ route('login') }}" class="btn-outline hide-on-mobile-sm" style="border:none; padding:8px 14px;">Log in</a>
+                    <a href="{{ route('register') }}" class="btn-primary hide-on-mobile-sm" style="padding:8px 18px;">Register</a>
                 @endauth
+
+                <!-- Mobile Hamburger Toggle Button -->
+                <button type="button" class="mobile-menu-toggle-btn" id="mobileMenuToggleBtn" aria-label="Open mobile navigation menu" onclick="toggleMobileNavMenu()">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
             </div>
         </div>
     </header>
@@ -2045,6 +2374,132 @@
         </div>
     </footer>
     @endif
+
+    <!-- Mobile Navigation Drawer Backdrop -->
+    <div id="mobileNavBackdrop" class="mobile-nav-backdrop" onclick="closeMobileNavMenu()" aria-hidden="true"></div>
+
+    <!-- Mobile Navigation Drawer -->
+    <aside id="mobileNavDrawer" class="mobile-nav-drawer" aria-label="Mobile Navigation">
+        <div class="mobile-nav-header">
+            <a href="{{ route('home') }}" class="mobile-nav-brand">
+                <span class="brand-icon-wrap" style="width:32px; height:32px; border-radius:9px; background:linear-gradient(135deg, #2563eb, #1d4ed8); display:flex; align-items:center; justify-content:center; color:#fff;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/>
+                    </svg>
+                </span>
+                <span style="font-weight:800; font-size:1.1rem; color:#0f172a; letter-spacing:-0.3px;">T-Shirt Online</span>
+            </a>
+            <button type="button" class="mobile-nav-close-btn" onclick="closeMobileNavMenu()" aria-label="Close menu">✕</button>
+        </div>
+
+        <div class="mobile-nav-search">
+            <form action="{{ route('shop.index') }}" method="GET" class="mobile-search-form">
+                <input type="text" name="search" placeholder="Search designs, styles..." value="{{ request('search') }}">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+        <div class="mobile-nav-body">
+            <div class="mobile-nav-section-title">Navigation</div>
+            <ul class="mobile-links-list">
+                <li>
+                    <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('shop.index') }}" class="{{ request()->routeIs('shop.*') && !request('category') ? 'active' : '' }}">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                        <span>Shop Catalog</span>
+                        <span class="m-badge">New</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('shop.index', ['category' => 'Graphic T-Shirts']) }}">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
+                        <span>Graphic T-Shirts</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('shop.index', ['category' => 'Plain T-Shirts']) }}">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                        <span>Plain & Basic</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('shop.index', ['category' => 'Oversized T-Shirts']) }}">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line></svg>
+                        <span>Oversized Fit</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('cart.index') }}" class="{{ request()->routeIs('cart.*') ? 'active' : '' }}">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                        <span>Cart</span>
+                        <span class="m-badge cart-count-badge" style="background:#2563eb; color:#fff; border:none;">{{ $cartCount ?? 0 }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('order.track') }}" class="{{ request()->routeIs('order.track') ? 'active' : '' }}">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                        <span>Track Order</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="mobile-nav-section-title" style="margin-top: 20px;">Account</div>
+            @auth
+                <div class="mobile-user-card">
+                    <div class="mobile-user-info">
+                        <div class="mobile-avatar">
+                            @if(auth()->user()->avatar)
+                                <img src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="{{ auth()->user()->name }}">
+                            @else
+                                {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                            @endif
+                        </div>
+                        <div style="min-width:0; flex:1;">
+                            <div class="m-name" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ auth()->user()->name }}</div>
+                            <div class="m-email" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ auth()->user()->email }}</div>
+                        </div>
+                    </div>
+                    <div class="mobile-user-actions">
+                        @if(auth()->user()->is_admin)
+                            <a href="{{ route('admin.dashboard') }}" class="m-btn admin">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
+                                <span>Admin Dashboard</span>
+                            </a>
+                        @endif
+                        <a href="{{ route('account.index') }}" class="m-btn">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                            <span>My Profile</span>
+                        </a>
+                        <a href="{{ route('account.index', ['tab' => 'orders']) }}" class="m-btn">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line></svg>
+                            <span>Order History</span>
+                        </a>
+                        <a href="{{ route('account.index', ['tab' => 'wishlist']) }}" class="m-btn">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                            <span>Saved Wishlist</span>
+                        </a>
+                        <button type="button" class="m-btn logout" id="mobileNavLogoutBtn">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                            <span>Log Out</span>
+                        </button>
+                    </div>
+                </div>
+            @else
+                <div class="mobile-auth-prompt" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:14px; padding:14px; margin-top:6px;">
+                    <p>Log in to access your orders, track shipments, and manage your wishlist.</p>
+                    <div class="mobile-auth-buttons">
+                        <a href="{{ route('login') }}" class="m-auth-btn secondary">Log in</a>
+                        <a href="{{ route('register') }}" class="m-auth-btn primary">Register</a>
+                    </div>
+                </div>
+            @endauth
+        </div>
+    </aside>
 
     <!-- ============================================================
          COOL CONFIRMATION ALERT MODAL (Universal)
@@ -2371,7 +2826,50 @@
                     });
                 });
             }
+
+            // Dedicated listener for mobile drawer logout button
+            const mobileLogoutBtn = document.getElementById('mobileNavLogoutBtn');
+            if (mobileLogoutBtn && navLogoutForm) {
+                mobileLogoutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    closeMobileNavMenu();
+                    window.openCoolConfirm({
+                        title: 'Log Out of Your Account?',
+                        message: 'Are you sure you want to end your current session? You will need to log back in to access your profile, saved wishlist, and order history.',
+                        type: 'logout',
+                        icon: 'logout',
+                        badge: 'SESSION SECURITY',
+                        confirmText: 'Yes, Log Out',
+                        cancelText: 'Stay Logged In',
+                        onConfirm: function() {
+                            navLogoutForm.submit();
+                        }
+                    });
+                });
+            }
         });
+
+        /* Mobile Navigation Drawer Functions */
+        function toggleMobileNavMenu() {
+            const drawer = document.getElementById('mobileNavDrawer');
+            const backdrop = document.getElementById('mobileNavBackdrop');
+            if (!drawer) return;
+            if (drawer.classList.contains('open')) {
+                closeMobileNavMenu();
+            } else {
+                drawer.classList.add('open');
+                if (backdrop) backdrop.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeMobileNavMenu() {
+            const drawer = document.getElementById('mobileNavDrawer');
+            const backdrop = document.getElementById('mobileNavBackdrop');
+            if (drawer) drawer.classList.remove('open');
+            if (backdrop) backdrop.classList.remove('show');
+            document.body.style.overflow = '';
+        }
 
         /* User Profile Dropdown Interactivity */
         function toggleUserDropdown(e) {
@@ -2395,6 +2893,7 @@
 
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
+                closeMobileNavMenu();
                 const wrap = document.getElementById('userMenuWrap');
                 const caret = document.getElementById('userMenuCaret');
                 if (wrap && wrap.classList.contains('open')) {
