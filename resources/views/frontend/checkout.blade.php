@@ -1209,12 +1209,11 @@
                                         </div>
                                         <span class="tile-badge khqr">Instant • Cambodia</span>
                                     </div>
-                                    <div class="tile-desc">ABA Mobile, Bakong, Wing, ACLEDA & all banks</div>
+                                    <div class="tile-desc">Scan & Pay with Bakong KHQR mobile banking</div>
                                     <div class="tile-logos-row" style="margin-top:10px; padding-left:28px;">
                                         <span class="brand-mini-pill" style="color:#e11d48; border-color:#fecdd3; font-weight:900;">KHQR</span>
-                                        <span class="brand-mini-pill">ABA</span>
                                         <span class="brand-mini-pill">Bakong</span>
-                                        <span class="brand-mini-pill">Wing</span>
+                                        <span class="brand-mini-pill">Mobile Banking</span>
                                     </div>
                                 </div>
                             @endif
@@ -1334,7 +1333,7 @@
                                                 <div>
                                                     <div style="font-weight:750; color:#1e3a8a; margin-bottom:2px;">របៀបទូទាត់ប្រាក់ (Payment Guide)</div>
                                                     <div style="font-size:0.80rem; color:#1e40af;">
-                                                        ស្កេន KHQR ខាងឆ្វេង ឬចម្លងលេខគណនីខាងលើតាមកម្មវិធីធនាគារ (ABA, Bakong, ACLEDA...) រួចថតអេក្រង់វិក្កយបត្រមក Upload ខាងក្រោមដើម្បីផ្ទៀងផ្ទាត់ការទូទាត់។
+                                                        ស្កេន KHQR ឬផ្ទេរប្រាក់តាមកម្មវិធី Mobile Banking ទៅកាន់គណនីខាងលើ រួចភ្ជាប់រូបភាពវិក្កយបត្រខាងក្រោមដើម្បីផ្ទៀងផ្ទាត់ការបញ្ជាទិញ។
                                                     </div>
                                                 </div>
                                             </div>
@@ -1382,11 +1381,11 @@
                             </div>
                         @endif
 
-                        <!-- Detail Panel 2: Credit Card Mock Form -->
+                        <!-- Detail Panel 2: Credit Card Panel (Safe Gateway / No Raw Sensitive Inputs) -->
                         <div class="payment-detail-container" id="detailCard">
                             <div class="card-payment-box">
                                 <div class="card-accepted-strip">
-                                    <div style="font-weight:750; font-size:0.88rem; color:#0f172a;">Card Details</div>
+                                    <div style="font-weight:750; font-size:0.88rem; color:#0f172a;">Card Payment Gateway</div>
                                     <div style="display:flex; align-items:center; gap:6px;">
                                         <span class="brand-mini-pill" style="font-weight:900; color:#1e40af;">VISA</span>
                                         <span class="brand-mini-pill" style="font-weight:900; color:#ea580c;">MASTERCARD</span>
@@ -1395,33 +1394,21 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <label class="form-label">Cardholder Name</label>
-                                    <input type="text" class="form-control" placeholder="Name as printed on card" value="{{ $user->name ?? '' }}">
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="form-label">Card Number</label>
-                                    <div style="position:relative; display:flex; align-items:center;">
-                                        <input type="text" class="form-control" placeholder="4242 •••• •••• 4242" style="width:100%; padding-right:45px;" maxlength="19">
-                                        <span style="position:absolute; right:14px; font-size:1.1rem; color:#64748b;">💳</span>
+                                <div style="padding:16px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; margin-top:10px;">
+                                    <div style="display:flex; align-items:flex-start; gap:12px;">
+                                        <span style="font-size:1.4rem; line-height:1;">🛡️</span>
+                                        <div>
+                                            <div style="font-weight:800; font-size:0.92rem; color:#0f172a; margin-bottom:4px;">Secure Direct Authorization</div>
+                                            <p style="font-size:0.82rem; color:#475569; margin:0; line-height:1.5;">
+                                                Card orders are authorized via secure gateway simulation. You do not need to enter sensitive card numbers directly on this demo page. Simply click <strong>Place Order</strong> below to confirm.
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="form-grid-2" style="margin-bottom:0;">
-                                    <div class="form-group" style="margin-bottom:0;">
-                                        <label class="form-label">Expiration Date</label>
-                                        <input type="text" class="form-control" placeholder="MM / YY" maxlength="5">
-                                    </div>
-                                    <div class="form-group" style="margin-bottom:0;">
-                                        <label class="form-label">Security Code (CVC)</label>
-                                        <input type="text" class="form-control" placeholder="•••" maxlength="4">
-                                    </div>
-                                </div>
-
-                                <div style="display:flex; align-items:center; gap:8px; margin-top:14px; font-size:0.78rem; color:#64748b;">
+                                <div style="display:flex; align-items:center; gap:8px; margin-top:12px; font-size:0.78rem; color:#64748b;">
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                                    <span>Encrypted with 256-bit AES military-grade payment encryption.</span>
+                                    <span>Encrypted with standard SSL/TLS secure protocol.</span>
                                 </div>
                             </div>
                         </div>

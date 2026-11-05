@@ -2353,7 +2353,10 @@
         </div>
 
         <div class="footer-bottom">
-            <div>&copy; {{ date('Y') }} T-Shirt Online Apparel Co. All rights reserved.</div>
+            <div>
+                <div>&copy; {{ date('Y') }} Vibe T-Shirt Online. All rights reserved.</div>
+                <div style="font-size:0.75rem; color:#94a3b8; margin-top:4px;">Educational E-Commerce Showcase Project • Demonstration Only</div>
+            </div>
             <div style="display:flex; gap: 20px;">
                 <a href="{{ route('about') }}" style="color:var(--text-muted);">Privacy Policy</a>
                 <a href="{{ route('about') }}" style="color:var(--text-muted);">Terms of Service</a>
