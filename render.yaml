@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: tshirt-online
+    name: vibe-tshirt-online
     runtime: docker
     plan: free
     region: singapore
@@ -17,7 +17,7 @@ services:
       - key: APP_URL
         fromService:
           type: web
-          name: tshirt-online
+          name: vibe-tshirt-online
           property: host
       - key: DB_CONNECTION
         value: mysql
