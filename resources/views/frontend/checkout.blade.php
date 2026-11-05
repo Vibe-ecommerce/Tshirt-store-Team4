@@ -9,8 +9,8 @@
     ------------------------------------------------------------- */
     .checkout-wrap {
         max-width: 1240px;
-        margin: 32px auto 80px;
-        padding: 0 24px;
+        margin: 20px auto 60px;
+        padding: 0 20px;
     }
 
     /* Stepper Progress Bar */
@@ -18,16 +18,16 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 16px;
-        margin-bottom: 32px;
+        gap: 14px;
+        margin-bottom: 20px;
         flex-wrap: wrap;
     }
 
     .step-item {
         display: flex;
         align-items: center;
-        gap: 10px;
-        font-size: 0.88rem;
+        gap: 8px;
+        font-size: 0.84rem;
         font-weight: 750;
         color: #64748b;
         letter-spacing: 0.2px;
@@ -39,15 +39,15 @@
     }
 
     .step-number-circle {
-        width: 32px;
-        height: 32px;
+        width: 28px;
+        height: 28px;
         border-radius: 50%;
         background: #f1f5f9;
         border: 1.5px solid #cbd5e1;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 0.85rem;
+        font-size: 0.80rem;
         font-weight: 850;
         color: #475569;
         transition: all 0.2s;
@@ -57,11 +57,11 @@
         background: #0f172a;
         border-color: #0f172a;
         color: #ffffff;
-        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+        box-shadow: 0 3px 10px rgba(15, 23, 42, 0.18);
     }
 
     .step-divider {
-        width: 38px;
+        width: 30px;
         height: 2px;
         background: #e2e8f0;
         border-radius: 2px;
@@ -71,28 +71,28 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 28px;
+        margin-bottom: 18px;
         flex-wrap: wrap;
-        gap: 12px;
+        gap: 10px;
     }
 
     .checkout-page-title {
-        font-size: 2.1rem;
+        font-size: 1.8rem;
         font-weight: 900;
         color: #0f172a;
-        letter-spacing: -0.7px;
+        letter-spacing: -0.5px;
     }
 
     .checkout-secure-pill {
         display: inline-flex;
         align-items: center;
-        gap: 7px;
+        gap: 6px;
         background: #eff6ff;
         border: 1px solid #bfdbfe;
         color: #1d4ed8;
-        padding: 6px 14px;
+        padding: 5px 12px;
         border-radius: 9999px;
-        font-size: 0.76rem;
+        font-size: 0.74rem;
         font-weight: 800;
         letter-spacing: 0.4px;
         text-transform: uppercase;
@@ -102,13 +102,14 @@
     .checkout-grid {
         display: grid;
         grid-template-columns: 1.75fr 1.25fr;
-        gap: 32px;
+        gap: 24px;
         align-items: start;
     }
 
     @media (max-width: 980px) {
         .checkout-grid {
             grid-template-columns: 1fr;
+            gap: 20px;
         }
     }
 
@@ -116,10 +117,10 @@
     .card-panel {
         background: #ffffff;
         border: 1.5px solid #e2e8f0;
-        border-radius: 20px;
-        padding: 30px;
-        margin-bottom: 24px;
-        box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04);
+        border-radius: 16px;
+        padding: 20px 22px;
+        margin-bottom: 16px;
+        box-shadow: 0 2px 12px -2px rgba(15, 23, 42, 0.03);
         transition: box-shadow 0.2s ease, border-color 0.2s ease;
     }
 
@@ -127,29 +128,64 @@
         border-color: #cbd5e1;
     }
 
-    .panel-heading {
-        font-size: 1.18rem;
-        font-weight: 850;
-        margin-bottom: 22px;
+    .compact-panel-header {
         display: flex;
         align-items: center;
-        gap: 12px;
+        justify-content: space-between;
+        margin-bottom: 14px;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .user-quick-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 9999px;
+        padding: 4px 12px;
+        font-size: 0.78rem;
+        font-weight: 750;
+        color: #334155;
+    }
+
+    .user-chip-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #10b981;
+    }
+
+    .verified-tag {
+        color: #059669;
+        font-size: 0.72rem;
+        font-weight: 800;
+    }
+
+    .panel-heading {
+        font-size: 1.08rem;
+        font-weight: 850;
+        margin-bottom: 14px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
         color: #0f172a;
-        letter-spacing: -0.3px;
+        letter-spacing: -0.2px;
     }
 
     .step-badge-num {
-        width: 30px;
-        height: 30px;
+        width: 26px;
+        height: 26px;
         border-radius: 50%;
         background: #0f172a;
         color: #ffffff;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        font-size: 0.82rem;
+        font-size: 0.78rem;
         font-weight: 850;
-        box-shadow: 0 2px 6px rgba(15, 23, 42, 0.25);
+        box-shadow: 0 2px 5px rgba(15, 23, 42, 0.2);
         flex-shrink: 0;
     }
 
@@ -157,28 +193,29 @@
     .form-grid-2 {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 16px;
-        margin-bottom: 16px;
+        gap: 12px;
+        margin-bottom: 12px;
     }
 
     @media (max-width: 620px) {
         .form-grid-2 {
             grid-template-columns: 1fr;
+            gap: 10px;
         }
     }
 
     .form-group {
         display: flex;
         flex-direction: column;
-        gap: 6px;
-        margin-bottom: 16px;
+        gap: 5px;
+        margin-bottom: 12px;
     }
 
     .form-label {
-        font-size: 0.78rem;
+        font-size: 0.76rem;
         font-weight: 800;
         text-transform: uppercase;
-        letter-spacing: 0.4px;
+        letter-spacing: 0.35px;
         color: #334155;
     }
 
@@ -186,13 +223,65 @@
         background: #f8fafc !important;
         border: 1.5px solid #cbd5e1 !important;
         color: #0f172a !important;
-        padding: 11px 16px;
-        border-radius: 12px;
-        font-size: 0.92rem;
+        padding: 9px 14px;
+        border-radius: 10px;
+        font-size: 0.88rem;
         font-weight: 600;
         outline: none;
         transition: all 0.2s ease;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    }
+
+    .channels-compact-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 38px;
+    }
+
+    .channel-pill-compact {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #f8fafc;
+        border: 1.5px solid #cbd5e1;
+        border-radius: 8px;
+        padding: 6px 11px;
+        font-size: 0.78rem;
+        font-weight: 750;
+        color: #334155;
+        cursor: pointer;
+        user-select: none;
+        transition: all 0.15s;
+    }
+
+    .channel-pill-compact:hover {
+        background: #eff6ff;
+        border-color: #93c5fd;
+    }
+
+    .channel-pill-compact input[type="checkbox"] {
+        accent-color: #2563eb;
+        width: 14px;
+        height: 14px;
+        cursor: pointer;
+    }
+
+    .deliv-price-badge {
+        color: #059669;
+        font-weight: 850;
+        background: #ecfdf5;
+        border: 1px solid #a7f3d0;
+        padding: 2px 8px;
+        border-radius: 9999px;
+        font-size: 0.74rem;
+    }
+
+    .deliv-price-badge.express {
+        color: #854d0e;
+        background: #fef9c3;
+        border-color: #fef08a;
+    }
     }
 
     .form-control::placeholder {
@@ -972,89 +1061,68 @@
 
             <div class="checkout-grid">
                 <div>
-                    <!-- 1. Customer Information -->
+                    <!-- 1. Unified Delivery & Contact Details (Compact Layout) -->
                     <div class="card-panel">
-                        @if ($user)
-                            <div style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 12px 18px; margin-bottom: 22px; display: flex; align-items: center; justify-content: space-between; font-size: 0.88rem; flex-wrap:wrap; gap:10px;">
-                                <div style="display:flex; align-items:center; gap:12px;">
-                                    <span style="display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg, #2563eb, #1e40af); font-weight:800; color:#ffffff; font-size:0.88rem; box-shadow:0 2px 8px rgba(37,99,235,0.3);">
-                                        {{ strtoupper(substr($user->name, 0, 1)) }}
-                                    </span>
-                                    <div>
-                                        <div style="color:#0f172a; font-weight:750;">
-                                            Purchasing as <strong>{{ $user->name }}</strong>
-                                        </div>
-                                        <div style="font-size:0.78rem; color:#64748b; font-weight:600;">
-                                            {{ $user->email }}
-                                        </div>
-                                    </div>
+                        <div class="compact-panel-header">
+                            <h3 class="panel-heading" style="margin-bottom:0;">
+                                <span class="step-badge-num">1</span>
+                                <span>Delivery & Contact Details</span>
+                            </h3>
+                            @if ($user)
+                                <div class="user-quick-chip">
+                                    <span class="user-chip-dot"></span>
+                                    <span>Purchasing as <strong>{{ $user->name }}</strong></span>
+                                    <span class="verified-tag">✓ Verified</span>
                                 </div>
-                                <span style="color:#065f46; font-size:0.76rem; font-weight:800; background:#ecfdf5; padding:4px 12px; border-radius:9999px; border:1px solid #a7f3d0; display:inline-flex; align-items:center; gap:5px;">
-                                    ✓ Verified Customer
-                                </span>
-                            </div>
-                        @endif
+                            @endif
+                        </div>
 
-                        <h3 class="panel-heading">
-                            <span class="step-badge-num">1</span>
-                            Customer Information
-                        </h3>
-
+                        <!-- Row 1: Full Name & Phone Number -->
                         <div class="form-grid-2">
                             <div class="form-group">
                                 <label class="form-label">Full Name *</label>
                                 <input type="text" name="customer_name" class="form-control" value="{{ old('customer_name', $user->name ?? '') }}" required placeholder="e.g. John Doe">
                             </div>
                             <div class="form-group">
+                                <label class="form-label">Phone Number *</label>
+                                <input type="tel" name="customer_phone" class="form-control" value="{{ old('customer_phone', $user->phone ?? '') }}" required placeholder="e.g. +855 12 345 678">
+                            </div>
+                        </div>
+
+                        <!-- Row 2: Email Address & Updates Channels -->
+                        <div class="form-grid-2">
+                            <div class="form-group">
                                 <label class="form-label">Email Address *</label>
                                 <input type="email" name="customer_email" class="form-control" value="{{ old('customer_email', $user->email ?? '') }}" required placeholder="e.g. john@example.com">
                             </div>
-                        </div>
-
-                        <div class="form-group" style="margin-bottom: 0;">
-                            <label class="form-label">Phone Number *</label>
-                            <input type="tel" name="customer_phone" class="form-control" value="{{ old('customer_phone', $user->phone ?? '') }}" required placeholder="e.g. +855 12 345 678">
-                        </div>
-
-                        <!-- Preferred Contact / Notification Channels (NEW FEATURE) -->
-                        <div class="preferred-contact-card">
-                            <div style="font-size:0.76rem; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; color:#1e293b; display:flex; align-items:center; gap:6px;">
-                                <span>📱 Order Confirmation & Delivery Updates Channel</span>
-                            </div>
-                            <div class="channels-selector-row">
-                                <label class="channel-checkbox-pill">
-                                    <input type="checkbox" name="notify_telegram" value="1" checked>
-                                    <span style="display:inline-flex; align-items:center; gap:6px;">
-                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="#0284c7"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.52 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
-                                        <span>Send via Telegram</span>
-                                    </span>
-                                </label>
-                                <label class="channel-checkbox-pill">
-                                    <input type="checkbox" name="notify_whatsapp" value="1" checked>
-                                    <span style="display:inline-flex; align-items:center; gap:6px;">
-                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="#16a34a"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.23 8.23 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.63c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.77 2.7 4.29 3.79.6.26 1.07.41 1.44.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.22-.18-.47-.3z"/></svg>
-                                        <span>Send via WhatsApp</span>
-                                    </span>
-                                </label>
-                            </div>
-                            <div style="font-size:0.75rem; color:#64748b; margin-top:8px;">
-                                We will send instant order tracking, courier dispatch alerts, and payment verification to this number.
+                            <div class="form-group">
+                                <label class="form-label">Order Updates via</label>
+                                <div class="channels-compact-row">
+                                    <label class="channel-pill-compact" title="Receive delivery updates via Telegram">
+                                        <input type="checkbox" name="notify_telegram" value="1" checked>
+                                        <span style="display:inline-flex; align-items:center; gap:5px;">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="#0284c7"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.52 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
+                                            <span>Telegram</span>
+                                        </span>
+                                    </label>
+                                    <label class="channel-pill-compact" title="Receive delivery updates via WhatsApp">
+                                        <input type="checkbox" name="notify_whatsapp" value="1" checked>
+                                        <span style="display:inline-flex; align-items:center; gap:5px;">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="#16a34a"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.23 8.23 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.63c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.49-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.77 2.7 4.29 3.79.6.26 1.07.41 1.44.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.22-.18-.47-.3z"/></svg>
+                                            <span>WhatsApp</span>
+                                        </span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- 2. Shipping Address -->
-                    <div class="card-panel">
-                        <h3 class="panel-heading">
-                            <span class="step-badge-num">2</span>
-                            Shipping Address
-                        </h3>
-
+                        <!-- Row 3: Street Address -->
                         <div class="form-group">
                             <label class="form-label">Street Address *</label>
                             <input type="text" name="shipping_address" class="form-control" value="{{ old('shipping_address', $user->address ?? '') }}" required placeholder="Building, street address, apartment or landmark">
                         </div>
 
+                        <!-- Row 4: City & Postal Code -->
                         <div class="form-grid-2" style="margin-bottom: 0;">
                             <div class="form-group" style="margin-bottom: 0;">
                                 <label class="form-label">City *</label>
@@ -1067,10 +1135,10 @@
                         </div>
                     </div>
 
-                    <!-- 3. Delivery Method (WITH ESTIMATED DELIVERY DATES) -->
+                    <!-- 2. Delivery Method (WITH ESTIMATED DELIVERY DATES) -->
                     <div class="card-panel">
                         <h3 class="panel-heading">
-                            <span class="step-badge-num">3</span>
+                            <span class="step-badge-num">2</span>
                             Delivery Method
                         </h3>
 
@@ -1117,12 +1185,12 @@
                         </div>
                     </div>
 
-                    <!-- 4. Payment Method (REVAMPED LUXURY DESIGN) -->
+                    <!-- 3. Payment Method -->
                     <div class="card-panel" id="paymentSectionPanel">
-                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; flex-wrap:wrap; gap:10px;">
+                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
                             <h3 class="panel-heading" style="margin-bottom:0;">
-                                <span class="step-badge-num">4</span>
-                                Select Payment Method
+                                <span class="step-badge-num">3</span>
+                                <span>Select Payment Method</span>
                             </h3>
                             <span style="font-size:0.75rem; color:#64748b; font-weight:700;">
                                 🛡️ Fast & Verified Processing
@@ -1384,10 +1452,14 @@
                             </div>
                         </div>
 
-                        <!-- Order Notes -->
-                        <div class="form-group" style="margin-top:22px; margin-bottom: 0;">
-                            <label class="form-label">Order Notes / Delivery Instructions (Optional)</label>
-                            <textarea name="notes" class="form-control" rows="2" placeholder="e.g. Please leave with security guard, or call upon arrival."></textarea>
+                        <!-- Order Notes (Expandable Collapsible Toggle) -->
+                        <div style="margin-top:16px; padding-top:12px; border-top:1px dashed #e2e8f0;">
+                            <a href="javascript:void(0)" onclick="toggleOrderNotes()" id="toggleNotesLink" style="font-size:0.82rem; font-weight:750; color:#2563eb; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+                                <span>📝 + Add Delivery Notes / Instructions (Optional)</span>
+                            </a>
+                            <div id="orderNotesWrap" style="display:none; margin-top:8px;">
+                                <textarea name="notes" class="form-control" rows="2" placeholder="e.g. Please leave with security guard, or call upon arrival."></textarea>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1606,6 +1678,20 @@
         if (wrap) wrap.style.display = 'none';
         const label = document.getElementById('slipFileLabel');
         if (label) label.innerText = 'ចុចទីនេះដើម្បីភ្ជាប់រូបភាពវិក្កយបត្រ (Upload Slip)';
+    }
+
+    // Toggle Order Notes Expand/Collapse
+    function toggleOrderNotes() {
+        const wrap = document.getElementById('orderNotesWrap');
+        const link = document.getElementById('toggleNotesLink');
+        if (!wrap) return;
+        if (wrap.style.display === 'none') {
+            wrap.style.display = 'block';
+            if (link) link.innerHTML = '<span>📝 &minus; Hide Delivery Notes</span>';
+        } else {
+            wrap.style.display = 'none';
+            if (link) link.innerHTML = '<span>📝 + Add Delivery Notes / Instructions (Optional)</span>';
+        }
     }
 
     document.addEventListener('DOMContentLoaded', function() {
