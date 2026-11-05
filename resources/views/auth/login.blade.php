@@ -939,6 +939,22 @@
             gap: 5px;
         }
 
+        @media (max-width: 480px) {
+            .auth-main-container {
+                padding: 14px 14px;
+            }
+            .auth-card-panel {
+                padding: 22px 18px;
+                border-radius: 18px;
+            }
+            .auth-title {
+                font-size: 1.55rem;
+            }
+            .auth-nav-bar {
+                padding: 12px 16px;
+            }
+        }
+
         @media (max-height: 640px) {
             html, body {
                 height: auto;
