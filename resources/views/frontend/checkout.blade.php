@@ -587,38 +587,80 @@
     .bank-info-card {
         background: #f8fafc;
         border: 1.5px solid #e2e8f0;
-        border-radius: 14px;
-        padding: 16px 18px;
-        margin-bottom: 16px;
+        border-radius: 16px;
+        padding: 16px 20px;
+        margin-bottom: 14px;
+        transition: all 0.2s ease;
+    }
+
+    .bank-info-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+    }
+
+    .bank-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: #ecfdf5;
+        border: 1px solid #a7f3d0;
+        color: #065f46;
+        font-size: 0.72rem;
+        font-weight: 800;
+        padding: 3px 9px;
+        border-radius: 9999px;
+        letter-spacing: 0.3px;
     }
 
     .bank-acc-row {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
         flex-wrap: wrap;
     }
 
     .copy-acc-btn {
-        padding: 7px 16px;
-        font-size: 0.80rem;
+        padding: 8px 16px;
+        font-size: 0.82rem;
         font-weight: 750;
         background: #ffffff;
         border: 1.5px solid #cbd5e1;
-        border-radius: 8px;
+        border-radius: 10px;
         color: #0f172a;
         cursor: pointer;
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        transition: all 0.2s;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
     }
 
     .copy-acc-btn:hover {
-        background: #f1f5f9;
-        border-color: #94a3b8;
+        background: #0f172a;
+        border-color: #0f172a;
+        color: #ffffff;
+        transform: translateY(-1px);
+    }
+
+    .khqr-notice-card {
+        font-size: 0.84rem;
+        color: #1e40af;
+        line-height: 1.55;
+        margin-bottom: 16px;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-left: 4px solid #2563eb;
+        padding: 12px 16px;
+        border-radius: 12px;
+        font-weight: 600;
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
     }
 
     /* Slip Upload Zone */
@@ -626,27 +668,92 @@
         display: block;
         border: 2px dashed #93c5fd;
         background: #f8fafc;
-        border-radius: 14px;
-        padding: 18px;
+        border-radius: 16px;
+        padding: 22px 18px;
         text-align: center;
         cursor: pointer;
-        transition: all 0.22s;
+        transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+        position: relative;
     }
 
-    .slip-upload-dropzone:hover {
+    .slip-upload-dropzone:hover, .slip-upload-dropzone.dragover {
         border-color: #2563eb;
         background: #eff6ff;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.08);
+    }
+
+    .slip-upload-icon-circle {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 8px;
+        transition: transform 0.2s ease;
+    }
+
+    .slip-upload-dropzone:hover .slip-upload-icon-circle {
+        transform: scale(1.08);
+        background: #2563eb;
+        color: #ffffff;
     }
 
     .slip-thumb-preview {
         display: none;
         align-items: center;
-        gap: 12px;
-        background: #ecfdf5;
+        justify-content: space-between;
+        gap: 14px;
+        background: #ffffff;
         border: 1.5px solid #a7f3d0;
+        border-radius: 14px;
+        padding: 12px 16px;
+        margin-top: 12px;
+        box-shadow: 0 4px 16px rgba(16, 185, 129, 0.08);
+    }
+
+    .slip-preview-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+        flex: 1;
+    }
+
+    .slip-preview-img {
+        width: 46px;
+        height: 46px;
         border-radius: 10px;
-        padding: 10px 14px;
-        margin-top: 10px;
+        object-fit: cover;
+        border: 1.5px solid #10b981;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+        flex-shrink: 0;
+    }
+
+    .slip-btn-remove {
+        background: #fee2e2;
+        border: 1px solid #fca5a5;
+        color: #b91c1c;
+        border-radius: 8px;
+        font-size: 0.78rem;
+        font-weight: 750;
+        padding: 6px 12px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        transition: all 0.2s;
+        flex-shrink: 0;
+    }
+
+    .slip-btn-remove:hover {
+        background: #ef4444;
+        color: #ffffff;
+        border-color: #ef4444;
     }
 
     /* 2. Credit Card Mock Form */
@@ -1131,49 +1238,74 @@
                                         <!-- Right: Account Details & Upload Slip -->
                                         <div>
                                             <div class="bank-info-card">
-                                                <div style="font-size:0.72rem; text-transform:uppercase; color:#64748b; font-weight:800; letter-spacing:0.5px;">Account Name</div>
-                                                <div style="font-size:1.05rem; font-weight:850; color:#0f172a; margin-bottom:12px;">{{ $qrSettings['account_name'] }}</div>
+                                                <div class="bank-info-header">
+                                                    <div>
+                                                        <div style="font-size:0.72rem; text-transform:uppercase; color:#64748b; font-weight:800; letter-spacing:0.5px;">Account Name</div>
+                                                        <div style="font-size:1.05rem; font-weight:850; color:#0f172a; margin-top:2px;">{{ $qrSettings['account_name'] }}</div>
+                                                    </div>
+                                                    <span class="bank-badge">
+                                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+                                                        <span>Official KHQR</span>
+                                                    </span>
+                                                </div>
 
                                                 <div class="bank-acc-row">
                                                     <div>
                                                         <div style="font-size:0.72rem; text-transform:uppercase; color:#64748b; font-weight:800; letter-spacing:0.5px;">Account Number</div>
-                                                        <div style="font-size:1.3rem; font-weight:900; color:#059669; letter-spacing:0.8px;" id="qrAccNum">{{ $qrSettings['account_number'] }}</div>
+                                                        <div style="font-size:1.35rem; font-weight:900; color:#059669; letter-spacing:0.8px; margin-top:2px;" id="qrAccNum">{{ $qrSettings['account_number'] }}</div>
                                                     </div>
                                                     <button type="button" onclick="copyAccountNumber()" class="copy-acc-btn" id="copyBtn">
                                                         <span>📋</span>
-                                                        <span>Copy Number</span>
+                                                        <span id="copyBtnText">Copy Number</span>
                                                     </button>
                                                 </div>
                                             </div>
 
-                                            <div style="font-size:0.84rem; color:#1e40af; line-height:1.5; margin-bottom:16px; background:#eff6ff; border:1px solid #bfdbfe; border-left:4px solid #3b82f6; padding:12px 16px; border-radius:10px; font-weight:600;">
-                                                💡 {{ $qrSettings['instructions'] }}
-                                            </div>
-
-                                            <!-- Receipt Slip Upload & Ref -->
-                                            <div class="form-grid-2" style="margin-bottom:0;">
+                                            <div class="khqr-notice-card">
+                                                <span style="font-size:1.15rem; line-height:1;">💡</span>
                                                 <div>
-                                                    <label class="form-label">Payment Receipt / Slip Screenshot</label>
-                                                    <label for="slipFileInput" class="slip-upload-dropzone">
-                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2.2" style="display:block; margin:0 auto 6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-                                                        <span id="slipFileLabel" style="font-size:0.84rem; font-weight:750; color:#2563eb; display:block;">Click to upload receipt</span>
-                                                        <span style="font-size:0.72rem; color:#94a3b8; display:block; margin-top:2px;">PNG, JPG up to 6MB</span>
-                                                    </label>
-                                                    <input type="file" id="slipFileInput" name="payment_slip" accept="image/*" style="display:none;" onchange="handleSlipSelected(this)">
-
-                                                    <div id="slipThumbnailWrap" class="slip-thumb-preview">
-                                                        <img id="slipThumbnail" src="" style="width:38px; height:38px; border-radius:6px; object-fit:cover; border:1px solid #6ee7b7;">
-                                                        <div style="flex:1; overflow:hidden;">
-                                                            <span style="font-size:0.78rem; color:#065f46; font-weight:800; display:block;">✓ Receipt Attached</span>
-                                                            <span id="slipFileNameText" style="font-size:0.72rem; color:#1e293b; font-weight:600; white-space:nowrap; text-overflow:ellipsis; overflow:hidden; display:block;"></span>
-                                                        </div>
+                                                    <div style="font-weight:750; color:#1e3a8a; margin-bottom:2px;">របៀបទូទាត់ប្រាក់ (Payment Guide)</div>
+                                                    <div style="font-size:0.80rem; color:#1e40af;">
+                                                        ស្កេន KHQR ខាងឆ្វេង ឬចម្លងលេខគណនីខាងលើតាមកម្មវិធីធនាគារ (ABA, Bakong, ACLEDA...) រួចថតអេក្រង់វិក្កយបត្រមក Upload ខាងក្រោមដើម្បីផ្ទៀងផ្ទាត់ការទូទាត់។
                                                     </div>
                                                 </div>
+                                            </div>
 
-                                                <div>
-                                                    <label class="form-label">Transaction / Ref # (Optional)</label>
-                                                    <input type="text" name="payment_reference" placeholder="e.g. 84920491 or ABA Ref" class="form-control" style="height:44px;">
-                                                    <span style="font-size:0.72rem; color:#64748b; margin-top:4px; display:block;">Found in your banking app receipt.</span>
+                                            <!-- Full-Width Payment Receipt Slip Upload (Transaction Ref removed) -->
+                                            <div style="margin-top:6px;">
+                                                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+                                                    <label class="form-label" style="margin-bottom:0; font-size:0.88rem;">រូបភាពវិក្កយបត្រផ្ទេរប្រាក់ / Payment Receipt Slip</label>
+                                                    <span style="font-size:0.72rem; color:#64748b; font-weight:700;">(PNG, JPG, WEBP • Max 6MB)</span>
+                                                </div>
+
+                                                <label for="slipFileInput" class="slip-upload-dropzone" id="slipDropzone">
+                                                    <div class="slip-upload-icon-circle">
+                                                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                                            <polyline points="17 8 12 3 7 8"></polyline>
+                                                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                                                        </svg>
+                                                    </div>
+                                                    <span id="slipFileLabel" style="font-size:0.92rem; font-weight:750; color:#2563eb; display:block;">ចុចទីនេះដើម្បីភ្ជាប់រូបភាពវិក្កយបត្រ (Upload Slip)</span>
+                                                    <span style="font-size:0.76rem; color:#64748b; display:block; margin-top:4px;">Drag & drop receipt screenshot here or click to browse</span>
+                                                </label>
+                                                <input type="file" id="slipFileInput" name="payment_slip" accept="image/*" style="display:none;" onchange="handleSlipSelected(this)">
+
+                                                <div id="slipThumbnailWrap" class="slip-thumb-preview">
+                                                    <div class="slip-preview-left">
+                                                        <img id="slipThumbnail" src="" class="slip-preview-img" alt="Receipt preview">
+                                                        <div style="overflow:hidden;">
+                                                            <span style="font-size:0.80rem; color:#065f46; font-weight:800; display:flex; align-items:center; gap:4px;">
+                                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                                                <span>វិក្កយបត្របានភ្ជាប់ (Receipt Attached)</span>
+                                                            </span>
+                                                            <span id="slipFileNameText" style="font-size:0.76rem; color:#334155; font-weight:600; white-space:nowrap; text-overflow:ellipsis; overflow:hidden; display:block; margin-top:2px;"></span>
+                                                        </div>
+                                                    </div>
+                                                    <button type="button" class="slip-btn-remove" onclick="removeSlipAttachment()" title="Remove attached receipt">
+                                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                                        <span>ដកចេញ</span>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -1441,7 +1573,7 @@
         }
     }
 
-    // Receipt Slip upload preview
+    // Receipt Slip upload preview & remove
     function handleSlipSelected(input) {
         if (input.files && input.files[0]) {
             const file = input.files[0];
@@ -1452,12 +1584,26 @@
                 const wrap = document.getElementById('slipThumbnailWrap');
                 if (wrap) wrap.style.display = 'flex';
                 const label = document.getElementById('slipFileLabel');
-                if (label) label.innerText = 'Change Receipt Slip';
+                if (label) label.innerText = '🔄 ចុចដើម្បីផ្លាស់ប្តូររូបភាព (Change Slip)';
                 const nameTxt = document.getElementById('slipFileNameText');
-                if (nameTxt) nameTxt.innerText = file.name;
-            }
+                if (nameTxt) {
+                    const sizeKB = (file.size / 1024).toFixed(0);
+                    nameTxt.innerText = `${file.name} • ${sizeKB} KB`;
+                }
+            };
             reader.readAsDataURL(file);
         }
+    }
+
+    function removeSlipAttachment() {
+        const input = document.getElementById('slipFileInput');
+        if (input) input.value = '';
+        const thumb = document.getElementById('slipThumbnail');
+        if (thumb) thumb.src = '';
+        const wrap = document.getElementById('slipThumbnailWrap');
+        if (wrap) wrap.style.display = 'none';
+        const label = document.getElementById('slipFileLabel');
+        if (label) label.innerText = 'ចុចទីនេះដើម្បីភ្ជាប់រូបភាពវិក្កយបត្រ (Upload Slip)';
     }
 
     document.addEventListener('DOMContentLoaded', function() {

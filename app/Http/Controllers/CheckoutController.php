@@ -52,7 +52,7 @@ class CheckoutController extends Controller
             'enabled' => SiteSetting::get('enable_qr', '1') == '1',
             'image' => SiteSetting::get('qr_code_image', '/images/payments/default_khqr.svg'),
             'bank_name' => SiteSetting::get('qr_bank_name', 'ABA Bank / KHQR'),
-            'account_name' => SiteSetting::get('qr_account_name', 'THREADCRAFT CO., LTD'),
+            'account_name' => SiteSetting::get('qr_account_name', 'VIBE T-SHIRT ONLINE'),
             'account_number' => SiteSetting::get('qr_account_number', '001 888 999 (USD)'),
             'instructions' => SiteSetting::get('qr_instructions', 'Scan this QR code using any banking app (ABA Mobile, Bakong, ACLEDA, Wing) to complete payment. Upload your payment slip / receipt screenshot below for prompt verification.'),
         ];
