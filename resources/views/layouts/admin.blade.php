@@ -344,6 +344,12 @@
             border: 1px solid #fde68a;
         }
 
+        .nav-pill-rose {
+            background: #fff1f2;
+            color: #e11d48;
+            border: 1px solid #fecdd3;
+        }
+
         /* Sidebar Footer Executive Profile Card */
         .sidebar-footer {
             padding: 12px 14px 14px;
@@ -1423,6 +1429,26 @@
                     </a>
                 </li>
 
+                <!-- CUSTOMER INQUIRIES & MESSAGES -->
+                @php
+                    $unreadInquiriesNavCount = \App\Models\ContactMessage::safeCountUnread();
+                @endphp
+                <li>
+                    <a href="{{ route('admin.messages.index') }}" class="sidebar-link {{ request()->routeIs('admin.messages.*') ? 'active' : '' }}" title="Customer Inquiries & Messages">
+                        <span class="link-left">
+                            <span class="nav-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                </svg>
+                            </span>
+                            <span>Customer Inquiries</span>
+                        </span>
+                        @if ($unreadInquiriesNavCount > 0)
+                            <span class="nav-pill nav-pill-rose">{{ $unreadInquiriesNavCount }} New</span>
+                        @endif
+                    </a>
+                </li>
+
                 <!-- 5. PAYMENT MANAGEMENT -->
                 <li>
                     <a href="{{ route('admin.payments.index') }}" class="sidebar-link {{ request()->routeIs('admin.payments.*') ? 'active' : '' }}">
@@ -1600,6 +1626,18 @@
                 </div>
 
                 <div class="header-actions">
+                    <a href="{{ route('admin.messages.index') }}" class="store-pill {{ request()->routeIs('admin.messages.*') ? 'active' : '' }}" title="Customer Inquiries & Messages">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        <span>Inquiries</span>
+                        @if (isset($unreadInquiriesNavCount) && $unreadInquiriesNavCount > 0)
+                            <span style="background:#ef4444; color:#ffffff; font-size:0.65rem; font-weight:850; padding:1.5px 6.5px; border-radius:999px; line-height:1.2;">
+                                {{ $unreadInquiriesNavCount }}
+                            </span>
+                        @endif
+                    </a>
+
                     <a href="{{ route('home') }}" target="_blank" class="store-pill" title="Open storefront in new tab">
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="10"></circle>

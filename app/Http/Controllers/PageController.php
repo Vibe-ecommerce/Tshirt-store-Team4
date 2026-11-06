@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ContactMessage;
 use App\Models\Product;
+use App\Models\SiteSetting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class PageController extends Controller
 {
@@ -104,6 +108,56 @@ class PageController extends Controller
             'subject' => 'required|string|max:255',
             'message' => 'required|string|max:2000',
         ]);
+
+        // 1. Save customer inquiry to database
+        try {
+            ContactMessage::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'subject' => $validated['subject'],
+                'message' => $validated['message'],
+                'status' => 'unread',
+                'ip_address' => $request->ip(),
+            ]);
+        } catch (\Throwable $e) {
+            ContactMessage::ensureTableExists();
+            try {
+                ContactMessage::create([
+                    'name' => $validated['name'],
+                    'email' => $validated['email'],
+                    'subject' => $validated['subject'],
+                    'message' => $validated['message'],
+                    'status' => 'unread',
+                    'ip_address' => $request->ip(),
+                ]);
+            } catch (\Throwable $e2) {
+                Log::error("Failed to save contact message: " . $e2->getMessage());
+            }
+        }
+
+        // 2. Send instant Telegram alert to Store Admin if configured
+        $botToken = SiteSetting::get('telegram_bot_token');
+        $chatId = SiteSetting::get('telegram_chat_id');
+        $enableTelegram = SiteSetting::get('enable_telegram_notifications', '1') == '1';
+
+        if ($enableTelegram && !empty($botToken) && !empty($chatId)) {
+            try {
+                $text = "📬 <b>New Customer Message / សារពីអតិថិជន</b>\n\n"
+                    . "👤 <b>Name:</b> " . htmlspecialchars($validated['name']) . "\n"
+                    . "📧 <b>Email:</b> " . htmlspecialchars($validated['email']) . "\n"
+                    . "🏷️ <b>Subject:</b> " . htmlspecialchars($validated['subject']) . "\n"
+                    . "💬 <b>Message:</b>\n" . htmlspecialchars($validated['message']) . "\n\n"
+                    . "🌐 <i>View in Admin: " . route('admin.messages.index') . "</i>";
+
+                Http::timeout(4)->post("https://api.telegram.org/bot{$botToken}/sendMessage", [
+                    'chat_id' => $chatId,
+                    'text' => $text,
+                    'parse_mode' => 'HTML',
+                ]);
+            } catch (\Throwable $e) {
+                Log::warning("Telegram contact alert error: " . $e->getMessage());
+            }
+        }
 
         return redirect()->back()->with('success', 'Thank you, ' . $validated['name'] . '! Your inquiry has been received. Our team will contact you within 24 hours.');
     }

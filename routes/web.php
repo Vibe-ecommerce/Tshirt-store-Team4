@@ -154,4 +154,10 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'update'])->name('settings.update');
     Route::post('/settings/telegram/test', [\App\Http\Controllers\Admin\SettingController::class, 'testTelegram'])->name('settings.telegram.test');
     Route::post('/settings/telegram/detect', [\App\Http\Controllers\Admin\SettingController::class, 'detectTelegramChat'])->name('settings.telegram.detect');
+
+    // 12. CUSTOMER INQUIRIES & MESSAGES
+    Route::get('/messages', [\App\Http\Controllers\Admin\MessageController::class, 'index'])->name('messages.index');
+    Route::get('/messages/{id}', [\App\Http\Controllers\Admin\MessageController::class, 'show'])->name('messages.show');
+    Route::post('/messages/{id}/status', [\App\Http\Controllers\Admin\MessageController::class, 'toggleStatus'])->name('messages.status');
+    Route::delete('/messages/{id}', [\App\Http\Controllers\Admin\MessageController::class, 'destroy'])->name('messages.destroy');
 });
