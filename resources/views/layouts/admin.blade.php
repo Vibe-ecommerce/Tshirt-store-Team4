@@ -539,13 +539,149 @@
             background-color: var(--bg-body);
         }
 
+        /* Mobile Overlay Backdrop */
+        .admin-sidebar-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 99998;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .admin-sidebar-backdrop.show {
+            display: block;
+            opacity: 1;
+        }
+
+        .admin-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .admin-sidebar-toggle-btn {
+            display: none;
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            border: 1.5px solid var(--border-subtle);
+            background: #ffffff;
+            color: var(--text-main);
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            flex-shrink: 0;
+            padding: 0;
+        }
+
+        .admin-sidebar-toggle-btn:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .sidebar-close-btn {
+            display: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: #f1f5f9;
+            color: #475569;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .sidebar-close-btn:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
         @media (max-width: 900px) {
             .admin-sidebar {
                 transform: translateX(-100%);
-                transition: transform 0.3s ease;
+                transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+                z-index: 99999;
+                width: min(290px, 86vw);
+            }
+            .admin-sidebar.open {
+                transform: translateX(0);
+                box-shadow: 10px 0 35px rgba(0, 0, 0, 0.25);
             }
             .admin-main {
                 margin-left: 0;
+            }
+            .admin-sidebar-toggle-btn {
+                display: inline-flex;
+            }
+            .sidebar-close-btn {
+                display: flex;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .admin-header {
+                padding: 0 16px;
+                height: 64px;
+            }
+            .admin-content {
+                padding: 20px 14px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .store-pill span {
+                display: none;
+            }
+            .store-pill svg:last-child {
+                display: none;
+            }
+            .store-pill {
+                padding: 8px 10px;
+            }
+            .header-user-meta, .header-user-chevron {
+                display: none;
+            }
+            .header-user-card {
+                padding: 4px;
+                border: none;
+                background: transparent;
+                box-shadow: none;
+            }
+            .header-title {
+                font-size: 1.05rem;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 170px;
+            }
+            .header-actions {
+                gap: 8px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .header-title {
+                max-width: 130px;
+                font-size: 0.95rem;
+            }
+            .admin-header-left {
+                gap: 8px;
+            }
+            .admin-sidebar-toggle-btn {
+                width: 34px;
+                height: 34px;
             }
         }
 
@@ -842,7 +978,8 @@
             background: var(--bg-card);
             border: 1px solid var(--border-subtle);
             border-radius: var(--radius-lg);
-            overflow: hidden;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
@@ -1166,24 +1303,29 @@
     @yield('styles')
 </head>
 <body>
+    <!-- Mobile Sidebar Backdrop Overlay -->
+    <div class="admin-sidebar-backdrop" id="adminSidebarBackdrop" onclick="closeAdminSidebar()"></div>
 
     <div class="admin-layout">
         <!-- Sidebar with all 11 Sitemap Modules -->
-        <aside class="admin-sidebar">
-            <a href="{{ route('admin.dashboard') }}" class="sidebar-brand" title="T-Shirt Online Admin Dashboard">
-                <div class="brand-badge">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/>
-                    </svg>
-                </div>
-                <div class="brand-info">
-                    <div class="brand-title-row">
-                        <span class="brand-name">T-Shirt Online</span>
-                        <span class="brand-pro-badge">PRO</span>
+        <aside class="admin-sidebar" id="adminSidebar">
+            <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #f1f5f9; background:#ffffff;">
+                <a href="{{ route('admin.dashboard') }}" class="sidebar-brand" style="border-bottom:none; flex:1;" title="T-Shirt Online Admin Dashboard">
+                    <div class="brand-badge">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/>
+                        </svg>
                     </div>
-                    <span class="brand-subtitle"><span class="status-pulse-dot"></span> STUDIO ADMIN</span>
-                </div>
-            </a>
+                    <div class="brand-info">
+                        <div class="brand-title-row">
+                            <span class="brand-name">T-Shirt Online</span>
+                            <span class="brand-pro-badge">PRO</span>
+                        </div>
+                        <span class="brand-subtitle"><span class="status-pulse-dot"></span> STUDIO ADMIN</span>
+                    </div>
+                </a>
+                <button type="button" class="sidebar-close-btn" id="sidebarCloseBtn" onclick="closeAdminSidebar()" aria-label="Close menu" style="margin-right:12px;">✕</button>
+            </div>
 
             <ul class="sidebar-nav">
                 <!-- 1. DASHBOARD -->
@@ -1446,7 +1588,16 @@
         <main class="admin-main">
             <!-- Top Header -->
             <header class="admin-header">
-                <div class="header-title">@yield('page-title', 'Overview')</div>
+                <div class="admin-header-left">
+                    <button type="button" class="admin-sidebar-toggle-btn" id="adminSidebarToggleBtn" onclick="toggleAdminSidebar()" aria-label="Toggle navigation menu">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                    </button>
+                    <div class="header-title">@yield('page-title', 'Overview')</div>
+                </div>
 
                 <div class="header-actions">
                     <a href="{{ route('home') }}" target="_blank" class="store-pill" title="Open storefront in new tab">
@@ -1633,6 +1784,37 @@
             modal.setAttribute('aria-hidden', 'true');
             currentConfirmCallback = null;
         };
+
+        function toggleAdminSidebar() {
+            const sidebar = document.getElementById('adminSidebar');
+            const backdrop = document.getElementById('adminSidebarBackdrop');
+            if (sidebar && backdrop) {
+                const isOpen = sidebar.classList.contains('open');
+                if (isOpen) {
+                    closeAdminSidebar();
+                } else {
+                    sidebar.classList.add('open');
+                    backdrop.classList.add('show');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+        }
+
+        function closeAdminSidebar() {
+            const sidebar = document.getElementById('adminSidebar');
+            const backdrop = document.getElementById('adminSidebarBackdrop');
+            if (sidebar && backdrop) {
+                sidebar.classList.remove('open');
+                backdrop.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeAdminSidebar();
+            }
+        });
 
         document.addEventListener('DOMContentLoaded', function() {
             const confirmBtn = document.getElementById('coolModalConfirmBtn');

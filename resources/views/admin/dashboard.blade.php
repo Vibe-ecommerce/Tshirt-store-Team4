@@ -98,6 +98,26 @@
         }
     }
 
+    @media (max-width: 640px) {
+        .kpi-grid {
+            gap: 14px;
+        }
+        .kpi-card {
+            padding: 18px 16px;
+        }
+        .kpi-value {
+            font-size: 1.7rem;
+        }
+        .section-card {
+            padding: 18px 16px;
+        }
+        .card-title-bar {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+    }
+
     .section-card {
         background: var(--bg-card);
         border: 1px solid var(--border-subtle);
