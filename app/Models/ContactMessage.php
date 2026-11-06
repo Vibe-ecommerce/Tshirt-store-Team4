@@ -14,8 +14,14 @@ class ContactMessage extends Model
         'email',
         'subject',
         'message',
+        'reply_message',
         'status',
+        'replied_at',
         'ip_address',
+    ];
+
+    protected $casts = [
+        'replied_at' => 'datetime',
     ];
 
     /**
@@ -31,10 +37,23 @@ class ContactMessage extends Model
                     $table->string('email');
                     $table->string('subject');
                     $table->text('message');
+                    $table->text('reply_message')->nullable();
                     $table->string('status')->default('unread');
+                    $table->timestamp('replied_at')->nullable();
                     $table->string('ip_address')->nullable();
                     $table->timestamps();
                 });
+            } else {
+                if (!Schema::hasColumn('contact_messages', 'reply_message')) {
+                    Schema::table('contact_messages', function (Blueprint $table) {
+                        $table->text('reply_message')->nullable();
+                    });
+                }
+                if (!Schema::hasColumn('contact_messages', 'replied_at')) {
+                    Schema::table('contact_messages', function (Blueprint $table) {
+                        $table->timestamp('replied_at')->nullable();
+                    });
+                }
             }
             return true;
         } catch (\Throwable $e) {

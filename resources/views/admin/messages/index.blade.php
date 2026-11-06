@@ -99,9 +99,9 @@
         color: #e11d48;
     }
 
-    .stat-icon-read {
-        background: #f0fdf4;
-        color: #16a34a;
+    .stat-icon-replied {
+        background: #ecfdf5;
+        color: #059669;
     }
 
     .stat-icon-telegram {
@@ -375,6 +375,12 @@
         border: 1px solid #e2e8f0;
     }
 
+    .status-replied {
+        background: #ecfdf5;
+        color: #047857;
+        border: 1px solid #a7f3d0;
+    }
+
     .pulse-unread-dot {
         width: 6px;
         height: 6px;
@@ -426,6 +432,18 @@
         color: #ffffff;
     }
 
+    .action-btn-reply {
+        background: #f5f3ff;
+        border-color: #ddd6fe;
+        color: #6d28d9;
+    }
+
+    .action-btn-reply:hover {
+        background: #6d28d9;
+        border-color: #6d28d9;
+        color: #ffffff;
+    }
+
     .action-btn-danger:hover {
         background: #ef4444;
         border-color: #ef4444;
@@ -452,7 +470,7 @@
     .message-modal-card {
         background: #ffffff;
         border-radius: 20px;
-        max-width: 600px;
+        max-width: 650px;
         width: 100%;
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
         overflow: hidden;
@@ -503,7 +521,7 @@
 
     .modal-body {
         padding: 24px;
-        max-height: 65vh;
+        max-height: 72vh;
         overflow-y: auto;
     }
 
@@ -548,7 +566,7 @@
                 </svg>
                 <span>Customer Inquiries & Messages</span>
             </h2>
-            <p>គ្រប់គ្រងសារ និងសំណួរដែលអតិថិជនបានផ្ញើតាមរយៈទំព័រ Contact Page • Instant Telegram notifications active</p>
+            <p>គ្រប់គ្រងសារ និងសំណួរដែលអតិថិជនបានផ្ញើតាមរយៈទំព័រ Contact Page • ឆ្លើយតបអតិថិជនតាម Email ផ្ទាល់</p>
         </div>
 
         <div style="display:flex; align-items:center; gap:10px;">
@@ -594,10 +612,10 @@
 
         <div class="inquiry-stat-card">
             <div class="stat-meta">
-                <div class="stat-label">Resolved / Read</div>
-                <div class="stat-value" style="color:#16a34a;">{{ number_format($counts['read']) }}</div>
+                <div class="stat-label">Replied to Customers</div>
+                <div class="stat-value" style="color:#059669;">{{ number_format($counts['replied'] ?? 0) }}</div>
             </div>
-            <div class="stat-icon-wrap stat-icon-read">
+            <div class="stat-icon-wrap stat-icon-replied">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
             </div>
         </div>
@@ -636,6 +654,10 @@
                     <span class="pulse-unread-dot"></span> Unread Only
                 </span>
                 <span class="tab-count">{{ $counts['unread'] }}</span>
+            </a>
+            <a href="{{ route('admin.messages.index', array_filter(['status' => 'replied', 'search' => $search])) }}" class="filter-tab-pill {{ $status === 'replied' ? 'active' : '' }}">
+                <span>✓ Replied</span>
+                <span class="tab-count">{{ $counts['replied'] ?? 0 }}</span>
             </a>
             <a href="{{ route('admin.messages.index', array_filter(['status' => 'read', 'search' => $search])) }}" class="filter-tab-pill {{ $status === 'read' ? 'active' : '' }}">
                 <span>Read</span>
@@ -694,6 +716,18 @@
                             elseif (str_contains($subj, 'custom') || str_contains($subj, 'print')) $pillClass = 'pill-custom';
                             elseif (str_contains($subj, 'return') || str_contains($subj, 'exchange')) $pillClass = 'pill-returns';
                             elseif (str_contains($subj, 'whole') || str_contains($subj, 'press')) $pillClass = 'pill-wholesale';
+
+                            $replyJson = json_encode([
+                                'id' => $msg->id,
+                                'name' => $msg->name,
+                                'email' => $msg->email,
+                                'subject' => $msg->subject,
+                                'message' => $msg->message,
+                                'reply_message' => $msg->reply_message,
+                                'date' => $msg->created_at->format('M d, Y • h:i A'),
+                                'replied_date' => $msg->replied_at ? $msg->replied_at->format('M d, Y • h:i A') : '',
+                                'status' => $msg->status,
+                            ]);
                         @endphp
                         <tr class="{{ $msg->status === 'unread' ? 'is-unread' : '' }}" id="message-row-{{ $msg->id }}">
                             <td>
@@ -708,7 +742,7 @@
                                                 <span class="pulse-unread-dot" title="New Unread Message"></span>
                                             @endif
                                         </div>
-                                        <a href="mailto:{{ $msg->email }}?subject={{ rawurlencode('Re: ' . ($msg->subject ?: 'Your inquiry at T-Shirt Online')) }}" class="sender-email" title="Click to send email reply">
+                                        <a href="mailto:{{ $msg->email }}?subject={{ rawurlencode('Re: ' . ($msg->subject ?: 'Your inquiry at T-Shirt Online')) }}" class="sender-email" title="Click to send email reply via client">
                                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
                                             <span>{{ $msg->email }}</span>
                                         </a>
@@ -723,9 +757,15 @@
                             </td>
 
                             <td>
-                                <div class="msg-preview-text" onclick="openMessageModal({{ $msg->id }}, '{{ addslashes($msg->name) }}', '{{ addslashes($msg->email) }}', '{{ addslashes($msg->subject) }}', `{{ addslashes($msg->message) }}`, '{{ $msg->created_at->format('M d, Y • h:i A') }}', '{{ $msg->status }}')" title="Click to read full message">
+                                <div class="msg-preview-text" onclick='openMessageModal({!! htmlspecialchars($replyJson, ENT_QUOTES, "UTF-8") !!})' title="Click to read full message & reply">
                                     "{{ $msg->message }}"
                                 </div>
+                                @if ($msg->status === 'replied')
+                                    <div style="font-size:0.75rem; color:#059669; font-weight:700; margin-top:3px; display:inline-flex; align-items:center; gap:4px;">
+                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                        <span>Replied by admin</span>
+                                    </div>
+                                @endif
                             </td>
 
                             <td>
@@ -734,7 +774,11 @@
                             </td>
 
                             <td>
-                                @if ($msg->status === 'unread')
+                                @if ($msg->status === 'replied')
+                                    <span class="status-badge status-replied" id="badge-status-{{ $msg->id }}">
+                                        ✓ Replied
+                                    </span>
+                                @elseif ($msg->status === 'unread')
                                     <span class="status-badge status-unread" id="badge-status-{{ $msg->id }}">
                                         <span class="pulse-unread-dot"></span> Unread
                                     </span>
@@ -748,14 +792,14 @@
                             <td style="text-align:right;">
                                 <div class="actions-cluster">
                                     <!-- 1. Quick View Modal -->
-                                    <button type="button" class="action-icon-btn action-btn-primary" onclick="openMessageModal({{ $msg->id }}, '{{ addslashes($msg->name) }}', '{{ addslashes($msg->email) }}', '{{ addslashes($msg->subject) }}', `{{ addslashes($msg->message) }}`, '{{ $msg->created_at->format('M d, Y • h:i A') }}', '{{ $msg->status }}')" title="Read Full Inquiry">
+                                    <button type="button" class="action-icon-btn action-btn-primary" onclick='openMessageModal({!! htmlspecialchars($replyJson, ENT_QUOTES, "UTF-8") !!})' title="Read & Reply Inquiry">
                                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                                     </button>
 
-                                    <!-- 2. Reply via Mail -->
-                                    <a href="mailto:{{ $msg->email }}?subject={{ rawurlencode('Re: ' . ($msg->subject ?: 'Your inquiry at T-Shirt Online')) }}" class="action-icon-btn" title="Reply Customer via Email">
+                                    <!-- 2. Direct Reply Button (Opens modal with reply box focused) -->
+                                    <button type="button" class="action-icon-btn action-btn-reply" onclick='openReplyModal({!! htmlspecialchars($replyJson, ENT_QUOTES, "UTF-8") !!})' title="Reply to Customer Email">
                                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                                    </a>
+                                    </button>
 
                                     <!-- 3. Toggle Status (Read / Unread) -->
                                     <form action="{{ route('admin.messages.status', $msg->id) }}" method="POST" style="display:inline-block; margin:0;">
@@ -821,13 +865,13 @@
         </div>
     @endif
 
-    <!-- Interactive Message Detail Modal -->
+    <!-- Interactive Message Detail & Reply Modal -->
     <div class="message-modal-overlay" id="messageModalOverlay" onclick="closeMessageModalOnBackdrop(event)">
         <div class="message-modal-card">
             <div class="modal-head">
                 <div style="display:flex; align-items:center; gap:10px;">
-                    <div style="width:36px; height:36px; border-radius:10px; background:#eff6ff; color:#2563eb; display:flex; align-items:center; justify-content:center;">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    <div style="width:38px; height:38px; border-radius:10px; background:#eff6ff; color:#2563eb; display:flex; align-items:center; justify-content:center;">
+                        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
                     </div>
                     <div>
                         <h3 id="modalCustomerName">Customer Inquiry</h3>
@@ -838,19 +882,61 @@
             </div>
 
             <div class="modal-body">
-                <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:14px 16px; margin-bottom:18px;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
-                        <div style="font-size:0.78rem; font-weight:800; color:#64748b; text-transform:uppercase;">Customer Contact</div>
+                <!-- Customer Info -->
+                <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:14px 16px; margin-bottom:16px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:6px;">
+                        <div style="font-size:0.78rem; font-weight:800; color:#64748b; text-transform:uppercase;">Customer Email</div>
                         <span id="modalTopicBadge" class="subject-pill pill-default">Subject</span>
                     </div>
                     <div style="font-size:0.95rem; font-weight:800; color:#0f172a;" id="modalSenderEmail">customer@example.com</div>
                 </div>
 
-                <div style="margin-bottom:8px;">
-                    <div style="font-size:0.78rem; font-weight:800; color:#64748b; text-transform:uppercase; margin-bottom:6px;">Message</div>
+                <!-- Customer Message -->
+                <div style="margin-bottom:16px;">
+                    <div style="font-size:0.78rem; font-weight:800; color:#64748b; text-transform:uppercase; margin-bottom:6px;">Inquiry Content (សាររបស់អតិថិជន)</div>
                     <div style="background:#ffffff; border:1.5px solid #e2e8f0; border-radius:12px; padding:16px 18px; font-size:0.92rem; color:#1e293b; line-height:1.65; white-space:pre-wrap; font-weight:500;" id="modalMessageContent">
                         ...
                     </div>
+                </div>
+
+                <!-- Previous Reply if exists -->
+                <div id="modalPreviousReplyBox" style="display:none; background:#ecfdf5; border:1.5px solid #86efac; border-radius:12px; padding:16px 18px; margin-bottom:16px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                        <span style="font-size:0.78rem; font-weight:800; color:#15803d; text-transform:uppercase; display:inline-flex; align-items:center; gap:5px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span>Official Reply Sent by Admin</span>
+                        </span>
+                        <span style="font-size:0.75rem; color:#16a34a; font-weight:700;" id="modalPreviousReplyDate">Date</span>
+                    </div>
+                    <div style="font-size:0.9rem; color:#14532d; white-space:pre-wrap; line-height:1.6;" id="modalPreviousReplyText"></div>
+                </div>
+
+                <!-- Reply Composer Box -->
+                <div style="background:#f8fafc; border:1.5px solid #cbd5e1; border-radius:14px; padding:16px 18px;">
+                    <form id="modalDirectReplyForm" method="POST" action="">
+                        @csrf
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                            <label for="modalReplyTextarea" style="font-size:0.82rem; font-weight:800; color:#0f172a; display:flex; align-items:center; gap:6px;">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2.3"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                                <span>Write Reply to Customer (សរសេរសារឆ្លើយតប)</span>
+                            </label>
+                            <span style="font-size:0.72rem; color:#64748b; font-weight:600;">Sent via Official Email</span>
+                        </div>
+
+                        <textarea name="reply_message" id="modalReplyTextarea" rows="4" style="width:100%; border:1.5px solid #cbd5e1; border-radius:10px; padding:12px 14px; font-size:0.9rem; font-family:inherit; outline:none; transition:border-color 0.2s;" placeholder="Type your response to this customer here..." required></textarea>
+
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; flex-wrap:wrap; gap:8px;">
+                            <a id="modalReplyMailto" href="#" class="btn-outline" style="font-size:0.78rem; padding:6px 12px; display:inline-flex; align-items:center; gap:5px; text-decoration:none;" title="Open external email app like Gmail or Outlook">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                                <span>Open in Gmail / Mail App</span>
+                            </a>
+
+                            <button type="submit" class="btn-primary" style="background:linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%); color:#ffffff; border:none; padding:8px 18px; border-radius:8px; font-weight:800; font-size:0.84rem; display:inline-flex; align-items:center; gap:6px; cursor:pointer; box-shadow:0 3px 10px rgba(79,70,229,0.3);">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                                <span>Send Email to Customer</span>
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
 
@@ -866,10 +952,6 @@
 
                 <div style="display:flex; align-items:center; gap:8px;">
                     <button type="button" class="btn-outline" style="font-size:0.82rem; padding:8px 14px;" onclick="closeMessageModal()">Close</button>
-                    <a id="modalReplyMailto" href="#" class="btn-primary" style="font-size:0.82rem; padding:8px 16px; display:inline-flex; align-items:center; gap:6px; background:#4f46e5; color:#ffffff; border-radius:8px; text-decoration:none; font-weight:750;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                        <span>Reply Customer Email</span>
-                    </a>
                 </div>
             </div>
         </div>
@@ -880,25 +962,39 @@
 <script>
     let activeMessageId = null;
 
-    function openMessageModal(id, name, email, subject, message, dateStr, status) {
-        activeMessageId = id;
+    function openMessageModal(data) {
+        activeMessageId = data.id;
 
-        document.getElementById('modalCustomerName').textContent = name || 'Customer Inquiry';
-        document.getElementById('modalReceivedTime').textContent = dateStr || '';
-        document.getElementById('modalSenderEmail').textContent = email || '';
-        document.getElementById('modalTopicBadge').textContent = subject || 'General Inquiry';
-        document.getElementById('modalMessageContent').textContent = message || '';
+        document.getElementById('modalCustomerName').textContent = data.name || 'Customer Inquiry';
+        document.getElementById('modalReceivedTime').textContent = data.date || '';
+        document.getElementById('modalSenderEmail').textContent = data.email || '';
+        document.getElementById('modalTopicBadge').textContent = data.subject || 'General Inquiry';
+        document.getElementById('modalMessageContent').textContent = data.message || '';
 
-        // Pre-fill email reply
-        const replyUrl = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent('Re: ' + (subject || 'Your inquiry at T-Shirt Online'))}`;
+        // Pre-fill email client mailto URL
+        const replyUrl = `mailto:${encodeURIComponent(data.email)}?subject=${encodeURIComponent('Re: ' + (data.subject || 'Your inquiry at T-Shirt Online'))}`;
         document.getElementById('modalReplyMailto').setAttribute('href', replyUrl);
+
+        // Direct Reply Form Action
+        const directReplyForm = document.getElementById('modalDirectReplyForm');
+        directReplyForm.setAttribute('action', `/admin/messages/${data.id}/reply`);
+
+        // Check if there was a previous reply
+        const prevReplyBox = document.getElementById('modalPreviousReplyBox');
+        if (data.reply_message) {
+            prevReplyBox.style.display = 'block';
+            document.getElementById('modalPreviousReplyText').textContent = data.reply_message;
+            document.getElementById('modalPreviousReplyDate').textContent = data.replied_date || 'Recently';
+        } else {
+            prevReplyBox.style.display = 'none';
+        }
 
         // Toggle Status Form Action
         const toggleForm = document.getElementById('modalToggleStatusForm');
-        toggleForm.setAttribute('action', `/admin/messages/${id}/status`);
+        toggleForm.setAttribute('action', `/admin/messages/${data.id}/status`);
 
         const toggleBtn = document.getElementById('modalToggleBtn');
-        if (status === 'unread') {
+        if (data.status === 'unread') {
             toggleBtn.innerHTML = '✓ Mark as Read';
         } else {
             toggleBtn.innerHTML = 'Mark as Unread';
@@ -908,17 +1004,17 @@
         document.getElementById('messageModalOverlay').classList.add('active');
 
         // Automatically call the show route via AJAX to mark it as read in the background
-        if (status === 'unread') {
-            fetch(`/admin/messages/${id}`, {
+        if (data.status === 'unread') {
+            fetch(`/admin/messages/${data.id}`, {
                 headers: {
                     'Accept': 'application/json',
                     'X-Requested-With': 'XMLHttpRequest'
                 }
-            }).then(res => res.json()).then(data => {
-                if (data.success) {
-                    const row = document.getElementById(`message-row-${id}`);
+            }).then(res => res.json()).then(resData => {
+                if (resData.success) {
+                    const row = document.getElementById(`message-row-${data.id}`);
                     if (row) row.classList.remove('is-unread');
-                    const badge = document.getElementById(`badge-status-${id}`);
+                    const badge = document.getElementById(`badge-status-${data.id}`);
                     if (badge) {
                         badge.className = 'status-badge status-read';
                         badge.innerHTML = 'Read';
@@ -926,6 +1022,17 @@
                 }
             }).catch(err => console.log(err));
         }
+    }
+
+    function openReplyModal(data) {
+        openMessageModal(data);
+        setTimeout(() => {
+            const textarea = document.getElementById('modalReplyTextarea');
+            if (textarea) {
+                textarea.focus();
+                textarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }, 150);
     }
 
     function closeMessageModal() {
@@ -947,4 +1054,3 @@
     });
 </script>
 @endsection
-
