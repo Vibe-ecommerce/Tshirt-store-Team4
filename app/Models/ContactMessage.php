@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Schema;
 class ContactMessage extends Model
 {
     protected $fillable = [
+        'user_id',
         'name',
         'email',
         'subject',
@@ -24,6 +25,11 @@ class ContactMessage extends Model
         'replied_at' => 'datetime',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     /**
      * Auto-ensure table exists in production databases (e.g. TiDB Cloud / Render)
      */
@@ -33,6 +39,7 @@ class ContactMessage extends Model
             if (!Schema::hasTable('contact_messages')) {
                 Schema::create('contact_messages', function (Blueprint $table) {
                     $table->id();
+                    $table->unsignedBigInteger('user_id')->nullable();
                     $table->string('name');
                     $table->string('email');
                     $table->string('subject');
@@ -44,6 +51,11 @@ class ContactMessage extends Model
                     $table->timestamps();
                 });
             } else {
+                if (!Schema::hasColumn('contact_messages', 'user_id')) {
+                    Schema::table('contact_messages', function (Blueprint $table) {
+                        $table->unsignedBigInteger('user_id')->nullable()->after('id');
+                    });
+                }
                 if (!Schema::hasColumn('contact_messages', 'reply_message')) {
                     Schema::table('contact_messages', function (Blueprint $table) {
                         $table->text('reply_message')->nullable();

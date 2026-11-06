@@ -112,6 +112,7 @@ class PageController extends Controller
         // 1. Save customer inquiry to database
         try {
             ContactMessage::create([
+                'user_id' => auth()->id(),
                 'name' => $validated['name'],
                 'email' => $validated['email'],
                 'subject' => $validated['subject'],
@@ -123,6 +124,7 @@ class PageController extends Controller
             ContactMessage::ensureTableExists();
             try {
                 ContactMessage::create([
+                    'user_id' => auth()->id(),
                     'name' => $validated['name'],
                     'email' => $validated['email'],
                     'subject' => $validated['subject'],

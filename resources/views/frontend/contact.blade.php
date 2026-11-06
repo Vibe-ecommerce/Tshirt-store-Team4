@@ -701,7 +701,7 @@
                                    class="form-control-lux"
                                    placeholder="e.g. Alexander Vance"
                                    required
-                                   value="{{ old('name') }}">
+                                   value="{{ old('name', auth()->user()?->name) }}">
                         </div>
 
                         <div class="form-group-lux">
@@ -714,7 +714,7 @@
                                    class="form-control-lux"
                                    placeholder="e.g. alexander@example.com"
                                    required
-                                   value="{{ old('email') }}">
+                                   value="{{ old('email', auth()->user()?->email) }}">
                         </div>
                     </div>
 

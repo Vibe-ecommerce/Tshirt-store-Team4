@@ -38,7 +38,12 @@ class AccountController extends Controller
         }
 
         \App\Models\ContactMessage::ensureTableExists();
-        $inquiries = \App\Models\ContactMessage::where('email', $user->email)
+        $inquiries = \App\Models\ContactMessage::where(function ($q) use ($user) {
+                $q->where('email', $user->email);
+                if ($user->id) {
+                    $q->orWhere('user_id', $user->id);
+                }
+            })
             ->orderBy('created_at', 'desc')
             ->get();
 
