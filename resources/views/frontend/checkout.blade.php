@@ -1009,6 +1009,332 @@
     .coupon-inline-btn:hover {
         background: #000000;
     }
+
+    /* -------------------------------------------------------------
+       2-STEP CHECKOUT WIZARD STYLES (MOBILE-FIRST)
+    ------------------------------------------------------------- */
+    .checkout-wizard-bar {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        background: #f8fafc;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 8px;
+        margin-bottom: 24px;
+    }
+
+    .wizard-tab {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 18px;
+        border-radius: 12px;
+        border: 1.5px solid transparent;
+        background: transparent;
+        cursor: pointer;
+        text-align: left;
+        transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+        font-family: inherit;
+        width: 100%;
+    }
+
+    .wizard-tab:hover {
+        background: #f1f5f9;
+    }
+
+    .wizard-tab.active {
+        background: #ffffff;
+        border-color: #cbd5e1;
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+    }
+
+    .wizard-tab.completed {
+        background: #f0fdf4;
+        border-color: #bbf7d0;
+    }
+
+    .wizard-tab-num {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: #e2e8f0;
+        color: #64748b;
+        font-weight: 850;
+        font-size: 0.90rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: all 0.2s ease;
+    }
+
+    .wizard-tab.active .wizard-tab-num {
+        background: #0f172a;
+        color: #ffffff;
+        box-shadow: 0 3px 10px rgba(15, 23, 42, 0.2);
+    }
+
+    .wizard-tab.completed .wizard-tab-num {
+        background: #059669;
+        color: #ffffff;
+    }
+
+    .wizard-tab-info {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+    }
+
+    .wizard-tab-sub {
+        font-size: 0.70rem;
+        font-weight: 800;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+    }
+
+    .wizard-tab.active .wizard-tab-sub {
+        color: #2563eb;
+    }
+
+    .wizard-tab.completed .wizard-tab-sub {
+        color: #059669;
+    }
+
+    .wizard-tab-title {
+        font-size: 0.92rem;
+        font-weight: 850;
+        color: #334155;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .wizard-tab.active .wizard-tab-title {
+        color: #0f172a;
+    }
+
+    .wizard-tab.completed .wizard-tab-title {
+        color: #065f46;
+    }
+
+    @media (max-width: 600px) {
+        .checkout-wizard-bar {
+            grid-template-columns: 1fr;
+            gap: 6px;
+            padding: 6px;
+        }
+        .wizard-tab {
+            padding: 10px 14px;
+        }
+    }
+
+    /* Address Review Card on Step 2 */
+    .address-review-card {
+        background: #f8fafc;
+        border: 1.5px solid #cbd5e1;
+        border-radius: 16px;
+        padding: 16px 18px;
+        margin-bottom: 18px;
+        position: relative;
+    }
+
+    .review-card-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #e2e8f0;
+        padding-bottom: 8px;
+    }
+
+    .review-card-edit-btn {
+        background: #ffffff;
+        border: 1.5px solid #cbd5e1;
+        color: #2563eb;
+        padding: 5px 12px;
+        border-radius: 8px;
+        font-size: 0.78rem;
+        font-weight: 800;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        transition: all 0.18s ease;
+    }
+
+    .review-card-edit-btn:hover {
+        background: #eff6ff;
+        border-color: #93c5fd;
+        transform: translateY(-1px);
+    }
+
+    .review-user-line {
+        font-size: 0.95rem;
+        font-weight: 850;
+        color: #0f172a;
+        margin-bottom: 4px;
+    }
+
+    .review-separator {
+        color: #94a3b8;
+        margin: 0 6px;
+    }
+
+    .review-address-line {
+        font-size: 0.88rem;
+        color: #475569;
+        font-weight: 600;
+        line-height: 1.45;
+        margin-bottom: 8px;
+    }
+
+    .review-delivery-line {
+        font-size: 0.82rem;
+        color: #1e40af;
+        background: #dbeafe;
+        padding: 6px 12px;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 750;
+    }
+
+    /* Step Navigation Footers */
+    .step-footer-actions {
+        background: #ffffff;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 18px 22px;
+        margin-top: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
+        flex-wrap: wrap;
+    }
+
+    .step-price-hint {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .hint-label {
+        font-size: 0.72rem;
+        font-weight: 800;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+    }
+
+    .hint-price {
+        font-size: 1.35rem;
+        font-weight: 900;
+        color: #0f172a;
+        line-height: 1.2;
+    }
+
+    .hint-khr {
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: #059669;
+    }
+
+    .btn-wizard-next {
+        background: #0f172a;
+        color: #ffffff;
+        border: none;
+        border-radius: 12px;
+        padding: 14px 24px;
+        font-size: 0.95rem;
+        font-weight: 850;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+        box-shadow: 0 6px 20px rgba(15, 23, 42, 0.18);
+        min-height: 48px;
+    }
+
+    .btn-wizard-next:hover {
+        background: #1e293b;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.25);
+    }
+
+    .step2-nav-footer {
+        margin-top: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    .btn-wizard-back {
+        background: #f1f5f9;
+        border: 1.5px solid #e2e8f0;
+        color: #475569;
+        border-radius: 10px;
+        padding: 10px 18px;
+        font-size: 0.85rem;
+        font-weight: 800;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.18s ease;
+    }
+
+    .btn-wizard-back:hover {
+        background: #e2e8f0;
+        color: #0f172a;
+    }
+
+    @media (max-width: 980px) {
+        .checkout-summary-col.hide-on-mobile-step1 {
+            display: none !important;
+        }
+        .step-footer-actions {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 12px;
+        }
+        .step-footer-actions .btn-wizard-next {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
+    /* Notification Toast for validation errors */
+    #stepNotifyToast {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%) translateY(100px);
+        background: #0f172a;
+        color: #ffffff;
+        padding: 12px 22px;
+        border-radius: 12px;
+        font-size: 0.88rem;
+        font-weight: 750;
+        box-shadow: 0 8px 26px rgba(0, 0, 0, 0.25);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        opacity: 0;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        pointer-events: none;
+    }
+
+    #stepNotifyToast.show {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+    }
 </style>
 @endsection
 
@@ -1056,12 +1382,32 @@
             </div>
         @endif
 
-        <form action="{{ route('checkout.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('checkout.store') }}" method="POST" enctype="multipart/form-data" id="checkoutForm">
             @csrf
 
+            <!-- Interactive 2-Step Wizard Navigation Bar -->
+            <div class="checkout-wizard-bar">
+                <button type="button" class="wizard-tab active" id="tabStep1" onclick="goToStep(1)">
+                    <span class="wizard-tab-num" id="badgeStep1">1</span>
+                    <div class="wizard-tab-info">
+                        <span class="wizard-tab-sub">ជំហានទី ១</span>
+                        <strong class="wizard-tab-title">ព័ត៌មានដឹកជញ្ជូន (Delivery)</strong>
+                    </div>
+                </button>
+                <button type="button" class="wizard-tab" id="tabStep2" onclick="validateAndGoToStep(2)">
+                    <span class="wizard-tab-num" id="badgeStep2">2</span>
+                    <div class="wizard-tab-info">
+                        <span class="wizard-tab-sub">ជំហានទី ២</span>
+                        <strong class="wizard-tab-title">ការទូទាត់ប្រាក់ (Payment & Review)</strong>
+                    </div>
+                </button>
+            </div>
+
             <div class="checkout-grid">
-                <div>
-                    <!-- 1. Unified Delivery & Contact Details (Compact Layout) -->
+                <div class="checkout-left-col">
+                    <!-- STEP 1 CONTAINER: Delivery & Shipping -->
+                    <div id="checkoutStep1" class="checkout-step-panel">
+                        <!-- 1. Unified Delivery & Contact Details (Compact Layout) -->
                     <div class="card-panel">
                         <div class="compact-panel-header">
                             <h3 class="panel-heading" style="margin-bottom:0;">
@@ -1182,6 +1528,50 @@
                                     <strong>Tomorrow, {{ $estExpress }} by 6:00 PM</strong>
                                 </div>
                             </label>
+                        </div>
+                    </div>
+
+                    <!-- Step 1 Continue Action Footer -->
+                    <div class="step-footer-actions">
+                        <div class="step-price-hint">
+                            <span class="hint-label">សរុបបណ្តោះអាសន្ន (Est. Total):</span>
+                            <div style="display:flex; align-items:baseline; gap:8px;">
+                                <span class="hint-price">${{ number_format($total, 2) }}</span>
+                                <span class="hint-khr">(@khr($total))</span>
+                            </div>
+                        </div>
+                        <button type="button" class="btn-wizard-next" onclick="validateAndGoToStep(2)">
+                            <span>បន្តទៅការទូទាត់ប្រាក់ (Continue to Payment)</span>
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                        </button>
+                    </div>
+                </div> <!-- End checkoutStep1 -->
+
+                <!-- STEP 2 CONTAINER: Payment & Final Confirmation -->
+                <div id="checkoutStep2" class="checkout-step-panel" style="display:none;">
+                    <!-- Compact Address Review Card -->
+                    <div class="address-review-card">
+                        <div class="review-card-head">
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span style="font-size:1.15rem;">📍</span>
+                                <strong style="font-size:0.92rem; color:#0f172a;">ផ្ញើទៅកាន់ (Shipping to):</strong>
+                            </div>
+                            <button type="button" class="review-card-edit-btn" onclick="goToStep(1)">
+                                <span>✏️ កែប្រែ (Edit)</span>
+                            </button>
+                        </div>
+                        <div class="review-card-body">
+                            <div class="review-user-line">
+                                <span class="review-name" id="revName">{{ $user->name ?? 'Customer' }}</span>
+                                <span class="review-separator">•</span>
+                                <span class="review-phone" id="revPhone">{{ $user->phone ?? '' }}</span>
+                            </div>
+                            <div class="review-address-line" id="revAddress">
+                                {{ $user->address ?? 'Address not entered' }}{{ !empty($user->city) ? ', ' . $user->city : '' }}
+                            </div>
+                            <div class="review-delivery-line" id="revDeliverySpeed">
+                                🚚 <strong>Standard Ground</strong> • Est: {{ $estStandardStart }} – {{ $estStandardEnd }}
+                            </div>
                         </div>
                     </div>
 
@@ -1449,10 +1839,19 @@
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- 5. Order Summary Sidebar (Sticky) -->
-                <div>
+                    <!-- Step 2 Navigation Footer -->
+                    <div class="step2-nav-footer">
+                        <button type="button" class="btn-wizard-back" onclick="goToStep(1)">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                            <span>⬅ ត្រឡប់ទៅព័ត៌មានដឹកជញ្ជូន (Back to Delivery)</span>
+                        </button>
+                    </div>
+                </div> <!-- End checkoutStep2 -->
+            </div> <!-- End checkout-left-col -->
+
+            <!-- 5. Order Summary Sidebar (Sticky on desktop, shown on Step 2 on mobile) -->
+            <div class="checkout-summary-col hide-on-mobile-step1" id="checkoutSummaryCol">
                     <div class="order-summary-panel">
                         <div class="summary-heading-row">
                             <h3 style="font-size:1.20rem; font-weight:850; color:#0f172a; letter-spacing:-0.2px;">
@@ -1534,7 +1933,7 @@
                         </div>
 
                         <!-- Place Order Button -->
-                        <button type="submit" class="place-order-btn">
+                        <button type="submit" class="place-order-btn" id="placeOrderBtn">
                             <span>Place Order (${{ number_format($total, 2) }} / ≈ @khr($total))</span>
                             <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
                         </button>
@@ -1547,10 +1946,18 @@
                 </div>
             </div>
         </form>
+
+        <!-- Floating Notification Toast -->
+        <div id="stepNotifyToast">
+            <span id="stepNotifyIcon">⚠️</span>
+            <span id="stepNotifyText"></span>
+        </div>
     </div>
 
 <script>
-    // Delivery Method selection
+    let currentStep = 1;
+
+    // Delivery Method selection & sync with Review Card
     function selectDeliveryCard(type) {
         const stdCard = document.getElementById('deliveryCardStandard');
         const expCard = document.getElementById('deliveryCardExpress');
@@ -1558,37 +1965,217 @@
         const expRadio = document.getElementById('delivExpress');
 
         if (type === 'Standard') {
-            stdRadio.checked = true;
-            stdCard.classList.add('active');
-            expCard.classList.remove('active');
+            if (stdRadio) stdRadio.checked = true;
+            if (stdCard) stdCard.classList.add('active');
+            if (expCard) expCard.classList.remove('active');
         } else {
-            expRadio.checked = true;
-            expCard.classList.add('active');
-            stdCard.classList.remove('active');
+            if (expRadio) expRadio.checked = true;
+            if (expCard) expCard.classList.add('active');
+            if (stdCard) stdCard.classList.remove('active');
+        }
+        updateReviewDeliverySpeed(type);
+    }
+
+    function updateReviewDeliverySpeed(type) {
+        const revSpeed = document.getElementById('revDeliverySpeed');
+        if (!revSpeed) return;
+        const isExp = type ? (type === 'Express') : (document.getElementById('delivExpress')?.checked);
+        if (isExp) {
+            revSpeed.className = 'review-delivery-line';
+            revSpeed.style.background = '#fef9c3';
+            revSpeed.style.color = '#854d0e';
+            revSpeed.innerHTML = '⚡ <strong>Express Air Courier ($9.99)</strong> • Est. Arrival: Tomorrow by 6:00 PM';
+        } else {
+            revSpeed.className = 'review-delivery-line';
+            revSpeed.style.background = '#dbeafe';
+            revSpeed.style.color = '#1e40af';
+            revSpeed.innerHTML = '🚚 <strong>Standard Ground</strong> • Est. Arrival: {{ $estStandardStart }} – {{ $estStandardEnd }}';
+        }
+    }
+
+    // Populate Address Review Card from current input values
+    function updateReviewCard() {
+        const nameVal = document.querySelector('input[name="customer_name"]')?.value.trim();
+        const phoneVal = document.querySelector('input[name="customer_phone"]')?.value.trim();
+        const addrVal = document.querySelector('input[name="shipping_address"]')?.value.trim();
+        const cityVal = document.querySelector('input[name="city"]')?.value.trim();
+        const zipVal = document.querySelector('input[name="postal_code"]')?.value.trim();
+
+        const revName = document.getElementById('revName');
+        const revPhone = document.getElementById('revPhone');
+        const revAddress = document.getElementById('revAddress');
+
+        if (revName) revName.textContent = nameVal || 'Customer';
+        if (revPhone) revPhone.textContent = phoneVal || '';
+        if (revAddress) {
+            let fullAddr = addrVal || '';
+            if (cityVal) fullAddr += (fullAddr ? ', ' : '') + cityVal;
+            if (zipVal) fullAddr += ' (' + zipVal + ')';
+            revAddress.textContent = fullAddr || 'Address details saved';
+        }
+
+        updateReviewDeliverySpeed();
+    }
+
+    // Floating Toast Notification
+    let toastTimer = null;
+    function showStepToast(message, isError = true) {
+        const toast = document.getElementById('stepNotifyToast');
+        const text = document.getElementById('stepNotifyText');
+        const icon = document.getElementById('stepNotifyIcon');
+        if (!toast || !text) return;
+
+        text.textContent = message;
+        icon.textContent = isError ? '⚠️' : '✓';
+        toast.style.background = isError ? '#0f172a' : '#065f46';
+        toast.classList.add('show');
+
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3600);
+    }
+
+    // Step 1 Validation & Transition to Step 2
+    function validateAndGoToStep(targetStep) {
+        if (targetStep === 2) {
+            const nameInput = document.querySelector('input[name="customer_name"]');
+            const phoneInput = document.querySelector('input[name="customer_phone"]');
+            const emailInput = document.querySelector('input[name="customer_email"]');
+            const addressInput = document.querySelector('input[name="shipping_address"]');
+            const cityInput = document.querySelector('input[name="city"]');
+
+            let firstInvalid = null;
+
+            const checkField = (input, isValid) => {
+                if (!input) return true;
+                if (!isValid) {
+                    input.style.borderColor = '#ef4444';
+                    input.style.backgroundColor = '#fef2f2';
+                    if (!firstInvalid) firstInvalid = input;
+                    input.addEventListener('input', function handler() {
+                        input.style.borderColor = '#cbd5e1';
+                        input.style.backgroundColor = '#ffffff';
+                        input.removeEventListener('input', handler);
+                    });
+                    return false;
+                } else {
+                    input.style.borderColor = '#cbd5e1';
+                    input.style.backgroundColor = '#ffffff';
+                    return true;
+                }
+            };
+
+            const emailValid = emailInput && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim());
+
+            const isNameOk = checkField(nameInput, nameInput && nameInput.value.trim().length > 0);
+            const isPhoneOk = checkField(phoneInput, phoneInput && phoneInput.value.trim().length >= 6);
+            const isEmailOk = checkField(emailInput, emailValid);
+            const isAddressOk = checkField(addressInput, addressInput && addressInput.value.trim().length > 0);
+            const isCityOk = checkField(cityInput, cityInput && cityInput.value.trim().length > 0);
+
+            if (!isNameOk || !isPhoneOk || !isEmailOk || !isAddressOk || !isCityOk) {
+                if (firstInvalid) {
+                    firstInvalid.focus();
+                    firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                showStepToast('សូមបំពេញព័ត៌មានដឹកជញ្ជូនឱ្យបានត្រឹមត្រូវសិន (Please fill in delivery details)', true);
+                return false;
+            }
+
+            updateReviewCard();
+            goToStep(2);
+        } else {
+            goToStep(targetStep);
+        }
+    }
+
+    // Switch active step UI
+    function goToStep(step) {
+        currentStep = step;
+        const step1 = document.getElementById('checkoutStep1');
+        const step2 = document.getElementById('checkoutStep2');
+        const tab1 = document.getElementById('tabStep1');
+        const tab2 = document.getElementById('tabStep2');
+        const badge1 = document.getElementById('badgeStep1');
+        const badge2 = document.getElementById('badgeStep2');
+        const summaryCol = document.getElementById('checkoutSummaryCol');
+        const placeOrderBtn = document.getElementById('placeOrderBtn');
+
+        if (step === 1) {
+            if (step1) step1.style.display = 'block';
+            if (step2) step2.style.display = 'none';
+
+            if (tab1) {
+                tab1.classList.add('active');
+                tab1.classList.remove('completed');
+            }
+            if (tab2) {
+                tab2.classList.remove('active', 'completed');
+            }
+            if (badge1) badge1.innerHTML = '1';
+            if (badge2) badge2.innerHTML = '2';
+
+            // Mobile summary visibility on Step 1
+            if (summaryCol) {
+                if (window.innerWidth <= 980) {
+                    summaryCol.classList.add('hide-on-mobile-step1');
+                } else {
+                    summaryCol.classList.remove('hide-on-mobile-step1');
+                }
+            }
+
+            if (placeOrderBtn && window.innerWidth > 980) {
+                placeOrderBtn.innerHTML = '<span>បន្តទៅការទូទាត់ប្រាក់ (Continue to Payment)</span> <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
+            }
+        } else if (step === 2) {
+            if (step1) step1.style.display = 'none';
+            if (step2) step2.style.display = 'block';
+
+            if (tab1) {
+                tab1.classList.remove('active');
+                tab1.classList.add('completed');
+            }
+            if (tab2) {
+                tab2.classList.add('active');
+            }
+            if (badge1) badge1.innerHTML = '✓';
+            if (badge2) badge2.innerHTML = '2';
+
+            // Mobile summary always shown on Step 2
+            if (summaryCol) {
+                summaryCol.classList.remove('hide-on-mobile-step1');
+            }
+
+            if (placeOrderBtn) {
+                placeOrderBtn.innerHTML = '<span>Place Order (${{ number_format($total, 2) }} / ≈ @khr($total))</span> <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
+            }
+        }
+
+        // Smooth scroll to top of wizard
+        const wizardBar = document.querySelector('.checkout-wizard-bar');
+        if (wizardBar) {
+            wizardBar.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     }
 
     // Payment Method selection & dynamic details switching
     function selectPaymentMethod(method) {
-        // Uncheck/check radios
         const radioQR = document.getElementById('payMethodQR');
         const radioCard = document.getElementById('payMethodCard');
         const radioCOD = document.getElementById('payMethodCOD');
         const radioPayPal = document.getElementById('payMethodPayPal');
 
-        // Tiles
         const tileQR = document.getElementById('tileKHQR');
         const tileCard = document.getElementById('tileCard');
         const tileCOD = document.getElementById('tileCOD');
         const tilePayPal = document.getElementById('tilePayPal');
 
-        // Details
         const detailQR = document.getElementById('detailKHQR');
         const detailCard = document.getElementById('detailCard');
         const detailCOD = document.getElementById('detailCOD');
         const detailPayPal = document.getElementById('detailPayPal');
 
-        // Clear active classes
         [tileQR, tileCard, tileCOD, tilePayPal].forEach(t => t && t.classList.remove('active'));
         [detailQR, detailCard, detailCOD, detailPayPal].forEach(d => d && (d.style.display = 'none'));
 
@@ -1682,10 +2269,59 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
+        // Init selected payment method
         const checkedRadio = document.querySelector('input[name="payment_method"]:checked');
         if (checkedRadio) {
             selectPaymentMethod(checkedRadio.value);
         }
+
+        // Init review card
+        updateReviewCard();
+
+        // Step 1: Prevent form submit, advance to Step 2
+        const form = document.getElementById('checkoutForm');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                if (currentStep === 1) {
+                    e.preventDefault();
+                    validateAndGoToStep(2);
+                    return false;
+                }
+            });
+        }
+
+        // Step 1: Enter key in inputs advances to Step 2
+        document.querySelectorAll('#checkoutStep1 input').forEach(inp => {
+            inp.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    validateAndGoToStep(2);
+                }
+            });
+        });
+
+        // Window resize responsive sync
+        window.addEventListener('resize', function() {
+            const summaryCol = document.getElementById('checkoutSummaryCol');
+            const placeOrderBtn = document.getElementById('placeOrderBtn');
+            if (!summaryCol) return;
+
+            if (currentStep === 1) {
+                if (window.innerWidth <= 980) {
+                    summaryCol.classList.add('hide-on-mobile-step1');
+                } else {
+                    summaryCol.classList.remove('hide-on-mobile-step1');
+                    if (placeOrderBtn) {
+                        placeOrderBtn.innerHTML = '<span>បន្តទៅការទូទាត់ប្រាក់ (Continue to Payment)</span> <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
+                    }
+                }
+            } else {
+                summaryCol.classList.remove('hide-on-mobile-step1');
+                if (placeOrderBtn) {
+                    placeOrderBtn.innerHTML = '<span>Place Order (${{ number_format($total, 2) }} / ≈ @khr($total))</span> <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>';
+                }
+            }
+        });
     });
 </script>
 @endsection
