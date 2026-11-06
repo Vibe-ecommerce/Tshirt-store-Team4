@@ -37,7 +37,12 @@ class AccountController extends Controller
             $recommendedProducts = Product::where('in_stock', true)->where('stock', '>', 0)->take(4)->get();
         }
 
-        return view('frontend.account', compact('user', 'tab', 'orders', 'wishlistProducts', 'recommendedProducts'));
+        \App\Models\ContactMessage::ensureTableExists();
+        $inquiries = \App\Models\ContactMessage::where('email', $user->email)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('frontend.account', compact('user', 'tab', 'orders', 'wishlistProducts', 'recommendedProducts', 'inquiries'));
     }
 
     public function updateProfile(Request $request)

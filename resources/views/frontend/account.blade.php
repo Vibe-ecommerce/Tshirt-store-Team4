@@ -2127,6 +2127,23 @@
                     </a>
                 </li>
 
+                <!-- 6. Inquiries & Support -->
+                <li>
+                    <a href="{{ route('account.index', ['tab' => 'inquiries']) }}" class="menu-item-link {{ $tab == 'inquiries' ? 'active' : '' }}">
+                        <div class="menu-link-inner">
+                            <div class="menu-icon-box" style="{{ $tab == 'inquiries' ? 'background: #eff6ff; color: #2563eb;' : '' }}">
+                                <svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                </svg>
+                            </div>
+                            <span>My Inquiries & Support</span>
+                        </div>
+                        @if (isset($inquiries) && $inquiries->count() > 0)
+                            <span class="menu-count-badge has-items">{{ $inquiries->count() }}</span>
+                        @endif
+                    </a>
+                </li>
+
                 <!-- VIP Perks Mini Card in Sidebar -->
                 <div class="sidebar-tier-card">
                     <div class="tier-card-header">
@@ -2988,6 +3005,99 @@
                         </form>
                     </div>
                 </div>
+
+            @elseif ($tab == 'inquiries')
+                <!-- 6. INQUIRIES & SUPPORT TAB -->
+                <div class="tab-header-banner">
+                    <div class="tab-header-left">
+                        <div class="tab-header-icon-wrap" style="background:#eff6ff; color:#2563eb; border:1px solid #bfdbfe;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h2 class="tab-title">Messages & Support (ប្រអប់សារ & ការសាកសួរ)</h2>
+                            <p class="tab-subtitle">Track your contact inquiries, sizing advice questions, and read official responses from our concierge team.</p>
+                        </div>
+                    </div>
+                    <div>
+                        <a href="{{ route('contact') }}" class="btn-outline" style="font-size:0.84rem; padding:8px 16px; border:1px solid #cbd5e1; background:#ffffff; text-decoration:none; display:inline-flex; align-items:center; gap:6px; border-radius:8px; font-weight:700;">
+                            <span>Send New Message ↗</span>
+                        </a>
+                    </div>
+                </div>
+
+                @if (isset($inquiries) && $inquiries->isNotEmpty())
+                    <div style="display:flex; flex-direction:column; gap:16px;">
+                        @foreach ($inquiries as $inq)
+                            <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:16px; padding:20px 24px; box-shadow:0 2px 8px rgba(15,23,42,0.03);">
+                                <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
+                                    <div>
+                                        <div style="display:flex; align-items:center; gap:8px;">
+                                            <span style="font-size:0.75rem; font-weight:800; background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; padding:2px 8px; border-radius:6px; text-transform:uppercase;">
+                                                {{ $inq->subject ?: 'General Inquiry' }}
+                                            </span>
+                                            <span style="font-size:0.8rem; color:#64748b; font-weight:600;">
+                                                {{ $inq->created_at->format('M d, Y • h:i A') }} ({{ $inq->created_at->diffForHumans() }})
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        @if ($inq->status === 'replied')
+                                            <span style="background:#ecfdf5; color:#047857; border:1px solid #a7f3d0; font-size:0.76rem; font-weight:800; padding:3px 10px; border-radius:999px; display:inline-flex; align-items:center; gap:4px;">
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                                <span>Answered by Store</span>
+                                            </span>
+                                        @else
+                                            <span style="background:#fffbeb; color:#b45309; border:1px solid #fde68a; font-size:0.76rem; font-weight:800; padding:3px 10px; border-radius:999px; display:inline-flex; align-items:center; gap:4px;">
+                                                <span style="width:6px; height:6px; border-radius:50%; background:#f59e0b; display:inline-block;"></span>
+                                                <span>Under Review</span>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <!-- Customer's Question -->
+                                <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:14px 16px; margin-bottom:14px;">
+                                    <div style="font-size:0.75rem; font-weight:800; color:#64748b; text-transform:uppercase; margin-bottom:4px;">Your Message / សារដែលអ្នកបានផ្ញើ:</div>
+                                    <div style="font-size:0.92rem; color:#1e293b; line-height:1.6; white-space:pre-wrap;">{{ $inq->message }}</div>
+                                </div>
+
+                                <!-- Admin's Reply -->
+                                @if ($inq->status === 'replied' && !empty($inq->reply_message))
+                                    <div style="background:#f0fdf4; border:1.5px solid #86efac; border-radius:12px; padding:16px 18px;">
+                                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:6px;">
+                                            <div style="font-size:0.82rem; font-weight:850; color:#15803d; display:flex; align-items:center; gap:6px;">
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                                <span>Store Concierge Official Response (ចម្លើយពី Admin):</span>
+                                            </div>
+                                            @if ($inq->replied_at)
+                                                <div style="font-size:0.74rem; color:#16a34a; font-weight:700;">{{ $inq->replied_at->format('M d, Y • h:i A') }}</div>
+                                            @endif
+                                        </div>
+                                        <div style="font-size:0.94rem; color:#14532d; line-height:1.65; white-space:pre-wrap; font-weight:500;">{{ $inq->reply_message }}</div>
+                                    </div>
+                                @else
+                                    <div style="font-size:0.82rem; color:#64748b; font-style:italic;">
+                                        ⏳ Our concierge team is preparing your response. You will also receive an instant copy directly in your email (<strong>{{ $inq->email }}</strong>).
+                                    </div>
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="empty-tab-state" style="text-align:center; padding:60px 20px; background:#ffffff; border:1px solid #e2e8f0; border-radius:16px;">
+                        <div style="width:60px; height:60px; border-radius:50%; background:#eff6ff; color:#2563eb; display:flex; align-items:center; justify-content:center; margin:0 auto 16px;">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                        </div>
+                        <h3 style="font-size:1.15rem; font-weight:850; color:#0f172a; margin-bottom:6px;">No Inquiries Yet</h3>
+                        <p style="font-size:0.88rem; color:#64748b; max-width:380px; margin:0 auto 20px;">Have questions about sizing, drops, or custom prints? Reach out anytime and check back here for official answers.</p>
+                        <a href="{{ route('contact') }}" class="btn-primary" style="padding:10px 24px; font-size:0.86rem; font-weight:750; text-decoration:none; display:inline-block;">
+                            Contact Concierge →
+                        </a>
+                    </div>
+                @endif
             @endif
 
         </main>
