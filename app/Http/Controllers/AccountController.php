@@ -38,7 +38,8 @@ class AccountController extends Controller
         }
 
         \App\Models\ContactMessage::ensureTableExists();
-        $inquiries = \App\Models\ContactMessage::where(function ($q) use ($user) {
+        $inquiries = \App\Models\ContactMessage::with('replies')
+            ->where(function ($q) use ($user) {
                 $q->where('email', $user->email);
                 if ($user->id) {
                     $q->orWhere('user_id', $user->id);
@@ -161,5 +162,60 @@ class AccountController extends Controller
         $user->save();
 
         return redirect()->route('account.index', ['tab' => 'setting'])->with('success', 'Password updated successfully.');
+    }
+
+    public function replyInquiry(Request $request, $id)
+    {
+        $user = Auth::user();
+
+        $request->validate([
+            'message' => 'required|string|max:3000',
+        ]);
+
+        $inquiry = \App\Models\ContactMessage::findOrFail($id);
+
+        // Security check: ensure current user owns this inquiry
+        if ($inquiry->user_id !== $user->id && strtolower($inquiry->email) !== strtolower($user->email)) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        // Save reply in thread
+        \App\Models\ContactMessageReply::create([
+            'contact_message_id' => $inquiry->id,
+            'user_id' => $user->id,
+            'sender_type' => 'customer',
+            'sender_name' => $user->name,
+            'message' => $request->message,
+        ]);
+
+        // Set status to unread so Admin is alerted to customer's follow up
+        $inquiry->status = 'unread';
+        $inquiry->save();
+
+        // Dispatch Telegram alert to Admin
+        $botToken = \App\Models\SiteSetting::get('telegram_bot_token');
+        $chatId = \App\Models\SiteSetting::get('telegram_chat_id');
+        $enableTelegram = \App\Models\SiteSetting::get('enable_telegram_notifications', '1') == '1';
+
+        if ($enableTelegram && !empty($botToken) && !empty($chatId)) {
+            try {
+                $text = "💬 <b>Customer Replied / សារតបពីអតិថិជន</b>\n\n"
+                    . "👤 <b>Name:</b> " . htmlspecialchars($user->name) . "\n"
+                    . "📧 <b>Email:</b> " . htmlspecialchars($user->email) . "\n"
+                    . "🏷️ <b>Topic:</b> " . htmlspecialchars($inquiry->subject ?: 'Inquiry') . "\n"
+                    . "💬 <b>Reply:</b>\n" . htmlspecialchars($request->message) . "\n\n"
+                    . "🌐 <i>View in Admin: " . route('admin.messages.index') . "</i>";
+
+                \Illuminate\Support\Facades\Http::timeout(4)->post("https://api.telegram.org/bot{$botToken}/sendMessage", [
+                    'chat_id' => $chatId,
+                    'text' => $text,
+                    'parse_mode' => 'HTML',
+                ]);
+            } catch (\Throwable $e) {
+                \Illuminate\Support\Facades\Log::warning("Telegram reply alert error: " . $e->getMessage());
+            }
+        }
+
+        return redirect()->route('account.index', ['tab' => 'inquiries'])->with('success', 'Your reply has been sent to our concierge team! We will get back to you shortly.');
     }
 }

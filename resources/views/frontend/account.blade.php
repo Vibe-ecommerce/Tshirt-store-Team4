@@ -3059,14 +3059,43 @@
                                 </div>
 
                                 <!-- Customer's Question -->
-                                <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:14px 16px; margin-bottom:14px;">
-                                    <div style="font-size:0.75rem; font-weight:800; color:#64748b; text-transform:uppercase; margin-bottom:4px;">Your Message / សារដែលអ្នកបានផ្ញើ:</div>
+                                <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:14px 16px; margin-bottom:12px;">
+                                    <div style="font-size:0.75rem; font-weight:800; color:#64748b; text-transform:uppercase; margin-bottom:4px;">Your Message / សារដើមរបស់អ្នក:</div>
                                     <div style="font-size:0.92rem; color:#1e293b; line-height:1.6; white-space:pre-wrap;">{{ $inq->message }}</div>
                                 </div>
 
-                                <!-- Admin's Reply -->
-                                @if ($inq->status === 'replied' && !empty($inq->reply_message))
-                                    <div style="background:#f0fdf4; border:1.5px solid #86efac; border-radius:12px; padding:16px 18px;">
+                                <!-- Follow-up Replies Thread if any -->
+                                @if ($inq->replies && $inq->replies->isNotEmpty())
+                                    <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:14px;">
+                                        @foreach ($inq->replies as $rep)
+                                            @if ($rep->sender_type === 'admin')
+                                                <div style="background:#f0fdf4; border:1.5px solid #86efac; border-radius:12px; padding:14px 16px;">
+                                                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; flex-wrap:wrap; gap:4px;">
+                                                        <div style="font-size:0.8rem; font-weight:850; color:#15803d; display:flex; align-items:center; gap:5px;">
+                                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                                            <span>Store Concierge (Admin):</span>
+                                                        </div>
+                                                        <span style="font-size:0.72rem; color:#16a34a; font-weight:700;">{{ $rep->created_at->format('M d, Y • h:i A') }}</span>
+                                                    </div>
+                                                    <div style="font-size:0.92rem; color:#14532d; line-height:1.6; white-space:pre-wrap; font-weight:500;">{{ $rep->message }}</div>
+                                                </div>
+                                            @else
+                                                <div style="background:#eff6ff; border:1.5px solid #bfdbfe; border-radius:12px; padding:14px 16px;">
+                                                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; flex-wrap:wrap; gap:4px;">
+                                                        <div style="font-size:0.8rem; font-weight:850; color:#1d4ed8; display:flex; align-items:center; gap:5px;">
+                                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                                            <span>You ({{ $rep->sender_name ?: 'Customer' }}):</span>
+                                                        </div>
+                                                        <span style="font-size:0.72rem; color:#2563eb; font-weight:700;">{{ $rep->created_at->format('M d, Y • h:i A') }}</span>
+                                                    </div>
+                                                    <div style="font-size:0.92rem; color:#1e3a8a; line-height:1.6; white-space:pre-wrap; font-weight:500;">{{ $rep->message }}</div>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                @elseif ($inq->status === 'replied' && !empty($inq->reply_message))
+                                    <!-- Fallback single reply -->
+                                    <div style="background:#f0fdf4; border:1.5px solid #86efac; border-radius:12px; padding:16px 18px; margin-bottom:14px;">
                                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:6px;">
                                             <div style="font-size:0.82rem; font-weight:850; color:#15803d; display:flex; align-items:center; gap:6px;">
                                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
@@ -3079,10 +3108,30 @@
                                         <div style="font-size:0.94rem; color:#14532d; line-height:1.65; white-space:pre-wrap; font-weight:500;">{{ $inq->reply_message }}</div>
                                     </div>
                                 @else
-                                    <div style="font-size:0.82rem; color:#64748b; font-style:italic;">
+                                    <div style="font-size:0.82rem; color:#64748b; font-style:italic; margin-bottom:14px;">
                                         ⏳ Our concierge team is preparing your response. You will also receive an instant copy directly in your email (<strong>{{ $inq->email }}</strong>).
                                     </div>
                                 @endif
+
+                                <!-- Customer Follow-up Reply Section (តបបន្តទៅកាន់ Admin) -->
+                                <div style="margin-top:14px; padding-top:12px; border-top:1px dashed #cbd5e1;">
+                                    <button type="button" class="btn-outline" onclick="toggleReplyBox({{ $inq->id }})" style="font-size:0.82rem; padding:6px 14px; display:inline-flex; align-items:center; gap:6px; border:1.5px solid #cbd5e1; background:#ffffff; border-radius:8px; cursor:pointer; font-weight:750; color:#2563eb;">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                                        <span>Reply Back to Admin (ឆ្លើយតបបន្ត)</span>
+                                    </button>
+
+                                    <form id="reply-box-{{ $inq->id }}" action="{{ route('account.inquiries.reply', $inq->id) }}" method="POST" style="display:none; margin-top:12px;">
+                                        @csrf
+                                        <label style="font-size:0.78rem; font-weight:800; color:#0f172a; display:block; margin-bottom:6px;">Your Follow-up Reply (សរសេរសារតបបន្តទៅ Admin):</label>
+                                        <textarea name="message" rows="3" style="width:100%; border:1.5px solid #cbd5e1; border-radius:10px; padding:10px 14px; font-size:0.88rem; font-family:inherit; outline:none; transition:border-color 0.2s;" placeholder="Type your follow-up reply here..." required></textarea>
+                                        <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:8px;">
+                                            <button type="button" class="btn-outline" onclick="toggleReplyBox({{ $inq->id }})" style="font-size:0.8rem; padding:6px 12px; cursor:pointer;">Cancel</button>
+                                            <button type="submit" class="btn-primary" style="font-size:0.82rem; padding:7px 18px; background:#4f46e5; color:#ffffff; border:none; border-radius:8px; font-weight:750; cursor:pointer; box-shadow:0 3px 8px rgba(79,70,229,0.3);">
+                                                <span>Send Reply →</span>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         @endforeach
                     </div>
@@ -3107,6 +3156,18 @@
 
 @section('scripts')
 <script>
+function toggleReplyBox(id) {
+    const box = document.getElementById('reply-box-' + id);
+    if (!box) return;
+    if (box.style.display === 'none' || !box.style.display) {
+        box.style.display = 'block';
+        const txt = box.querySelector('textarea');
+        if (txt) txt.focus();
+    } else {
+        box.style.display = 'none';
+    }
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     const logoutBtn = document.getElementById('accountSidebarLogoutBtn');
     const logoutForm = document.getElementById('accountSidebarLogoutForm');

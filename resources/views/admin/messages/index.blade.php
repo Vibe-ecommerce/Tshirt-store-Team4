@@ -717,6 +717,16 @@
                             elseif (str_contains($subj, 'return') || str_contains($subj, 'exchange')) $pillClass = 'pill-returns';
                             elseif (str_contains($subj, 'whole') || str_contains($subj, 'press')) $pillClass = 'pill-wholesale';
 
+                            $repliesArray = $msg->replies ? $msg->replies->map(function ($r) {
+                                return [
+                                    'id' => $r->id,
+                                    'sender_type' => $r->sender_type,
+                                    'sender_name' => $r->sender_name,
+                                    'message' => $r->message,
+                                    'date' => $r->created_at->format('M d, Y • h:i A'),
+                                ];
+                            })->values()->toArray() : [];
+
                             $replyJson = json_encode([
                                 'id' => $msg->id,
                                 'name' => $msg->name,
@@ -724,6 +734,7 @@
                                 'subject' => $msg->subject,
                                 'message' => $msg->message,
                                 'reply_message' => $msg->reply_message,
+                                'replies' => $repliesArray,
                                 'date' => $msg->created_at->format('M d, Y • h:i A'),
                                 'replied_date' => $msg->replied_at ? $msg->replied_at->format('M d, Y • h:i A') : '',
                                 'status' => $msg->status,
@@ -899,7 +910,10 @@
                     </div>
                 </div>
 
-                <!-- Previous Reply if exists -->
+                <!-- Conversation Thread & Replies -->
+                <div id="modalRepliesContainer" style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;"></div>
+
+                <!-- Previous Reply fallback if exists -->
                 <div id="modalPreviousReplyBox" style="display:none; background:#ecfdf5; border:1.5px solid #86efac; border-radius:12px; padding:16px 18px; margin-bottom:16px;">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
                         <span style="font-size:0.78rem; font-weight:800; color:#15803d; text-transform:uppercase; display:inline-flex; align-items:center; gap:5px;">
@@ -962,6 +976,18 @@
 <script>
     let activeMessageId = null;
 
+    function escapeHtml(text) {
+        if (!text) return '';
+        const map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+        return String(text).replace(/[&<>"']/g, function(m) { return map[m]; });
+    }
+
     function openMessageModal(data) {
         activeMessageId = data.id;
 
@@ -979,9 +1005,43 @@
         const directReplyForm = document.getElementById('modalDirectReplyForm');
         directReplyForm.setAttribute('action', `/admin/messages/${data.id}/reply`);
 
-        // Check if there was a previous reply
+        // Render replies thread
+        const repliesContainer = document.getElementById('modalRepliesContainer');
+        repliesContainer.innerHTML = '';
         const prevReplyBox = document.getElementById('modalPreviousReplyBox');
-        if (data.reply_message) {
+
+        if (data.replies && data.replies.length > 0) {
+            prevReplyBox.style.display = 'none';
+            data.replies.forEach(rep => {
+                const item = document.createElement('div');
+                if (rep.sender_type === 'admin') {
+                    item.style.cssText = 'background:#f0fdf4; border:1.5px solid #86efac; border-radius:12px; padding:12px 16px;';
+                    item.innerHTML = `
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; flex-wrap:wrap; gap:4px;">
+                            <span style="font-size:0.78rem; font-weight:850; color:#15803d; text-transform:uppercase; display:inline-flex; align-items:center; gap:4px;">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                <span>${rep.sender_name || 'Store Admin'} (Store Response)</span>
+                            </span>
+                            <span style="font-size:0.72rem; color:#16a34a; font-weight:700;">${rep.date}</span>
+                        </div>
+                        <div style="font-size:0.9rem; color:#14532d; white-space:pre-wrap; line-height:1.6; font-weight:500;">${escapeHtml(rep.message)}</div>
+                    `;
+                } else {
+                    item.style.cssText = 'background:#eff6ff; border:1.5px solid #bfdbfe; border-radius:12px; padding:12px 16px;';
+                    item.innerHTML = `
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; flex-wrap:wrap; gap:4px;">
+                            <span style="font-size:0.78rem; font-weight:850; color:#1d4ed8; text-transform:uppercase; display:inline-flex; align-items:center; gap:4px;">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                <span>${rep.sender_name || 'Customer'} (Customer Reply)</span>
+                            </span>
+                            <span style="font-size:0.72rem; color:#2563eb; font-weight:700;">${rep.date}</span>
+                        </div>
+                        <div style="font-size:0.9rem; color:#1e3a8a; white-space:pre-wrap; line-height:1.6; font-weight:500;">${escapeHtml(rep.message)}</div>
+                    `;
+                }
+                repliesContainer.appendChild(item);
+            });
+        } else if (data.reply_message) {
             prevReplyBox.style.display = 'block';
             document.getElementById('modalPreviousReplyText').textContent = data.reply_message;
             document.getElementById('modalPreviousReplyDate').textContent = data.replied_date || 'Recently';

@@ -83,6 +83,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/account/avatar', [AccountController::class, 'updateAvatar'])->name('account.avatar');
     Route::post('/account/address', [AccountController::class, 'updateAddress'])->name('account.address');
     Route::post('/account/password', [AccountController::class, 'updatePassword'])->name('account.password');
+    Route::post('/account/inquiries/{id}/reply', [AccountController::class, 'replyInquiry'])->name('account.inquiries.reply');
 });
 
 Route::post('/wishlist/toggle/{id}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');

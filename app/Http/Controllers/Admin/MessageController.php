@@ -18,7 +18,7 @@ class MessageController extends Controller
         $status = $request->get('status', 'all');
         $search = $request->get('search');
 
-        $query = ContactMessage::orderBy('created_at', 'desc');
+        $query = ContactMessage::with('replies')->orderBy('created_at', 'desc');
 
         if ($status && $status !== 'all') {
             $query->where('status', $status);
@@ -123,6 +123,15 @@ class MessageController extends Controller
         $message->replied_at = now();
         $message->status = 'replied';
         $message->save();
+
+        // Also record in replies thread
+        \App\Models\ContactMessageReply::create([
+            'contact_message_id' => $message->id,
+            'user_id' => auth()->id(),
+            'sender_type' => 'admin',
+            'sender_name' => auth()->user()?->name ?? 'Store Admin',
+            'message' => $replyText,
+        ]);
 
         if ($request->wantsJson()) {
             return response()->json([

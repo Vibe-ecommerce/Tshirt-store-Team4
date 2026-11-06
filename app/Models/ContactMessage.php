@@ -30,12 +30,18 @@ class ContactMessage extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function replies()
+    {
+        return $this->hasMany(ContactMessageReply::class)->orderBy('created_at', 'asc');
+    }
+
     /**
      * Auto-ensure table exists in production databases (e.g. TiDB Cloud / Render)
      */
     public static function ensureTableExists(): bool
     {
         try {
+            ContactMessageReply::ensureTableExists();
             if (!Schema::hasTable('contact_messages')) {
                 Schema::create('contact_messages', function (Blueprint $table) {
                     $table->id();
