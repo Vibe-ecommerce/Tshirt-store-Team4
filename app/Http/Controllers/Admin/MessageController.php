@@ -88,3 +88,4 @@ class MessageController extends Controller
         return redirect()->back()->with('success', 'Customer inquiry deleted successfully.');
     }
 }
+
