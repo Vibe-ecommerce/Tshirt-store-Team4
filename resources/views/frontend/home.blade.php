@@ -1166,71 +1166,249 @@
             font-size: 0.88rem;
         }
 
-        /* 2-Column Mobile Product Grid */
+        /* -------------------------------------------------------------
+           2-COLUMN MOBILE PRODUCT GRID (LUXURY COMPACT STOREFRONT)
+        ------------------------------------------------------------- */
         .products-grid-modern {
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+            gap: 10px;
         }
         .product-card-modern {
             border-radius: 14px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+            overflow: hidden;
         }
+        .product-media-wrap {
+            aspect-ratio: 1/1;
+        }
+
+        /* Clean unobtrusive badges on mobile */
+        .product-top-tag {
+            display: none; /* Hide bulky category badge from image on mobile */
+        }
+        .product-top-tag.badge-bestseller {
+            display: block;
+            top: 8px;
+            left: 8px;
+            font-size: 0.58rem;
+            padding: 2.5px 6px;
+            font-weight: 850;
+        }
+        .product-top-rating {
+            top: 8px;
+            right: 8px;
+            font-size: 0.65rem;
+            font-weight: 850;
+            padding: 2.5px 7px;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.94);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+        .product-discount-badge {
+            top: 8px;
+            left: 8px;
+            bottom: auto;
+            right: auto;
+            font-size: 0.65rem;
+            font-weight: 850;
+            padding: 2.5px 6.5px;
+            border-radius: 9999px;
+            background: #ef4444;
+            color: #ffffff;
+            box-shadow: 0 2px 6px rgba(239, 68, 68, 0.35);
+        }
+        .badge-lowstock {
+            top: 8px;
+            left: 8px;
+            font-size: 0.58rem;
+            padding: 2px 6px;
+        }
+        .badge-stockout {
+            font-size: 0.65rem;
+            padding: 3px 8px;
+        }
+
         .product-body-modern {
-            padding: 12px 10px 14px;
+            padding: 10px 8px 12px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        .product-cat-subtle {
+            display: block;
+            font-size: 0.60rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: #94a3b8;
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .product-title-modern {
-            font-size: 0.86rem;
-            line-height: 1.3;
-            height: 2.6em;
+            font-size: 0.83rem;
+            line-height: 1.35;
+            height: 2.7em;
+            margin-bottom: 4px;
             overflow: hidden;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
+            font-weight: 800;
+            color: #0f172a;
         }
         .product-desc-modern {
             display: none;
         }
+
+        /* Size Selector: Single horizontal swipeable row (Zero multi-line wrapping!) */
         .size-selector-row {
-            margin: 6px 0;
-            gap: 4px;
+            display: flex;
+            align-items: center;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            gap: 3.5px;
+            margin: 4px 0 8px;
+            padding-bottom: 2px;
+        }
+        .size-selector-row::-webkit-scrollbar {
+            display: none;
         }
         .size-label-tag {
-            font-size: 0.64rem;
+            font-size: 0.58rem;
+            font-weight: 800;
+            color: #94a3b8;
+            letter-spacing: 0.2px;
+            margin-right: 2px;
+            flex-shrink: 0;
         }
         .size-pill-btn {
-            font-size: 0.68rem;
-            padding: 2px 6px;
+            flex-shrink: 0;
+            height: 22px;
             min-width: 22px;
+            padding: 0 5px;
+            font-size: 0.65rem;
+            font-weight: 750;
+            border-radius: 5px;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            color: #475569;
+        }
+        .size-pill-btn.active {
+            background: #0f172a;
+            color: #ffffff;
+            border-color: #0f172a;
+        }
+
+        /* Pricing strip: clean 2-line layout to prevent KHR currency truncation */
+        .product-footer-modern {
+            margin-top: auto;
+            padding-top: 6px;
+            border-top: 1px solid #f1f5f9;
+            gap: 7px;
+        }
+        .product-pricing-strip {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2px;
+            width: 100%;
+        }
+        .product-pricing-strip > div:first-child {
+            display: flex;
+            align-items: baseline;
+            gap: 5px;
         }
         .product-price-current {
-            font-size: 0.98rem;
+            font-size: 1.02rem;
+            font-weight: 900;
+            color: #0f172a;
+            letter-spacing: -0.3px;
         }
         .product-price-prev {
             font-size: 0.74rem;
+            color: #94a3b8;
+            text-decoration: line-through;
         }
         .product-khr-pill {
-            font-size: 0.68rem;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #64748b;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 1.5px 6px;
+            border-radius: 4px;
+            white-space: nowrap;
+            display: inline-block;
         }
-        .product-top-tag, .product-top-rating, .product-discount-badge {
-            font-size: 0.62rem;
-            padding: 2px 7px;
-        }
+
+        /* Dual Action Row: Sleek side-by-side (Square Cart icon + Buy Now button) */
         .card-action-dual {
-            flex-direction: column;
-            gap: 6px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            width: 100%;
         }
-        .btn-quick-cart-modern, .btn-quick-buynow-modern {
+        .card-action-dual form:first-child {
+            flex: 0 0 36px !important;
+            margin: 0;
+        }
+        .card-action-dual form:last-child {
+            flex: 1 !important;
+            margin: 0;
+        }
+        .btn-quick-cart-modern {
+            width: 36px;
             height: 36px;
-            font-size: 0.78rem;
-            padding: 0 8px;
-            gap: 4px;
+            padding: 0;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0f172a;
+            color: #ffffff;
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.12);
         }
-        .btn-quick-cart-modern svg, .btn-quick-buynow-modern svg {
-            width: 13px;
-            height: 13px;
+        .btn-quick-cart-modern span {
+            display: none !important;
+        }
+        .btn-quick-cart-modern svg {
+            width: 15px;
+            height: 15px;
+            display: block;
+        }
+        .btn-quick-buynow-modern {
+            width: 100%;
+            height: 36px;
+            padding: 0 6px;
+            border-radius: 9px;
+            font-size: 0.76rem;
+            font-weight: 850;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+            white-space: nowrap;
+        }
+        .btn-quick-buynow-modern svg {
+            width: 11px;
+            height: 11px;
+            flex-shrink: 0;
         }
         .btn-stockout-full {
             height: 36px;
-            font-size: 0.78rem;
+            font-size: 0.76rem;
+            border-radius: 9px;
         }
     }
 </style>
@@ -1516,6 +1694,7 @@
                     </a>
 
                     <div class="product-body-modern">
+                        <span class="product-cat-subtle">{{ $product->category }}</span>
                         <a href="{{ route('product.detail', $product->id) }}">
                             <h3 class="product-title-modern">{{ $product->name }}</h3>
                         </a>
@@ -1683,6 +1862,7 @@
                     </a>
 
                     <div class="product-body-modern">
+                        <span class="product-cat-subtle">{{ $product->category }}</span>
                         <a href="{{ route('product.detail', $product->id) }}">
                             <h3 class="product-title-modern">{{ $product->name }}</h3>
                         </a>

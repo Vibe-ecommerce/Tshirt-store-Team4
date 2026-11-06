@@ -660,67 +660,131 @@
         }
         .products-grid {
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+            gap: 10px;
         }
         .product-card {
             border-radius: 14px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+            overflow: hidden;
         }
         .product-body {
-            padding: 12px 10px 14px;
+            padding: 10px 8px 12px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
         }
         .product-cat-label {
-            font-size: 0.65rem;
-            margin-bottom: 3px;
+            font-size: 0.60rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            color: #94a3b8;
+            margin-bottom: 2px;
         }
         .product-title {
-            font-size: 0.86rem;
-            line-height: 1.3;
-            height: 2.6em;
+            font-size: 0.83rem;
+            line-height: 1.35;
+            height: 2.7em;
+            margin-bottom: 4px;
             overflow: hidden;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
+            font-weight: 800;
+            color: #0f172a;
         }
         .product-rating-row {
-            margin: 4px 0 6px;
-            font-size: 0.74rem;
+            margin: 2px 0 6px;
+            font-size: 0.72rem;
         }
         .rating-reviews-count {
             display: none;
         }
+        .product-price-row {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2px;
+            margin-bottom: 6px;
+        }
         .product-price {
-            font-size: 0.98rem;
+            font-size: 1.02rem;
+            font-weight: 900;
+            color: #0f172a;
+            letter-spacing: -0.3px;
         }
         .product-original-price {
-            font-size: 0.75rem;
+            font-size: 0.74rem;
+            color: #94a3b8;
         }
         .product-discount-pill {
-            font-size: 0.65rem;
-            padding: 1px 5px;
+            font-size: 0.62rem;
+            padding: 1.5px 5px;
+            border-radius: 4px;
         }
         .card-action-dual {
-            flex-direction: column;
-            gap: 6px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            width: 100%;
         }
-        .btn-shop-cart-dual, .btn-shop-buynow-dual {
+        .card-action-dual form:first-child {
+            flex: 0 0 36px !important;
+            margin: 0;
+        }
+        .card-action-dual form:last-child {
+            flex: 1 !important;
+            margin: 0;
+        }
+        .btn-shop-cart-dual {
+            width: 36px;
             height: 36px;
-            font-size: 0.78rem;
-            padding: 0 8px;
-            gap: 4px;
+            padding: 0;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0f172a;
+            color: #ffffff;
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.12);
         }
-        .btn-shop-cart-dual svg, .btn-shop-buynow-dual svg {
-            width: 13px;
-            height: 13px;
+        .btn-shop-cart-dual span {
+            display: none !important;
+        }
+        .btn-shop-cart-dual svg {
+            width: 15px;
+            height: 15px;
+            display: block;
+        }
+        .btn-shop-buynow-dual {
+            width: 100%;
+            height: 36px;
+            padding: 0 6px;
+            border-radius: 9px;
+            font-size: 0.76rem;
+            font-weight: 850;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+            white-space: nowrap;
+        }
+        .btn-shop-buynow-dual svg {
+            width: 11px;
+            height: 11px;
+            flex-shrink: 0;
         }
         .btn-shop-cart-full, .btn-stockout-full {
             height: 36px;
-            font-size: 0.78rem;
+            font-size: 0.76rem;
+            border-radius: 9px;
         }
         .badge-tag {
-            font-size: 0.62rem;
-            padding: 3px 7px;
-            top: 8px;
-            left: 8px;
+            display: none; /* Hide category badge from image on mobile to keep photo clean */
         }
         .badge-stockout, .badge-lowstock {
             font-size: 0.62rem;
