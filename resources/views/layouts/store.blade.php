@@ -1555,6 +1555,8 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            flex-shrink: 0;
+            min-width: 0;
         }
 
         @media (max-width: 900px) {
@@ -1597,42 +1599,92 @@
                 font-size: 0.72rem;
                 padding: 6px 10px;
             }
-            .user-name-text {
-                display: none;
+            .user-name-text,
+            .user-admin-chip,
+            .user-menu-caret {
+                display: none !important;
+            }
+            .user-menu-trigger {
+                padding: 2px !important;
+                border: none !important;
+                background: transparent !important;
+                box-shadow: none !important;
+                gap: 0 !important;
+            }
+            .user-avatar {
+                width: 32px !important;
+                height: 32px !important;
             }
             .cart-pill-btn span:first-of-type {
                 display: none;
             }
             .cart-pill-btn {
-                padding: 6px 10px;
+                padding: 5px 8px;
+                gap: 4px;
+            }
+            .cart-count-badge {
+                min-width: 18px;
+                height: 18px;
+                font-size: 0.68rem;
+                padding: 0 4px;
+            }
+            .nav-actions {
+                gap: 6px !important;
+            }
+            .brand-nav-group {
+                gap: 8px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .brand-text-sub {
+                display: none !important;
             }
         }
 
         @media (max-width: 480px) {
             .navbar {
-                padding: 0 12px;
-                height: 62px;
+                padding: 0 10px;
+                height: 58px;
             }
             .nav-container {
-                gap: 8px;
+                gap: 6px;
             }
             .brand-nav-group {
-                gap: 8px;
+                gap: 6px;
+            }
+            .brand-logo {
+                gap: 6px;
             }
             .brand-icon-wrap {
-                width: 34px;
-                height: 34px;
-                border-radius: 10px;
+                width: 32px;
+                height: 32px;
+                border-radius: 9px;
             }
             .brand-text {
-                font-size: 1.05rem;
+                font-size: 1rem;
+                white-space: nowrap;
+            }
+            .mobile-menu-toggle-btn {
+                width: 34px;
+                height: 34px;
+                border-radius: 9px;
             }
             .action-icon-btn {
-                width: 36px;
-                height: 36px;
+                width: 34px;
+                height: 34px;
+            }
+            .action-icon-btn svg {
+                width: 16px;
+                height: 16px;
             }
             .cart-pill-btn {
-                padding: 5px 8px;
+                padding: 5px 7px;
+                font-size: 0.8rem;
+            }
+            .cart-pill-btn svg {
+                width: 16px;
+                height: 16px;
             }
             .top-banner {
                 font-size: 0.68rem;
@@ -2142,7 +2194,7 @@
                             <path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z" fill="rgba(255,255,255,0.2)"/>
                         </svg>
                     </span>
-                    <span class="brand-text">T-Shirt Online<span class="brand-dot"></span></span>
+                    <span class="brand-text">T-Shirt<span class="brand-text-sub"> Online</span><span class="brand-dot"></span></span>
                 </a>
             </div>
 
