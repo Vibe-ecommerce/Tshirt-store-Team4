@@ -27,9 +27,20 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-av
 # Install production dependencies
 RUN composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist --ignore-platform-reqs
 
-# Set directory permissions for Laravel storage and cache
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
-    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+# Set directory permissions for Laravel storage, cache, and public uploads
+RUN mkdir -p /var/www/html/public/uploads/payments \
+             /var/www/html/public/uploads/receipts \
+             /var/www/html/public/uploads/avatars \
+             /var/www/html/public/images/products \
+             /var/www/html/public/images/banners \
+    && chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/public/uploads /var/www/html/public/images \
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/public/uploads /var/www/html/public/images
+
+# Configure custom PHP upload and memory limits for mobile photo uploads
+RUN echo "upload_max_filesize = 25M" > /usr/local/etc/php/conf.d/uploads.ini \
+    && echo "post_max_size = 30M" >> /usr/local/etc/php/conf.d/uploads.ini \
+    && echo "memory_limit = 256M" >> /usr/local/etc/php/conf.d/uploads.ini \
+    && echo "max_execution_time = 120" >> /usr/local/etc/php/conf.d/uploads.ini
 
 # Setup entrypoint script
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh

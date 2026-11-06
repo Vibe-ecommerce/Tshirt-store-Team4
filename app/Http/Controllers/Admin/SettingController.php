@@ -67,49 +67,56 @@ class SettingController extends Controller
     {
         $group = $request->input('group', 'website');
 
-        // Handle QR Code Image Upload if in payment group
-        if ($group === 'payment') {
-            if ($request->hasFile('qr_code_image_file')) {
-                $request->validate([
-                    'qr_code_image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:5120',
-                ]);
-                $file = $request->file('qr_code_image_file');
-                $extension = $file->getClientOriginalExtension() ?: 'png';
-                $fileName = 'qr_code_' . time() . '.' . $extension;
-                $destination = public_path('uploads/payments');
-                if (!file_exists($destination)) {
-                    mkdir($destination, 0755, true);
-                }
-                $file->move($destination, $fileName);
-                SiteSetting::set('qr_code_image', '/uploads/payments/' . $fileName, 'payment');
-            } elseif ($request->filled('remove_qr_code') && $request->input('remove_qr_code') == '1') {
-                SiteSetting::set('qr_code_image', '/images/payments/default_khqr.svg', 'payment');
-            }
-        }
-
-        foreach ($request->except(['_token', 'group', 'qr_code_image_file', 'remove_qr_code']) as $key => $value) {
-            SiteSetting::set($key, $value, $group);
-        }
-
-        // Auto-fix if user mistakenly entered a bot username (ending in _bot) for chat_id
-        if ($group === 'notification') {
-            $botToken = SiteSetting::get('telegram_bot_token');
-            $chatId = SiteSetting::get('telegram_chat_id');
-            if (!empty($botToken) && !empty($chatId) && str_ends_with(strtolower(trim($chatId)), '_bot')) {
-                try {
-                    $res = Http::timeout(5)->get("https://api.telegram.org/bot{$botToken}/getUpdates")->json();
-                    if (!empty($res['result'])) {
-                        $lastMsg = end($res['result']);
-                        if (isset($lastMsg['message']['chat']['id'])) {
-                            $realChatId = (string) $lastMsg['message']['chat']['id'];
-                            SiteSetting::set('telegram_chat_id', $realChatId, 'notification');
-                        }
+        try {
+            // Handle QR Code Image Upload if in payment group
+            if ($group === 'payment') {
+                if ($request->hasFile('qr_code_image_file')) {
+                    $request->validate([
+                        'qr_code_image_file' => 'nullable|image|mimes:jpeg,png,jpg,webp,svg|max:10240',
+                    ]);
+                    $file = $request->file('qr_code_image_file');
+                    $extension = $file->getClientOriginalExtension() ?: 'png';
+                    $fileName = 'qr_code_' . time() . '.' . $extension;
+                    $destination = public_path('uploads/payments');
+                    if (!file_exists($destination)) {
+                        @mkdir($destination, 0775, true);
                     }
-                } catch (\Exception $e) {}
+                    $file->move($destination, $fileName);
+                    SiteSetting::set('qr_code_image', '/uploads/payments/' . $fileName, 'payment');
+                } elseif ($request->filled('remove_qr_code') && $request->input('remove_qr_code') == '1') {
+                    SiteSetting::set('qr_code_image', '/images/payments/default_khqr.svg', 'payment');
+                }
             }
-        }
 
-        return redirect()->route('admin.settings.index', ['group' => $group])->with('success', ucfirst($group) . ' settings updated successfully.');
+            foreach ($request->except(['_token', 'group', 'qr_code_image_file', 'remove_qr_code']) as $key => $value) {
+                SiteSetting::set($key, $value, $group);
+            }
+
+            // Auto-fix if user mistakenly entered a bot username (ending in _bot) for chat_id
+            if ($group === 'notification') {
+                $botToken = SiteSetting::get('telegram_bot_token');
+                $chatId = SiteSetting::get('telegram_chat_id');
+                if (!empty($botToken) && !empty($chatId) && str_ends_with(strtolower(trim($chatId)), '_bot')) {
+                    try {
+                        $res = Http::timeout(5)->get("https://api.telegram.org/bot{$botToken}/getUpdates")->json();
+                        if (!empty($res['result'])) {
+                            $lastMsg = end($res['result']);
+                            if (isset($lastMsg['message']['chat']['id'])) {
+                                $realChatId = (string) $lastMsg['message']['chat']['id'];
+                                SiteSetting::set('telegram_chat_id', $realChatId, 'notification');
+                            }
+                        }
+                    } catch (\Throwable $e) {}
+                }
+            }
+
+            return redirect()->route('admin.settings.index', ['group' => $group])
+                ->with('success', ucfirst($group) . ' settings updated successfully (បានរក្សាទុកដោយជោគជ័យ)។');
+        } catch (\Throwable $e) {
+            Log::error("Failed to update settings: " . $e->getMessage());
+            return redirect()->route('admin.settings.index', ['group' => $group])
+                ->with('error', 'Could not save settings: ' . $e->getMessage());
+        }
     }
 
     /**

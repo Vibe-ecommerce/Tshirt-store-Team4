@@ -1539,19 +1539,19 @@
                 <div class="sidebar-profile-card">
                     <a href="{{ route('admin.account.profile') }}" class="profile-card-header" title="Manage Profile & Account">
                         <div class="profile-avatar-wrap">
-                            @if (Auth::user() && Auth::user()->avatar)
-                                <img src="{{ asset(Auth::user()->avatar) }}" alt="{{ Auth::user()->name }}" class="profile-avatar-img">
+                            @if (Auth::user()?->avatar)
+                                <img src="{{ asset(Auth::user()->avatar) }}" alt="{{ Auth::user()?->name ?? 'Admin' }}" class="profile-avatar-img">
                             @else
-                                <div class="profile-avatar-fallback">{{ strtoupper(substr(Auth::user()->name ?? 'A', 0, 1)) }}</div>
+                                <div class="profile-avatar-fallback">{{ strtoupper(substr(Auth::user()?->name ?? 'A', 0, 1)) }}</div>
                             @endif
                             <span class="profile-online-dot" title="Active Administrator Session"></span>
                         </div>
                         <div class="profile-meta">
                             <div class="profile-meta-top">
-                                <span class="profile-name">{{ Auth::user()->name ?? 'Admin Manager' }}</span>
+                                <span class="profile-name">{{ Auth::user()?->name ?? 'Admin Manager' }}</span>
                                 <span class="profile-role-badge">ADMIN</span>
                             </div>
-                            <span class="profile-email">{{ Auth::user()->email ?? 'admin@tshirtstore.com' }}</span>
+                            <span class="profile-email">{{ Auth::user()?->email ?? 'admin@tshirtstore.com' }}</span>
                         </div>
                     </a>
 
@@ -1615,19 +1615,19 @@
 
                     <a href="{{ route('admin.account.profile') }}" class="header-user-card" title="Manage Admin Profile & Account">
                         <div class="header-avatar-wrap">
-                            @if (Auth::user() && Auth::user()->avatar)
-                                <img src="{{ asset(Auth::user()->avatar) }}" alt="{{ Auth::user()->name }}" class="header-avatar-img">
+                            @if (Auth::user()?->avatar)
+                                <img src="{{ asset(Auth::user()->avatar) }}" alt="{{ Auth::user()?->name ?? 'Admin' }}" class="header-avatar-img">
                             @else
-                                <div class="header-avatar-fallback">{{ strtoupper(substr(Auth::user()->name ?? 'A', 0, 1)) }}</div>
+                                <div class="header-avatar-fallback">{{ strtoupper(substr(Auth::user()?->name ?? 'A', 0, 1)) }}</div>
                             @endif
                             <span class="header-online-dot"></span>
                         </div>
                         <div class="header-user-meta">
                             <div class="header-user-name-row">
-                                <span class="header-user-name">{{ Auth::user()->name ?? 'Admin Manager' }}</span>
+                                <span class="header-user-name">{{ Auth::user()?->name ?? 'Admin Manager' }}</span>
                                 <span class="header-user-badge">ADMIN</span>
                             </div>
-                            <span class="header-user-email">{{ Auth::user()->email ?? 'admin@tshirtstore.com' }}</span>
+                            <span class="header-user-email">{{ Auth::user()?->email ?? 'admin@tshirtstore.com' }}</span>
                         </div>
                         <svg class="header-user-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="6 9 12 15 18 9"></polyline>

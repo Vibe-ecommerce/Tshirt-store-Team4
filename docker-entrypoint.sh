@@ -8,10 +8,11 @@ if [ -n "$PORT" ]; then
     sed -i "s/:80/:$PORT/g" /etc/apache2/sites-available/*.conf
 fi
 
-# Ensure storage directories exist and are writable
+# Ensure storage and upload directories exist and are writable
 mkdir -p storage/framework/{sessions,views,cache} storage/logs bootstrap/cache
-chown -R www-data:www-data storage bootstrap/cache
-chmod -R 775 storage bootstrap/cache
+mkdir -p public/uploads/{payments,receipts,avatars} public/images/{products,banners}
+chown -R www-data:www-data storage bootstrap/cache public/uploads public/images
+chmod -R 775 storage bootstrap/cache public/uploads public/images
 
 # Create public storage symlink if missing
 php artisan storage:link --force || true

@@ -406,6 +406,33 @@
         box-shadow: 0 8px 28px rgba(79, 70, 229, 0.65);
         background: linear-gradient(135deg, #4338ca 0%, #4f46e5 100%);
     }
+
+    .settings-qr-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.35fr;
+        gap: 26px;
+        align-items: start;
+    }
+
+    @media (max-width: 768px) {
+        .settings-qr-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        .settings-content-wrap {
+            padding: 20px 16px;
+        }
+        .settings-hero-banner {
+            padding: 20px 18px;
+        }
+        .settings-hero-title {
+            font-size: 1.35rem;
+        }
+        .btn-executive-save-settings {
+            width: 100%;
+            justify-content: center;
+        }
+    }
 </style>
 @endsection
 
@@ -739,7 +766,7 @@
                         </div>
                     </div>
 
-                    <div style="display:grid; grid-template-columns:1fr 1.35fr; gap:26px; align-items:start;">
+                    <div class="settings-qr-grid">
                         <!-- QR Code Upload & Live Preview -->
                         <div style="background:#ffffff; border:1.5px dashed #cbd5e1; border-radius:var(--radius-md); padding:24px; text-align:center; box-shadow:0 1px 3px rgba(0,0,0,0.03);">
                             <div style="font-size:0.82rem; font-weight:850; color:#1e293b; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:14px; display:flex; align-items:center; justify-content:center; gap:6px;">
