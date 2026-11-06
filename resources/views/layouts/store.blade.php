@@ -1551,6 +1551,12 @@
             color: #0f172a;
         }
 
+        .brand-nav-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         @media (max-width: 900px) {
             .mobile-menu-toggle-btn {
                 display: inline-flex;
@@ -1577,6 +1583,12 @@
             }
         }
 
+        @media (max-width: 768px) {
+            .nav-auth-desktop {
+                display: none !important;
+            }
+        }
+
         @media (max-width: 680px) {
             .nav-search-container {
                 display: none;
@@ -1593,6 +1605,42 @@
             }
             .cart-pill-btn {
                 padding: 6px 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 0 12px;
+                height: 62px;
+            }
+            .nav-container {
+                gap: 8px;
+            }
+            .brand-nav-group {
+                gap: 8px;
+            }
+            .brand-icon-wrap {
+                width: 34px;
+                height: 34px;
+                border-radius: 10px;
+            }
+            .brand-text {
+                font-size: 1.05rem;
+            }
+            .action-icon-btn {
+                width: 36px;
+                height: 36px;
+            }
+            .cart-pill-btn {
+                padding: 5px 8px;
+            }
+            .top-banner {
+                font-size: 0.68rem;
+                padding: 5px 8px;
+            }
+            .top-banner-badge {
+                font-size: 0.60rem;
+                padding: 1px 6px;
             }
         }
 
@@ -2079,14 +2127,24 @@
     <!-- 2. Main Navigation -->
     <header class="navbar">
         <div class="nav-container">
-            <a href="{{ route('home') }}" class="brand-logo">
-                <span class="brand-icon-wrap">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z" fill="rgba(255,255,255,0.2)"/>
+            <div class="brand-nav-group">
+                <!-- Mobile Hamburger Button (visible <= 900px) -->
+                <button type="button" class="mobile-menu-toggle-btn" id="mobileMenuToggleBtn" aria-label="Open mobile navigation menu" onclick="openMobileNav()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
                     </svg>
-                </span>
-                <span class="brand-text">T-Shirt Online<span class="brand-dot"></span></span>
-            </a>
+                </button>
+                <a href="{{ route('home') }}" class="brand-logo">
+                    <span class="brand-icon-wrap">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z" fill="rgba(255,255,255,0.2)"/>
+                        </svg>
+                    </span>
+                    <span class="brand-text">T-Shirt Online<span class="brand-dot"></span></span>
+                </a>
+            </div>
 
             <ul class="nav-links">
                 <li><a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}">Home</a></li>
@@ -2232,8 +2290,8 @@
                         </div>
                     </div>
                 @else
-                    <a href="{{ route('login') }}" class="btn-outline" style="border:none; padding:8px 14px;">Log in</a>
-                    <a href="{{ route('register') }}" class="btn-primary" style="padding:8px 18px;">Register</a>
+                    <a href="{{ route('login') }}" class="btn-outline nav-auth-desktop" style="border:none; padding:8px 14px;">Log in</a>
+                    <a href="{{ route('register') }}" class="btn-primary nav-auth-desktop" style="padding:8px 18px;">Register</a>
                 @endauth
             </div>
         </div>
@@ -2366,6 +2424,171 @@
     </footer>
     @endif
 
+    <!-- =============================================================
+         MOBILE NAVIGATION DRAWER & BACKDROP OVERLAY
+         ============================================================= -->
+    <div class="mobile-nav-backdrop" id="mobileNavBackdrop" onclick="closeMobileNav()"></div>
+
+    <aside class="mobile-nav-drawer" id="mobileNavDrawer" aria-hidden="true" role="dialog" aria-label="Mobile Navigation Drawer">
+        <!-- Drawer Header -->
+        <div class="mobile-nav-header">
+            <a href="{{ route('home') }}" class="mobile-nav-brand" onclick="closeMobileNav()">
+                <span class="brand-icon-wrap" style="width:34px; height:34px; border-radius:10px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z" fill="rgba(255,255,255,0.2)"/>
+                    </svg>
+                </span>
+                <span class="brand-text" style="font-size:1.15rem;">T-Shirt Online<span class="brand-dot"></span></span>
+            </a>
+            <button type="button" class="mobile-nav-close-btn" onclick="closeMobileNav()" aria-label="Close menu">✕</button>
+        </div>
+
+        <!-- Drawer Search Bar -->
+        <div class="mobile-nav-search">
+            <form action="{{ route('shop.index') }}" method="GET" class="mobile-search-form">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" name="search" placeholder="ស្វែងរកម៉ូតអាវ (Search)..." value="{{ request('search') }}">
+                <button type="submit">ស្វែងរក</button>
+            </form>
+        </div>
+
+        <!-- Drawer Body -->
+        <div class="mobile-nav-body">
+            <!-- Navigation Links -->
+            <div class="mobile-nav-section-title">មឺនុយចម្បង (Navigation)</div>
+            <ul class="mobile-links-list">
+                <li>
+                    <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}" onclick="closeMobileNav()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                        <span>ទំព័រដើម (Home)</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('shop.index') }}" class="{{ request()->routeIs('shop.*') ? 'active' : '' }}" onclick="closeMobileNav()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+                        <span>ហាងទំនិញ (Shop All)</span>
+                        <span class="m-badge">COLLECTION</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('order.track') }}" class="{{ request()->routeIs('order.track') ? 'active' : '' }}" onclick="closeMobileNav()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                        <span>តាមដានកញ្ចប់ទំនិញ (Track Order)</span>
+                        <span class="m-badge" style="background:#fef3c7; color:#b45309; border-color:#fde68a;">LIVE</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('cart.index') }}" class="{{ request()->routeIs('cart.*') ? 'active' : '' }}" onclick="closeMobileNav()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                        <span>កន្ត្រកទំនិញ (Shopping Bag)</span>
+                        <span class="m-badge" style="background:#eff6ff; color:#2563eb; border-color:#bfdbfe;">{{ $cartCount ?? 0 }}</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ Auth::check() ? route('account.index', ['tab' => 'wishlist']) : route('shop.index') }}" onclick="closeMobileNav()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                        <span>ទំនិញពេញចិត្ត (Wishlist)</span>
+                        @if (($wishlistCount ?? 0) > 0)
+                            <span class="m-badge" style="background:#fdf2f8; color:#ec4899; border-color:#fbcfe8;">{{ $wishlistCount }}</span>
+                        @endif
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}" onclick="closeMobileNav()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                        <span>អំពីពួកយើង (About Us)</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}" onclick="closeMobileNav()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                        <span>ទំនាក់ទំនង (Contact)</span>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Account Section -->
+            <div style="margin-top: 24px;">
+                <div class="mobile-nav-section-title">គណនីរបស់អ្នក (Account)</div>
+                @auth
+                    <div class="mobile-user-card">
+                        <div class="mobile-user-info">
+                            <div class="mobile-avatar">
+                                @if (Auth::user()->avatar)
+                                    <img src="{{ asset(Auth::user()->avatar) }}" alt="{{ Auth::user()->name }}">
+                                @else
+                                    <span>{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</span>
+                                @endif
+                            </div>
+                            <div style="flex: 1; min-width: 0;">
+                                <div class="m-name" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ Auth::user()->name }}</div>
+                                <div class="m-email" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ Auth::user()->email }}</div>
+                            </div>
+                            @if (Auth::user()->role === 'admin')
+                                <span class="m-badge" style="background:#fef3c7; color:#92400e; border-color:#fde68a;">ADMIN</span>
+                            @endif
+                        </div>
+                        <div class="mobile-user-actions">
+                            @if (Auth::user()->role === 'admin')
+                                <a href="{{ route('admin.dashboard') }}" class="m-btn admin" onclick="closeMobileNav()">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                                    <span>ផ្ទាំងគ្រប់គ្រង Admin</span>
+                                </a>
+                            @endif
+                            <a href="{{ route('account.index') }}" class="m-btn" onclick="closeMobileNav()">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                <span>ព័ត៌មានគណនី (My Profile)</span>
+                            </a>
+                            <a href="{{ route('account.index', ['tab' => 'orders']) }}" class="m-btn" onclick="closeMobileNav()">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                                <span>ប្រវត្តិបញ្ជាទិញ (Order History)</span>
+                            </a>
+                            <form action="{{ route('logout') }}" method="POST" style="margin:0;">
+                                @csrf
+                                <button type="submit" class="m-btn logout">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                                    <span>ចាកចេញ (Log Out)</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                @else
+                    <div class="mobile-user-card" style="padding:16px;">
+                        <div class="mobile-auth-prompt">
+                            <p style="margin-bottom:12px;">សូមចូលគណនីដើម្បីពិនិត្យការបញ្ជាទិញ និងរក្សាទុកទំនិញដែលពេញចិត្ត។</p>
+                        </div>
+                        <div class="mobile-auth-buttons">
+                            <a href="{{ route('login') }}" class="m-auth-btn primary" onclick="closeMobileNav()">ចូលគណនី</a>
+                            <a href="{{ route('register') }}" class="m-auth-btn secondary" onclick="closeMobileNav()">ចុះឈ្មោះ</a>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <a href="{{ route('auth.google') }}" style="display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:9px 12px; border:1px solid #cbd5e1; border-radius:8px; background:#ffffff; color:#334155; font-size:0.82rem; font-weight:700; text-decoration:none; box-shadow:0 1px 2px rgba(0,0,0,0.03);">
+                                <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+                                <span>ចូលដោយ Google</span>
+                            </a>
+                        </div>
+                    </div>
+                @endauth
+            </div>
+
+            <!-- Customer Care -->
+            <div style="margin-top: 24px; padding: 14px 16px; background: #f8fafc; border-radius: 12px; border: 1px dashed #cbd5e1; font-size: 0.8rem; color: #64748b;">
+                <div style="font-weight: 750; color: #0f172a; margin-bottom: 6px; display:flex; align-items:center; gap:6px;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                    <span>សេវាកម្មអតិថិជន (Support)</span>
+                </div>
+                <div style="line-height:1.6;">
+                    <div>Telegram: <a href="https://t.me/mesakvav" target="_blank" style="color:#2563eb; font-weight:650;">@mesakvav</a></div>
+                    <div>ទូរសព្ទ: <a href="tel:+85512345678" style="color:#0f172a; font-weight:650;">+855 12 345 678</a></div>
+                    <div>ដឹកជញ្ជូន: <span style="font-weight:600; color:#059669;">ទូទាំងប្រទេសកម្ពុជា (25 ខេត្ត/ក្រុង)</span></div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
     <!-- ============================================================
          COOL CONFIRMATION ALERT MODAL (Universal)
          ============================================================ -->
@@ -2413,6 +2636,37 @@
     </div>
 
     <script>
+        /* ============================================================
+           MOBILE NAVIGATION DRAWER TOGGLE
+           ============================================================ */
+        function openMobileNav() {
+            const backdrop = document.getElementById('mobileNavBackdrop');
+            const drawer = document.getElementById('mobileNavDrawer');
+            if (backdrop && drawer) {
+                backdrop.classList.add('show');
+                drawer.classList.add('open');
+                drawer.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeMobileNav() {
+            const backdrop = document.getElementById('mobileNavBackdrop');
+            const drawer = document.getElementById('mobileNavDrawer');
+            if (backdrop && drawer) {
+                backdrop.classList.remove('show');
+                drawer.classList.remove('open');
+                drawer.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = '';
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeMobileNav();
+            }
+        });
+
         let currentConfirmCallback = null;
 
         const COOL_MODAL_ICONS = {
